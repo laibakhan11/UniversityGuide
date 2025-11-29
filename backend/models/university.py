@@ -1,59 +1,36 @@
-from pydantic import BaseModel, Field, HttpUrl
+from pydantic import BaseModel
 from typing import List, Optional
-from datetime import datetime
 
-class Contact(BaseModel):
-    phone: Optional[str] = None
-    email: Optional[str] = None
-    address: Optional[str] = None
+class Eligibility(BaseModel):
+    min_percentage: float
+    entry_test: str
+    notes: Optional[str] = ""
 
 class Program(BaseModel):
     name: str
-    department: str
-    duration: str
-    fee_per_semester: int
-    degree_type: str = "undergraduate"  # undergraduate, graduate, phd
+    department: Optional[str] = ""
+    fee_per_semester: Optional[int] = None
+    total_fee_first_year: Optional[int] = None
+    eligibility: Eligibility
 
-class Announcement(BaseModel):
+class Scholarship(BaseModel):
+    name: str
+    type: str
+    link: Optional[str] = ""
+
+class EmbeddedDeadline(BaseModel):
     title: str
-    date: str
-    url: str
-    description: Optional[str] = ""
-    scraped_at: datetime = Field(default_factory=datetime.now)
+    deadline_date: str  
 
 class University(BaseModel):
     name: str
     full_name: str
+    city: str
+    address: Optional[str] = ""
     website: str
+    email: str
+    admission_link: str
+    application_fee: Optional[int] = None
     programs: List[Program] = []
-    announcements: List[Announcement] = []
-    contact: Optional[Contact] = None
-    last_scraped: Optional[datetime] = None
-    created_at: datetime = Field(default_factory=datetime.now)
-    
-    class Config:
-        json_encoders = {
-            datetime: lambda v: v.isoformat()
-        }
-
-# Helper functions
-def insert_university(db, uni: University):
-    """Insert university to MongoDB"""
-    if db.universities.find_one({"name": uni.name}):
-        print(f"⚠️  {uni.name} already exists!")
-        return None
-    
-    result = db.universities.insert_one(uni.model_dump())
-    print(f"✅ Inserted {uni.name}")
-    return result.inserted_id
-
-def get_university(db, name: str):
-    """Get university by name"""
-    data = db.universities.find_one({"name": name})
-    if data:
-        return University(**data)
-    return None
-
-def get_all_universities(db):
-    """Get all universities"""
-    return [University(**uni) for uni in db.universities.find()]
+    scholarships: List[Scholarship] = []
+    deadlines: List[EmbeddedDeadline] = [] 

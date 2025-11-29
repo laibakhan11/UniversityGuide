@@ -1,7 +1,6 @@
-# Environment variables (CRITICAL - never commit this!)
 .env
 
-# Python
+
 __pycache__/
 *.py[cod]
 *$py.class
@@ -26,16 +25,16 @@ wheels/
 .installed.cfg
 *.egg
 
-# IDEs
+
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
-# OS
+
 .DS_Store
 Thumbs.db
 
-# Logs
+
 *.log
