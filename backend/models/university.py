@@ -2,7 +2,8 @@ from pydantic import BaseModel
 from typing import List, Optional
 
 class Eligibility(BaseModel):
-    min_percentage: float
+    min_percentage_matric: float
+    min_percentage_inter: float 
     entry_test: str
     notes: Optional[str] = ""
 
