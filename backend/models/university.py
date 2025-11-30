@@ -13,6 +13,7 @@ class Program(BaseModel):
     fee_per_semester: Optional[int] = None
     total_fee_first_year: Optional[int] = None
     eligibility: Eligibility
+    notes: Optional[str] = ""
 
 class Scholarship(BaseModel):
     name: str
@@ -31,7 +32,6 @@ class University(BaseModel):
     website: str
     email: str
     admission_link: str
-    application_fee: Optional[int] = None
     programs: List[Program] = []
     scholarships: List[Scholarship] = []
     deadlines: List[EmbeddedDeadline] = [] 
