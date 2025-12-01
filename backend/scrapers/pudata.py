@@ -1,56 +1,13 @@
-from pydantic import BaseModel
-from typing import List, Optional
-from pymongo import MongoClient
-from pymongo.errors import ConnectionFailure
-from datetime import datetime
+import sys
+sys.path.append('..')
+import requests
+from bs4 import BeautifulSoup
+import os
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+from config.db import get_db
+from models.university import University, Program, Eligibility, Scholarship, EmbeddedDeadline
+from models.deadline import Deadline
 
-# --- Pydantic Models ---
-class Eligibility(BaseModel):
-    min_percentage_matric: float
-    min_percentage_inter: float
-    entry_test: str
-    notes: Optional[str] = ""
-
-class Program(BaseModel):
-    name: str
-    department: Optional[str] = ""
-    fee_per_semester: Optional[int] = None
-    total_fee_first_year: Optional[int] = None
-    eligibility: Eligibility
-    notes: Optional[str] = ""
-
-class Scholarship(BaseModel):
-    name: str
-    type: str
-    link: Optional[str] = ""
-
-class EmbeddedDeadline(BaseModel):
-    title: str
-    deadline_date: str
-
-class University(BaseModel):
-    name: str
-    full_name: str
-    city: str
-    address: Optional[str] = ""
-    website: str
-    email: str
-    admission_link: str
-    application_fee: Optional[int] = None
-    programs: List[Program] = []
-    scholarships: List[Scholarship] = []
-    deadlines: List[EmbeddedDeadline] = []
-
-# --- MongoDB Connection ---
-client = MongoClient("mongodb://localhost:27017/")
-try:
-    client.admin.command('ismaster')
-    print("Connected to MongoDB successfully")
-except ConnectionFailure:
-    print("Failed to connect to MongoDB")
-
-db = client['university_db']
-collection = db['universities']
 
 
 pu_programs = [
@@ -202,7 +159,7 @@ pu_scholarships = [
     Scholarship(name="USAID Funded Merit and Need Based Scholarships", type="Merit & Need-based", link="https://usaidmnbsp-fas.hec.gov.pk/#/auth/login"),
 ]
 
-# --- Create University Object ---
+
 try:
     pu_data = University(
         name="PU",
@@ -212,15 +169,17 @@ try:
         website="https://pu.edu.pk/#intro",
         email="infocell@pu.edu.pk",
         admission_link="https://pu.edu.pk//home/more/4",
-        application_fee=None,  # Placeholder for missing fee
         programs=pu_programs,
         scholarships=pu_scholarships,
         deadlines=[EmbeddedDeadline(title="Test & Admission Form Portal Open Date", deadline_date="18 September, 2025, Thursday"),EmbeddedDeadline(title="Test & Admission Form Portal Close Date", deadline_date="25 September, 2025, Thursday"),EmbeddedDeadline(title="Last Date of Fee Deposit Final Merit List", deadline_date="13 October, 2025, Monday")]
     )
+    db = get_db()
+    
+    db.universities.delete_many({"name": "PU"})
+    db.deadlines.delete_many({"university_name": "PU"})
+    
+    db.universities.insert_one(pu_data.dict())
 
-    # --- Insert into MongoDB ---
-    insert_result = collection.insert_one(pu_data.dict())
-    print(f"Inserted PU University document with ID: {insert_result.inserted_id}")
 except Exception as e:
     print("Error inserting PU data:", e)
 
