@@ -19,6 +19,7 @@ class Scholarship(BaseModel):
     name: str
     type: str
     link: Optional[str] = ""
+    notes: Optional[str] = ""  
 
 class EmbeddedDeadline(BaseModel):
     title: str

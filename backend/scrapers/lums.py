@@ -321,7 +321,6 @@ def save_to_database():
             university_name="LUMS",
             title=d["title"],
             deadline_date=d["deadline_date"],
-            url="https://admission.lums.edu.pk/critical-dates-all-programmes"
         )
         db.deadlines.insert_one(deadline_obj.dict())
     
