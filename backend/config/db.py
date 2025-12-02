@@ -22,8 +22,7 @@ except Exception as e:
 
 db = client['UniversityGuide']
 
-
-universities_collection = db['Universities']
+universities_collection = db['universities']
 deadlines_collection = db['deadlines']
 
 

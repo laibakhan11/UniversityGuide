@@ -264,11 +264,6 @@ lums = University(
     
     scholarships=[
         Scholarship(
-            name="Undergraduate Merit Scholarships",
-            type="merit",
-            link="https://financial-aid.lums.edu.pk/merit-scholarship"
-        ),
-        Scholarship(
             name="LUMS Financial Aid",
             type="need-based",
             link="https://financial-aid.lums.edu.pk/financial-aid-options-fa"
