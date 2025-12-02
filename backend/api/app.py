@@ -65,3 +65,10 @@ def get_university(name: str):
 async def serve_home():
     with open("../public/home.html", encoding="utf-8") as f:
         return HTMLResponse(f.read())
+    
+@app.get("/api/deadlines")
+def get_all_deadlines():
+    db = get_db()
+    deadlines = list(db.deadlines.find({}, {"_id": 0, "university_name": 1, "title": 1, "deadline_date": 1}))
+    deadlines.sort(key=lambda x: x.get("deadline_date", ""), reverse=True)
+    return {"deadlines": deadlines}

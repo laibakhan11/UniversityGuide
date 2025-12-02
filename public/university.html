@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title id="page-title">University - UniGuide</title>
+  
+  <link rel="stylesheet" href="home.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+
+  <style>
+    .uni-hero {
+      background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1)), #ffffff;
+      padding: 6rem 0 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .uni-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1000 300%22><circle cx=%22500%22 cy=%22150%22 r=%22300%22 fill=%22url(%23grad)%22 opacity=%220.08%22/><defs><radialGradient id=%22grad%22><stop offset=%220%22 stop-color=%22%233b82f6%22/><stop offset=%22100%22 stop-color=%22%238b5cf6%22/></radialGradient></defs></svg>');
+    }
+
+    .uni-name {
+      font-size: 4.5rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #1e40af, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 0;
+    }
+    .uni-fullname {
+      font-size: 1.6rem;
+      color: #64748b;
+      margin-top: 1rem;
+    }
+
+    .search-bar {
+      max-width: 800px;
+      margin: 3rem auto;
+      padding: 1rem;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .search-bar input {
+      flex: 1;
+      padding: 1rem 1.5rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      font-size: 1.1rem;
+      outline: none;
+      transition: all 0.3s;
+    }
+    .search-bar input:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 4px rgba(59,130,246,0.15);
+    }
+    .search-bar button {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: white;
+      border: none;
+      padding: 1rem 2.5rem;
+      border-radius: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .search-bar button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(59,130,246,0.3);
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin: 2rem 0 4rem;
+    }
+    .filter-btn {
+      background: #f1f5f9;
+      color: #475569;
+      border: none;
+      padding: 0.8rem 1.8rem;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 2rem;
+      margin: 4rem 0;
+    }
+    .info-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+    .info-card h3 {
+      font-size: 1.8rem;
+      color: #1e40af;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .deadlines-list { display: grid; gap: 1rem; }
+    .deadline-item {
+      background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+      padding: 1.5rem;
+      border-radius: 16px;
+      border-left: 6px solid #10b981;
+    }
+    .deadline-title { font-weight: 700; font-size: 1.1rem; color: #065f46; }
+    .deadline-date { font-weight: bold; color: #059669; margin-top: 0.5rem; font-size: 1.15rem; }
+
+    .fee-summary {
+      background: linear-gradient(135deg, #fffbeb, #fef3c7);
+      padding: 2.5rem;
+      border-radius: 20px;
+      text-align: center;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #d97706;
+      border: 2px solid #fbbf24;
+    }
+
+    /* Department Cards - Premium Collapsible */
+    .department-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      margin: 1.8rem 0;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      border: 1px solid rgba(59,130,246,0.1);
+      transition: all 0.4s ease;
+    }
+    .department-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.12); }
+
+    .dept-header {
+      padding: 1.8rem 2rem;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+    .dept-header h3 { margin: 0; font-size: 1.5rem; font-weight: 700; }
+    .dept-header small { opacity: 0.9; font-size: 0.95rem; }
+    .toggle-icon { font-size: 2.2rem; font-weight: 300; transition: transform 0.3s; }
+
+    .programs-list {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1), padding 0.6s ease;
+      padding: 0 2rem;
+      background: #fafafa;
+    }
+    .programs-list.open {
+      max-height: 4000px;
+      padding: 2rem;
+    }
+
+    .program-item {
+      background: white;
+      padding: 1.6rem;
+      margin: 1rem 0;
+      border-radius: 16px;
+      border-left: 6px solid #3b82f6;
+      transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .programs-list.open .program-item {
+      opacity: 1;
+      transform: translateY(0);
+      animation: slideUp 0.5s ease forwards;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .program-name {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #1e40af;
+      margin-bottom: 0.8rem;
+    }
+    .fee { color: #059669; font-weight: bold; font-size: 1.15rem; }
+    .notes { color: #64748b; font-size: 0.95rem; display: block; margin-top: 0.8rem; }
+
+    .scholarships-section {
+      margin: 5rem 0;
+      padding: 3rem;
+      background: linear-gradient(135deg, #fffbeb, #fefce8);
+      border-radius: 24px;
+      text-align: center;
+      border: 2px solid #fbbf24;
+    }
+    .scholarship-item {
+      background: white;
+      padding: 1.5rem;
+      margin: 1rem 0;
+      border-radius: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+    }
+    .view-details {
+      background: #f59e0b;
+      color: white;
+      padding: 0.6rem 1.4rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .view-details:hover { background: #d97706; }
+
+    @media (max-width: 768px) {
+      .uni-name { font-size: 3rem; }
+      .search-bar { flex-direction: column; }
+      .info-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="container header-content">
+      <div class="logo">
+        <span class="logo-text">UniGuide</span>
+      </div>
+      <nav class="nav">
+        <a href="home.html" class="nav-link">Home</a>
+        <a href="#" class="nav-link">Universities</a>
+        <a href="#" class="nav-link">Deadlines</a>
+        <a href="#" class="nav-link">Aggregate Calculator</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="uni-hero">
+    <div class="container">
+      <h1 class="uni-name" id="uni-name">Loading...</h1>
+      <p class="uni-fullname" id="uni-fullname"></p>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="search-bar">
+      <input type="text" id="program-search" placeholder="Search programs (e.g. Computer Science, BBA, MBBS...)"/>
+      <button>Search</button>
+    </div>
+
+    <div class="filters">
+      <button class="filter-btn active" data-filter="all">All Programs</button>
+      <button class="filter-btn" data-filter="cs">CS / IT</button>
+      <button class="filter-btn" data-filter="bba">Business</button>
+      <button class="filter-btn" data-filter="eng">Engineering</button>
+      <button class="filter-btn" data-filter="law">Law</button>
+      <button class="filter-btn" data-filter="med">Medical</button>
+      <button class="filter-btn" data-filter="hum">Humanities</button>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>Admission Deadlines</h3>
+        <div id="deadlines-container" class="deadlines-list">
+          <div class="loading">Loading deadlines...</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <h3>Fee Structure Overview</h3>
+        <div id="fee-summary" class="fee-summary">Calculating...</div>
+      </div>
+    </div>
+
+    <h2 style="text-align:center; margin: 4rem 0 2rem; font-size: 2.8rem; background: linear-gradient(135deg, #1e40af, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+      Departments & Programs
+    </h2>
+
+    <div id="loading" class="loading" style="padding: 3rem; font-size: 1.4rem;">Loading programs from database...</div>
+    <div id="departments-container"></div>
+
+    <div id="scholarships-section" class="scholarships-section" style="display:none;">
+      <h2 style="color:#d97706; font-size:2.4rem;">Available Scholarships</h2>
+      <div id="scholarships-list"></div>
+    </div>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const uniName = urlParams.get('name') || 'LUMS';
+    document.getElementById('uni-name').textContent = uniName;
+    document.title = uniName + " - UniGuide";
+
+    let allProgramItems = [];
+
+    function filterPrograms() {
+      const search = document.getElementById('program-search').value.toLowerCase();
+      const activeFilter = document.querySelector('.filter-btn.active')?.dataset.filter || 'all';
+
+      allProgramItems.forEach(item => {
+        const name = item.querySelector('.program-name').textContent.toLowerCase();
+        let show = name.includes(search);
+
+        if (activeFilter !== 'all') {
+          const filters = {
+            cs: /computer|cs|software|ai|data|it|cyber|information/,
+            bba: /bba|business|management|finance|accounting|commerce/,
+            eng: /engineering/,
+            law: /law|llb|legal/,
+            med: /medicine|mbbs|pharmacy|biology|health|doctor|dpt/,
+            hum: /english|history|psychology|political|sociology|media|art|literature|islamic/
+          };
+          show = show && filters[activeFilter].test(name);
+        }
+        item.style.display = show ? 'block' : 'none';
+      });
+    }
+
+    document.getElementById('program-search').addEventListener('input', filterPrograms);
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        filterPrograms();
+      });
+    });
+
+    async function loadUniversity() {
+      try {
+        const res = await fetch(`/api/university/${uniName}`);
+        const uni = await res.json();
+        if (uni.error) throw new Error(uni.error);
+
+        document.getElementById('uni-fullname').textContent = uni.full_name || uni.name;
+        document.getElementById('loading').style.display = 'none';
+
+        // Deadlines
+        const deadlinesContainer = document.getElementById('deadlines-container');
+        if (uni.deadlines?.length > 0) {
+          deadlinesContainer.innerHTML = uni.deadlines.map(d => `
+            <div class="deadline-item">
+              <div class="deadline-title">${d.title}</div>
+              <div class="deadline-date">${d.deadline_date}</div>
+            </div>
+          `).join('');
+        } else {
+          deadlinesContainer.innerHTML = '<p style="text-align:center; color:#999;">No deadlines announced</p>';
+        }
+
+        // Fee Summary
+        const fees = uni.programs?.map(p => p.total_fee_first_year).filter(Boolean) || [];
+        const feeEl = document.getElementById('fee-summary');
+        if (fees.length > 0) {
+          const avg = Math.round(fees.reduce((a,b) => a+b, 0) / fees.length);
+          const min = Math.min(...fees);
+          const max = Math.max(...fees);
+          feeEl.innerHTML = `Average First Year: <strong>PKR ${avg.toLocaleString()}</strong><br>
+            <small>Range: PKR ${min.toLocaleString()} – ${max.toLocaleString()}</small>`;
+        } else {
+          feeEl.innerHTML = 'Fee information not available';
+        }
+
+        // PROGRAMS BY DEPARTMENT - NOW WORKING 100%
+        const deptMap = {};
+        (uni.programs || []).forEach(p => {
+          const dept = p.department?.trim() || "Other Programs";
+          if (!deptMap[dept]) deptMap[dept] = [];
+          deptMap[dept].push(p);
+        });
+
+        const container = document.getElementById('departments-container');
+        container.innerHTML = '';
+        allProgramItems = [];
+
+        Object.keys(deptMap).sort().forEach(deptName => {
+          const programs = deptMap[deptName];
+          const count = programs.length;
+
+          const card = document.createElement('div');
+          card.className = 'department-card';
+
+          const programsHTML = programs.map(p => `
+            <div class="program-item">
+              <div class="program-name">${p.name || 'Unnamed'}</div>
+              <div><strong>First Year Fee:</strong> <span class="fee">PKR ${p.total_fee_first_year?.toLocaleString() || 'N/A'}</span></div>
+              <div><strong>Eligibility:</strong> FSc ≥ ${p.eligibility?.min_percentage_inter || 'N/A'}%</div>
+              <div><strong>Test:</strong> ${p.eligibility?.entry_test || 'Not Required'}</div>
+              ${p.eligibility?.notes ? `<em class="notes">${p.eligibility.notes}</em>` : ''}
+            </div>
+          `).join('');
+
+          card.innerHTML = `
+            <div class="dept-header">
+              <div>
+                <h3>${deptName}</h3>
+                <small>${count} program${count > 1 ? 's' : ''}</small>
+              </div>
+              <span class="toggle-icon">+</span>
+            </div>
+            <div class="programs-list">${programsHTML}</div>
+          `;
+
+          const header = card.querySelector('.dept-header');
+          const list = card.querySelector('.programs-list');
+          const icon = card.querySelector('.toggle-icon');
+
+          header.onclick = () => {
+            const open = list.classList.toggle('open');
+            icon.textContent = open ? '−' : '+';
+          };
+
+          card.querySelectorAll('.program-item').forEach(item => allProgramItems.push(item));
+          container.appendChild(card);
+        });
+
+        // Scholarships
+        if (uni.scholarships?.length > 0) {
+          const sec = document.getElementById('scholarships-section');
+          const list = document.getElementById('scholarships-list');
+          sec.style.display = 'block';
+          uni.scholarships.forEach(s => {
+            list.innerHTML += `
+              <div class="scholarship-item">
+                <div><strong>${s.name}</strong><br><small>${s.type || 'Merit/Need'}</small></div>
+                ${s.link ? `<a href="${s.link}" target="_blank" class="view-details">Apply Now</a>` : ''}
+              </div>
+            `;
+          });
+        }
+
+      } catch (err) {
+        document.getElementById('loading').innerHTML = `<p style="color:red; text-align:center;">Error: ${err.message}</p>`;
+      }
+    }
+
+    loadUniversity();
+  </script>
+</body>
+</html>

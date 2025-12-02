@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>UniGuide - Find Your Future</title>
+  <link rel="stylesheet" href="home.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-content">
+      <div class="logo">
+        <span class="logo-text">UniGuide</span>
+      </div>
+      <nav class="nav">
+        <a href="home.html" class="nav-link">Home</a>
+        <a href="universities.html" class="nav-link">Universities</a>
+        <a href="#" class="nav-link">Deadlines</a>
+        <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container hero-content">
+      <h1>Find Your Future.</h1>
+      <p class="subtitle">Explore universities and programs across Pakistan.</p>
+
+      <div class="search-section">
+        <h2>Get Started</h2>
+        <div class="search-boxes">
+          <div class="search-group">
+            <label>Enter Program</label>
+            <input type="text" placeholder="e.g., Computer Science" class="search-input" id="program-input"/>
+            <div class="dropdown" id="program-dropdown"></div>
+          </div>
+          <div class="search-group">
+            <label>Enter University</label>
+            <input type="text" placeholder="e.g., LUMS" class="search-input" id="uni-input"/>
+          </div>
+          <button class="search-btn">Search</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dynamic Institutions -->
+  <section class="institutions">
+    <div class="container">
+      <h2 class="section-title">Explore Top Institutions</h2>
+      
+      <div id="loading" class="loading">Loading universities from database...</div>
+      <div id="error" class="error" style="display:none;"></div>
+
+      <div class="cards-grid" id="universities-grid">
+        <!-- Cards will be injected here by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="logo footer-logo">
+        <span class="logo-text">UniGuide</span>
+      </div>
+      <div class="footer-links">
+        <a href="home.html">Home</a>
+        <a href="#">Aggregate Calculator</a>
+        <a href="#">Deadlines</a>
+      </div>
+      <p class="copyright">© 2025 UniGuide. All rights reserved.</p>
+    </div>
+  </footer>
+<script src = "home.js"></script>
+</body>
+</html>
