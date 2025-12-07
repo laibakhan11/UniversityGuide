@@ -23,8 +23,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Serve static files (HTML, CSS, JS)
-app.mount("/", StaticFiles(directory="../public", html=True), name="static")
 
 @app.get("/")
 async def root():
@@ -259,3 +257,5 @@ def get_all_deadlines():
         "total_deadlines": len(all_deadlines),
         "deadlines": all_deadlines
     }
+
+app.mount("/", StaticFiles(directory="../public", html=True), name="static")
