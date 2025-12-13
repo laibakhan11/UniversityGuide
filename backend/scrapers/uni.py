@@ -1,12 +1,9 @@
-# uni.py (updated - safe on Windows + better output)
-
 import os
 import subprocess
 import sys
 
 folder = os.path.dirname(os.path.abspath(__file__))
 
-# Force UTF-8 for all subprocess (fixes Unicode errors on Windows)
 env = os.environ.copy()
 env["PYTHONIOENCODING"] = "utf-8"
 

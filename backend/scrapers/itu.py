@@ -47,7 +47,7 @@ for row in rows:
 print(f"Found {len(scholarships)} undergraduate scholarships")
 
 
-print("\n5. Scraping ITU Programs with Individual Fees and Eligibility...")
+print("\n Scraping ITU Programs with Individual Fees and Eligibility...")
 req = requests.get("https://itu.edu.pk/admissions/fee-structure/")
 sp = BeautifulSoup(req.text, "html.parser")
 
