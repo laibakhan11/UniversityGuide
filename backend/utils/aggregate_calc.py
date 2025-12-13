@@ -106,10 +106,29 @@ def umtAggregate_calculator(ssc_obtained, ssc_total, hssc_obtained, hssc_total,
 
     return round(agg, 2)
 
+def gikiAggregate_calculator(ssc_obtained, ssc_total, hssc_obtained, hssc_total,
+                             entry_testmarks, total_entry_test_marks):
+    inter = pct(hssc_obtained, hssc_total)
+    test = pct(entry_testmarks, total_entry_test_marks)
+    agg = (test * 0.85) + (inter * 0.15)
+    return round(agg, 2)
+
+def airAggregate_calculator(ssc_obtained, ssc_total, hssc_obtained, hssc_total,
+                            entry_testmarks, total_entry_test_marks, is_engineering=False):
+  
+    matric = pct(ssc_obtained, ssc_total)
+    inter = pct(hssc_obtained, hssc_total)
+    test = pct(entry_testmarks, total_entry_test_marks)
+    
+    if is_engineering:
+        agg = (matric * 0.10) + (inter * 0.35) + (test * 0.55)
+    else:
+        agg = (matric * 0.15) + (inter * 0.40) + (test * 0.45)
+    return round(agg, 2)
 
 def calculate_aggregate(university_name, *args, **kwargs):
-    uni = university_name.upper()
-
+    uni = university_name.upper().strip()
+    
     uni_map = {
         "COMSATS": comsatsAggregate_calculator,
         "PU": puAggregate_calculator,
@@ -119,12 +138,12 @@ def calculate_aggregate(university_name, *args, **kwargs):
         "FAST NUCES": fastAggregate_calculator,
         "NUCES": fastAggregate_calculator,
         "UMT": umtAggregate_calculator,
+        "GIKI": gikiAggregate_calculator,
+        "AIR": airAggregate_calculator,
+        "AIR UNIVERSITY": airAggregate_calculator,
     }
-
+    
     if uni not in uni_map:
-        return f"{university_name} formula not added."
-
-    return uni_map[uni](*args, **kwargs)  
-
-
-
+        return f"Aggregate formula not available for {university_name}"
+    
+    return uni_map[uni](*args, **kwargs)
