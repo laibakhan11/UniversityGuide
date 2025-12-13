@@ -1,4 +1,3 @@
-# pifd_scraper_real.py - 100% REAL SCRAPING (NO HARDCODING)
 
 import requests
 from bs4 import BeautifulSoup
@@ -9,10 +8,9 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from models.university import University, Program, Eligibility, Scholarship, EmbeddedDeadline
+from models.deadline import Deadline
 from config.db import get_db
 db = get_db()
-print("PIFD REAL Scraper Started (No Hardcoding)...\n")
-
 url = "https://pifd.edu.pk/admission.html"
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
@@ -28,89 +26,99 @@ except Exception as e:
     exit()
 
 # ========================================
-# 1. SCRAPE PROGRAMS FROM "List of Programmes"
+# SCRAPE FEE STRUCTURE
 # ========================================
-print("1. Scraping List of Programmes...")
+print("Scraping Fee Structure...")
+table = soup.find('div', id="collapseThree").find('table', class_="semester-breakdown w-100")
+rows = table.find_all('tr', class_="semester-text")
+
+first_sem = 0
+second_sem = 0
+fee_details = []
+
+for row in rows:
+    cols = row.find_all('td')
+    if len(cols) >= 3:
+        desc = cols[0].get_text(strip=True)
+        amt1 = cols[1].get_text(strip=True).replace('/-', '').replace(',', '').replace('-', '0').strip()
+        amt2 = cols[2].get_text(strip=True).replace('/-', '').replace(',', '').replace('-', '0').strip()
+        
+        try:
+            first_sem += int(amt1)
+            second_sem += int(amt2)
+            fee_details.append(f"{desc}: Rs. {amt1} (1st sem), Rs. {amt2} (2nd-8th sem)")
+        except:
+            pass
+
+print(f"   → First Semester: Rs. {first_sem:,}")
+print(f"   → Second Semester: Rs. {second_sem:,}")
+print(f"   → First Year Total: Rs. {first_sem + second_sem:,}")
+
+# ========================================
+# SCRAPE PROGRAMS
+# ========================================
+print("\nScraping List of Programmes...")
 programs = []
-# Look for the correct heading
 heading = soup.find(string=re.compile(r"Degree\s+Programmes", re.I))
-if not heading:
-    print("   → 'Degree Programmes' heading not found!")
-    exit()
 
-parent = heading.find_parent()
-# Look for the <ul> that comes after this heading
-ul = None
-for sibling in parent.find_next_siblings():
-    if sibling.name in ["ul", "ol"]:
-        ul = sibling
-        break
-    # Sometimes the list is inside a div
-    if sibling.find(["ul", "ol"]):
-        ul = sibling.find(["ul", "ol"])
-        break
+if heading:
+    parent = heading.find_parent()
+    ul = None
+    
+    for sibling in parent.find_next_siblings():
+        if sibling.name in ["ul", "ol"]:
+            ul = sibling
+            break
+        if sibling.find(["ul", "ol"]):
+            ul = sibling.find(["ul", "ol"])
+            break
+    
+    if ul:
+        items = ul.find_all("li")
+        print(f"   → Found {len(items)} programs")
+        
+        for item in items:
+            name = item.get_text(strip=True)
+            name = re.sub(r"^\d+[\.\)]\s*", "", name).strip()
+            
+            if name and len(name) > 5:
+                programs.append(Program(
+                    name=name,
+                    department="Pakistan Institute of Fashion and Design",
+                    fee_per_semester=second_sem,
+                    total_fee_first_year=first_sem + second_sem,
+                    eligibility=Eligibility(
+                        min_percentage_matric=45.0,
+                        min_percentage_inter=45.0,
+                        entry_test="PIFD Entry Test + Interview",
+                        notes="2nd Division in Intermediate or equivalent"
+                    ),
+                    notes=f"Admission Fee: Rs. 18,000 (one-time) | Security Deposits: Rs. 20,000 (refundable) | Hostel available: Rs. 95,000-160,000/semester"
+                ))
 
-if ul:
-    items = ul.find_all("li")
-    print(f"   → Found {len(items)} programs:")
-    for item in items:
-        name = item.get_text(strip=True)
-        name = re.sub(r"^\d+[\.\)]\s*", "", name).strip()
-        name = re.sub(r"\s*-\s*$", "", name).strip()
-        if name and len(name) > 5:
-            print(f"      • {name}")
-            programs.append(Program(
-                name=name,
-                department="Pakistan Institute of Fashion and Design",
-                total_fee_first_year=230000,
-                eligibility=Eligibility(
-                    min_percentage_matric=45.0,
-                    min_percentage_inter=45.0,
-                    entry_test="PIFD Entry Test + Interview",
-                    notes="2nd Division in Intermediate or equivalent"
-                )
-            ))
-else:
-    print("   → No list found after 'Degree Programmes'")
 # ========================================
-# 2. SCRAPE DEADLINES FROM TABLES
+# SCRAPE DEADLINES
 # ========================================
-print("\n2. Scraping Deadlines from tables...")
+print("\nScraping Deadlines...")
 deadlines = []
-tables = soup.find_all('table')
+tables = soup.find('div',id="collapseTwo").find('table',class_="semester-breakdown w-100")
+rows=tables.find_all('tr')
+for row in rows:
+    cols = row.find_all('td')
+    if len(cols) >= 2:
+        title = cols[0].get_text(strip=True)
+        date = cols[1].get_text(strip=True)
+        
+        if title and date:
+            deadlines.append(EmbeddedDeadline(title=title, deadline_date=date))
+            print(f"   • {title}: {date}")
 
-for table in tables:
-    rows = table.find_all('tr')
-    for row in rows:
-        cols = row.find_all(['td', 'th'])
-        if len(cols) >= 2:
-            title = cols[0].get_text(strip=True)
-            date = cols[1].get_text(strip=True)
-            if title and date and any(year in date for year in ["2025", "2026"]):
-                deadlines.append(EmbeddedDeadline(title=title, deadline_date=date))
 
-print(f"   → Found {len(deadlines)} deadlines")
-
-# ========================================
-# 3. SCRAPE FEE STRUCTURE
-# ========================================
-print("\n3. Scraping Fee Structure...")
-fee_notes = []
-for table in tables:
-    header = " ".join([th.get_text(strip=True) for th in table.find_all('th')]).lower()
-    if any(word in header for word in ["fee", "tuition", "semester", "regular", "self finance"]):
-        for row in table.find_all('tr')[1:]:
-            cols = row.find_all(['td', 'th'])
-            if len(cols) >= 2:
-                text = " | ".join([c.get_text(strip=True) for c in cols])
-                fee_notes.append(text)
-
-print(f"   → Found {len(fee_notes)} fee entries")
 
 # ========================================
-# 4. SCRAPE ELIGIBILITY CRITERIA
+# SCRAPE ELIGIBILITY
 # ========================================
-print("\n4. Scraping Eligibility Criteria...")
+print("\nScraping Eligibility Criteria...")
 eligibility_notes = []
 criteria_heading = soup.find(string=re.compile("Eligibility Criteria", re.I))
 if criteria_heading:
@@ -125,61 +133,237 @@ if criteria_heading:
 print(f"   → Found {len(eligibility_notes)} eligibility points")
 
 # ========================================
-# 5. SCRAPE SCHOLARSHIPS
+# SCRAPE SCHOLARSHIPS
 # ========================================
-print("\n5. Scraping Scholarships...")
+print("\nScraping Scholarships...")
 scholarships = []
-text_blocks = soup.find_all(string=re.compile("Scholarship|Financial Assistance|Endowment|PEEF|BEEF", re.I))
-for block in text_blocks:
-    parent = block.find_parent()
-    if parent:
-        text = parent.get_text(strip=True)
-        if "scholarship" in text.lower() or "financial" in text.lower():
-            name = text.split("Scholarship")[0].strip() + " Scholarship"
-            if len(name) > 5:
-                scholarships.append(Scholarship(name=name, type="need-based", link="https://pifd.edu.pk"))
+data = soup.find('div', id="collapseFour").find('ul', class_="list-style-num")
+li = data.find_all('li')
+for l in li:
+    text = l.get_text(strip=True)
+    scholarships.append(Scholarship(name=text, type="need-based", link="https://pifd.edu.pk"))
 
-# Remove duplicates
-scholarships = [dict(t) for t in {tuple(d.items()) for d in scholarships}]
 print(f"   → Found {len(scholarships)} scholarships")
 
 # ========================================
-# 6. SAVE TO DATABASE
+# SAVE TO DATABASE
 # ========================================
-print("\n6. Saving to Database...")
+print("\nSaving to Database...")
 pifd = University(
     name="PIFD",
     full_name="Pakistan Institute of Fashion and Design",
     city="Lahore",
+    email="info@pifd.edu.pk",
     website="https://pifd.edu.pk",
     admission_link=url,
     programs=programs,
     scholarships=scholarships,
     deadlines=deadlines[:20],
-    notes=f"Real scraped data | {len(programs)} programs | {len(deadlines)} deadlines | {len(fee_notes)} fee entries"
+    notes=f"Premier fashion and design institute. Entry test and interview required. First year total fee: Rs. {first_sem + second_sem:,}"
 )
 
-collection = db.universities
-collection.delete_many({"shortName": "PIFD"})
-result = collection.insert_one(pifd.model_dump())
-print(f"SUCCESS! PIFD saved with ID: {result.inserted_id}")
-
-# Save deadlines
-db.deadlines.delete_many({"university_name": "PIFD"})
+standalone_deadlines = []
 for d in deadlines:
-    db.deadlines.insert_one({
-        "university_name": "PIFD",
-        "title": d.title,
-        "deadline_date": d.deadline_date,
-        "url": url
-    })
+    deadline_obj = Deadline(
+        university_name="PIFD",
+        title=d.title,
+        deadline_date=d.deadline_date,
+        url="https://pifd.edu.pk/admission.html"
+    )
+    standalone_deadlines.append(deadline_obj)
 
-print("\n" + "="*60)
-print("PIFD 100% REAL DATA SCRAPED & SAVED!")
-print(f"Programs: {len(programs)}")
-print(f"Deadlines: {len(deadlines)}")
-print(f"Fee entries: {len(fee_notes)}")
-print(f"Eligibility points: {len(eligibility_notes)}")
-print(f"Scholarships: {len(scholarships)}")
-print("PIFD is now LIVE with REAL scraped data!")
-print("="*60)
+def save_to_database():
+    db = get_db()
+    db.universities.delete_many({"name": "PIFD"})
+    db.deadlines.delete_many({"university_name": "Pakistan Institute of Fashion and Design"})
+    db.universities.insert_one(pifd.dict())
+    db.deadlines.insert_many([d.dict() for d in standalone_deadlines])
+
+if __name__ == "__main__":
+    save_to_database()
+    print("PIFD data saved to database.")
+
+
+
+
+
+'''
+<div id="collapseTwo" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample" style="">
+                    <div class="card-body page-section">
+                        <div class="text-container">
+                            <table class="semester-breakdown w-100">
+                            <tbody>
+                                <tr class="semester-h-col">
+                                <th width="622" scope="col"><div align="center">Schedules</div></th>
+                                <th width="306" scope="col"><div align="center">Dates</div></th>
+                              </tr>
+                              <tr class="semester-text">
+                                <td>Advertisement</td>
+                                <td> <div align=""><strong> 15<sup>th</sup>, 22<sup>nd</sup> June, &amp;  13<sup>th</sup> July, 2025</strong></div></td>
+                              </tr>
+                              <tr class="semester-text">
+                                <td>Admissions Open</td>
+                                <td><div align=""><strong>16<sup>th</sup> June, 2025</strong> </div></td>
+                              </tr>
+                              <tr class="semester-text">
+                                <td>Last Date For Submission of Applications</td>
+                                <td><div align=""><strong>16<sup>th</sup> July, 2025</strong> </div></td>
+                              </tr>
+                              <tr class="semester-text">
+                                <td>Admission Entry / Aptitude Test:
+                                    [Lahore, karachi Campus, Islamabad Campus, Peshawar, Quetta and Skardu Campus]</td>
+                                
+                                <td><div align=""><strong>20<sup>th</sup> July, 2025 at 10:00 AM</strong> </div></td>
+                              </tr>
+                              <tr class="semester-text">
+                                <td>Display of Merit List for Interviews</td>
+                                <td><div align=""><strong>22<sup>nd</sup> July, 2025 (Evening)</strong> </div></td>
+                              </tr>
+                              <tr class="semester-text">
+                                <td>Interviews</td>
+                                <td><div align=""><strong>24<sup>th</sup>, 25<sup>th</sup>, 26<sup>th</sup>, 28<sup>th</sup>&amp; 29<sup>th</sup>  July, 2025 </strong> </div></td>
+                              </tr>
+                              <tr class="semester-text">
+                                <td>Display of First Merit List</td>
+                                <td><div align=""><strong>30<sup>th</sup> July, 2025</strong> </div></td>
+                              </tr>
+                              <tr class="semester-text">
+                                <td>Last Date for submission of Dues</td>
+                                <td><div align=""><strong>08<sup>th</sup> August, 2025</strong> </div></td>
+                              </tr>
+                              <tr class="semester-text">
+                                <td>Display of Second Merit List</td>
+                                <td><div align=""><strong>08<sup>th</sup> August, 2025 (Evening)</strong> </div></td>
+                              </tr>
+                              <tr class="semester-text">
+                                <td>Last Date for submission of Dues</td>
+                                <td><div align=""><strong>13<sup>th</sup> August, 2025</strong> </div></td>
+                              </tr>
+                              <tr class="semester-text">
+                                <td>Orientation</td>
+                                <td><div align=""><strong>18<sup>th</sup> August, 2025</strong> </div></td>
+                              </tr>
+                              <tr class="semester-text">
+                                <td>Commencement of Classes</td>
+                                <td><div align=""><strong>18<sup>th</sup> August, 2025</strong> </div></td>
+                              </tr>
+                            
+                            <!-- <tr class="semester-text">
+                             <td colspan="2">
+                                <table>
+                                    <tbody>
+                                        <tr class="semester-h-col">
+                                            <th width="622" scope="col"><div align="center">Department Name</div></th>
+                                            <th width="306" scope="col"><div align="center">Interviews</div></th>
+                                            <th width="306" scope="col"><div align="center">1st Merit List</div></th>
+                                            <th width="306" scope="col"><div align="center">Last Date for submission of Dues (1st Merit List)</div></th>
+                                            <th width="306" scope="col"><div align="center">2nd Merit List</div></th>
+                                            <th width="306" scope="col"><div align="center">Last Date for submission of Dues (2nd Merit List)</div></th>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Fashion Design
+                                            </td>
+                                            <td>
+                                                <strong>8<sup>th</sup> August, 2024 </strong>
+                                            </td>
+                                            <td rowspan="3" style="vertical-align: middle;">
+                                                <strong>12<sup>th</sup> August, 2024 </strong>
+                                            </td>
+                                            <td rowspan="3" style="vertical-align: middle;">
+                                                <strong>16<sup>th</sup> August, 2024 </strong>
+                                            </td>
+                                            <td rowspan="3" style="vertical-align: middle;">
+                                                <strong>16<sup>th</sup> August, 2024(Evening) </strong>
+                                            </td>
+                                            <td rowspan="3" style="vertical-align: middle;">
+                                                <strong>22<sup>nd</sup> August, 2024 </strong>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Textile Design
+                                            </td>
+                                            <td>
+                                                <strong>9<sup>th</sup> August, 2024 </strong>
+                                            </td>
+                                
+                                            
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Fashion Marketing and Merchandising
+                                            </td>
+                                            <td>
+                                                <strong>10<sup>th</sup> August, 2024 </strong>
+                                            </td>
+                                       
+                                           
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Leather Accessories and Footwear
+                                            </td>
+                                            <td rowspan="2" style="vertical-align: middle;">
+                                                <strong>12<sup>th</sup> August, 2024 </strong>
+                                            </td>
+                                            <td rowspan="5" style="vertical-align: middle;">
+                                                <strong>16<sup>th</sup> August, 2024 </strong>
+                                            </td>
+                                            <td rowspan="5" style="vertical-align: middle;">
+                                                <strong>23<sup>rd</sup> August, 2024 </strong>
+                                            </td>
+                                            <td rowspan="5" style="vertical-align: middle;">
+                                                <strong>23<sup>rd</sup> August, 2024(Evening) </strong>
+                                            </td>
+                                            <td rowspan="5" style="vertical-align: middle;">
+                                                <strong>27<sup>th</sup> August, 2024(Evening) </strong>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Gems and Jewellery Design
+                                            </td>                                 
+                                            
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Furniture Design and Manufacture
+                                            </td>
+                                            <td rowspan="3" style="vertical-align: middle;">
+                                                <strong>13<sup>th</sup> August, 2024 </strong>
+                                            </td>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Ceramic and Glass Design
+                                            </td>
+                             
+                                            
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                BFA Visual Arts
+                                            </td>
+                             
+                                            
+                                        </tr>
+           
+                                    </tbody>
+                                </table>
+
+                             </td>
+                            
+                           </tr> -->
+                              <!-- <tr class="semester-text">
+                                <td>Orientation</td>
+                                <td><div align=""><strong>15<sup>th</sup> September, 2024</strong> </div></td>
+                              </tr> -->
+                             
+                            </tbody></table>
+                            
+                        </div>
+                    </div>
+                </div>
+'''
