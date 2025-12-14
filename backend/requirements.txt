@@ -1,0 +1,9 @@
+pymongo
+pydantic
+fastapi
+uvicorn[standard]
+beautifulsoup4
+requests
+python-multipart
+selenium
+PyPDF2

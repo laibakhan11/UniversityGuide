@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aggregate Calculator - UniGuide</title>
+  <link rel="stylesheet" href="home.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  
+  <style>
+    .calc-hero {
+      background: linear-gradient(135deg, #eef2ff, #c7d2fe);
+      padding: 7rem 0 5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .calc-hero h1 {
+      font-size: 4.8rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #1e40af, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .calc-container {
+      max-width: 1000px;
+      margin: 3rem auto;
+      padding: 3rem;
+      background: white;
+      border-radius: 28px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.12);
+      backdrop-filter: blur(12px);
+    }
+    .uni-select {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    #university-select {
+      width: 100%;
+      max-width: 600px;
+      padding: 1.3rem 1.8rem;
+      font-size: 1.3rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 18px;
+      background: white;
+      outline: none;
+      transition: all 0.4s;
+    }
+    #university-select:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 6px rgba(59,130,246,0.15);
+    }
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+    .input-group {
+      margin: 1.5rem 0;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.8rem;
+      font-size: 1.1rem;
+    }
+    input, select {
+      width: 100%;
+      padding: 1.1rem 1.4rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      font-size: 1.1rem;
+      transition: all 0.3s;
+    }
+    input:focus, select:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 5px rgba(59,130,246,0.12);
+      outline: none;
+    }
+    .extra-options {
+      background: #f8fafc;
+      padding: 2rem;
+      border-radius: 18px;
+      margin: 2rem 0;
+      border: 1px dashed #94a3b8;
+    }
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 1rem;
+    }
+    .result-box {
+      margin-top: 3rem;
+      padding: 3rem;
+      background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+      border-radius: 24px;
+      text-align: center;
+      border: 3px solid #10b981;
+    }
+    #aggregate-result {
+      font-size: 4.5rem;
+      font-weight: 900;
+      color: #059669;
+      margin: 0.5rem 0;
+    }
+    .formula-note {
+      font-size: 1.1rem;
+      color: #065f46;
+      margin-top: 1rem;
+      line-height: 1.6;
+    }
+    @media (max-width: 768px) {
+      .input-row { grid-template-columns: 1fr; }
+      .calc-hero h1 { font-size: 3.5rem; }
+      #aggregate-result { font-size: 3.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Premium Navbar -->
+  <header class="header">
+    <div class="container header-content">
+      <div class="logo">
+        <span class="logo-text">UniGuide</span>
+      </div>
+      <nav class="nav">
+        <a href="home.html" class="nav-link">Home</a>
+        <a href="#" class="nav-link">Universities</a>
+        <a href="#" class="nav-link">Deadlines</a>
+        <a href="aggregateCalculator.html" class="nav-link active">Aggregate Calculator</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="calc-hero">
+    <div class="container">
+      <h1>Aggregate Calculator</h1>
+      <p style="font-size:1.5rem; color:#64748b; margin-top:1rem;">
+        Calculate your merit for any university in Pakistan — 100% accurate formulas
+      </p>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="calc-container">
+
+      <div class="uni-select">
+        <label for="university-select">Select University</label>
+        <select id="university-select">
+          <option value="">Choose your university...</option>
+          <option value="COMSATS">COMSATS University</option>
+          <option value="PU">Punjab University (PU)</option>
+          <option value="FAST">FAST-NUCES</option>
+          <option value="UMT">University of Management & Technology (UMT)</option>
+        </select>
+      </div>
+
+      <div id="calculator-form" style="display:none;">
+
+        <div class="input-row">
+          <div class="input-group">
+            <label>Matric / SSC Obtained Marks</label>
+            <input type="number" id="ssc-obtained" placeholder="e.g. 1025" />
+          </div>
+          <div class="input-group">
+            <label>Matric / SSC Total Marks</label>
+            <input type="number" id="ssc-total" value="1100" />
+          </div>
+        </div>
+
+        <div class="input-row">
+          <div class="input-group">
+            <label>Inter / HSSC Obtained Marks</label>
+            <input type="number" id="hssc-obtained" placeholder="e.g. 965" />
+          </div>
+          <div class="input-group">
+            <label>Inter / HSSC Total Marks</label>
+            <input type="number" id="hssc-total" value="1100" />
+          </div>
+        </div>
+
+        <div class="input-row">
+          <div class="input-group">
+            <label>Entry Test Obtained Marks</label>
+            <input type="number" id="test-obtained" placeholder="e.g. 145" />
+          </div>
+          <div class="input-group">
+            <label>Entry Test Total Marks</label>
+            <input type="number" id="test-total" value="200" />
+          </div>
+        </div>
+
+        <!-- Extra Options (PU, FAST, UMT) -->
+        <div id="extra-options" class="extra-options" style="display:none;">
+          <h3>Additional Options</h3>
+
+          <div id="pu-options" style="display:none;">
+            <div class="checkbox-grid">
+              <div class="checkbox-item">
+                <input type="checkbox" id="hafiz"> <label for="hafiz">Hafiz-e-Quran (+20)</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="diploma"> <label for="diploma">Diploma Holder (+20)</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="combination"> <label for="combination">Combination (+10)</label>
+              </div>
+            </div>
+            <div class="input-row" style="margin-top:1.5rem;">
+              <div class="input-group">
+                <label>Elective Subject Marks (Max 20)</label>
+                <input type="number" id="elective-marks" min="0" max="20" />
+              </div>
+              <div class="input-group">
+                <label>Gap Years (Deduction: 2 per year, max 10)</label>
+                <input type="number" id="gap-years" min="0" max="10" value="0" />
+              </div>
+            </div>
+          </div>
+
+          <div id="fast-options" style="display:none; margin-top:1.5rem;">
+            <label>Program Type</label>
+            <select id="fast-program-type">
+              <option value="non-eng">Non-Engineering (CS, BBA, etc.)</option>
+              <option value="eng">Engineering</option>
+            </select>
+          </div>
+
+          <div id="umt-options" style="display:none; margin-top:1.5rem;">
+            <label>Program Type</label>
+            <select id="umt-program-type">
+              <option value="non-eng">Non-Engineering</option>
+              <option value="eng">Engineering</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="result-box">
+          <h2>Your Final Aggregate</h2>
+          <p id="aggregate-result">--%</p>
+          <p class="formula-note" id="formula-note">Select a university to begin</p>
+        </div>
+      </div>
+
+      <div id="no-selection" style="text-align:center; padding:4rem; color:#94a3b8; font-size:1.4rem;">
+        Please select a university to calculate your aggregate
+      </div>
+    </div>
+  </div>
+
+  <!-- Premium Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="logo footer-logo">
+        <span class="logo-text">UniGuide</span>
+      </div>
+      <div class="footer-links">
+        <a href="home.html">Home</a>
+        <a href="#">Universities</a>
+        <a href="#">Deadlines</a>
+        <a href="#">Aggregate Calculator</a>
+      </div>
+      <p class="copyright">© 2025 UniGuide. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    const select = document.getElementById('university-select');
+    const form = document.getElementById('calculator-form');
+    const noSelection = document.getElementById('no-selection');
+    const extraOptions = document.getElementById('extra-options');
+    const resultEl = document.getElementById('aggregate-result');
+    const noteEl = document.getElementById('formula-note');
+
+    select.addEventListener('change', () => {
+      const uni = select.value;
+      document.querySelectorAll('#pu-options, #fast-options, #umt-options').forEach(el => el.style.display = 'none');
+      extraOptions.style.display = 'none';
+
+      if (!uni) {
+        form.style.display = 'none';
+        noSelection.style.display = 'block';
+        return;
+      }
+
+      form.style.display = 'block';
+      noSelection.style.display = 'none';
+      extraOptions.style.display = 'block';
+
+      if (uni === 'PU') {
+        document.getElementById('pu-options').style.display = 'block';
+        noteEl.innerHTML = `PU Formula: (Academic × Weightage) + Test + Bonuses − Gap Years Deduction`;
+      } else if (uni === 'FAST') {
+        document.getElementById('fast-options').style.display = 'block';
+        noteEl.textContent = `FAST: Engineering = 17% Matric + 50% Inter + 33% Test | Non-Eng = 10+40+50`;
+      } else if (uni === 'UMT') {
+        document.getElementById('umt-options').style.display = 'block';
+        noteEl.textContent = `UMT: Engineering requires minimum 33% in test`;
+      } else if (uni === 'COMSATS') {
+        noteEl.textContent = `COMSATS: 10% Matric + 40% Inter + 50% Test`;
+      }
+
+      calculate();
+    });
+
+    document.querySelectorAll('input, select').forEach(el => {
+      el.addEventListener('input', calculate);
+      el.addEventListener('change', calculate);
+    });
+
+    function calculate() {
+      const uni = select.value;
+      if (!uni) return;
+
+      const sscObt = parseFloat(document.getElementById('ssc-obtained').value) || 0;
+      const sscTot = parseFloat(document.getElementById('ssc-total').value) || 1100;
+      const hsscObt = parseFloat(document.getElementById('hssc-obtained').value) || 0;
+      const hsscTot = parseFloat(document.getElementById('hssc-total').value) || 1100;
+      const testObt = parseFloat(document.getElementById('test-obtained').value) || 0;
+      const testTot = parseFloat(document.getElementById('test-total').value) || 200;
+
+      let result = "Invalid";
+
+      if (uni === "COMSATS") {
+        const matric = (sscObt / sscTot) * 100;
+        const inter = (hsscObt / hsscTot) * 100;
+        const test = (testObt / testTot) * 100;
+        result = ((matric * 0.10) + (inter * 0.40) + (test * 0.50)).toFixed(2);
+
+      } else if (uni === "PU") {
+        let addObt = 0, addTot = 0;
+        if (document.getElementById('hafiz').checked) { addObt += 20; addTot += 20; }
+        if (document.getElementById('diploma').checked) { addObt += 20; addTot += 20; }
+        if (document.getElementById('combination').checked) { addObt += 10; addTot += 10; }
+        const elective = Math.min(parseFloat(document.getElementById('elective-marks').value) || 0, 20);
+        addObt += elective; addTot += 20;
+
+        const numerator = (sscObt / 4) + hsscObt + addObt;
+        const denominator = (sscTot / 4) + hsscTot + addTot;
+        const academic = (numerator / denominator) * 100;
+
+        const gapYears = parseInt(document.getElementById('gap-years').value) || 0;
+        result = (academic - Math.min(gapYears, 5) * 2).toFixed(2);
+
+      } else if (uni === "FAST") {
+        const isEng = document.getElementById('fast-program-type').value === 'eng';
+        const matric = (sscObt / sscTot) * 100;
+        const inter = (hsscObt / hsscTot) * 100;
+        const test = (testObt / testTot) * 100;
+        if (isEng) {
+          result = (matric * 0.17 + inter * 0.50 + test * 0.33).toFixed(2);
+        } else {
+          result = (matric * 0.10 + inter * 0.40 + test * 0.50).toFixed(2);
+        }
+      } else if (uni === "UMT") {
+        const isEng = document.getElementById('umt-program-type').value === 'eng';
+        const testPct = (testObt / testTot) * 100;
+        if (isEng && testPct < 33) {
+          result = "Fail (Need 33% in test)";
+        } else {
+          const matric = (sscObt / sscTot) * 100;
+          const inter = (hsscObt / hsscTot) * 100;
+          if (isEng) {
+            result = (matric * 0.17 + inter * 0.50 + testPct * 0.33).toFixed(2);
+          } else {
+            result = (matric * 0.20 + inter * 0.50 + testPct * 0.30).toFixed(2);
+          }
+        }
+      }
+
+      resultEl.textContent = result + (isNaN(result) ? "" : "%");
+      resultEl.style.color = parseFloat(result) >= 80 ? "#059669" : parseFloat(result) >= 70 ? "#f59e0b" : "#ef4444";
+    }
+  </script>
+</body>
+</html>
