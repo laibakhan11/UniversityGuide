@@ -1,5 +1,6 @@
 from pathlib import Path
 import sys
+from pydantic import BaseModel
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -9,7 +10,6 @@ from config.db import get_universities_collection
 from datetime import datetime
 from typing import Optional
 from pathlib import Path
-
 
 
 app = FastAPI(title="University Guide API", version="1.0.0")

@@ -9,8 +9,6 @@ MONGO_URI = os.getenv("MONGO_URI")
 if not MONGO_URI:
     print(" ERROR: Can't find MONGO_URI in .env file!")
     exit()
-
-#Connect to MongoDB 
 try:
     client = MongoClient(MONGO_URI)
     # Test if connection works
