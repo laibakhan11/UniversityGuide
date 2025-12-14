@@ -148,7 +148,7 @@ for item in items:
     elif '50%' in text:
         inter = 50.0
     
-    # Extract entry test info
+
     test = "AU Admission Test"
     text_lower = text.lower()
     
@@ -159,7 +159,7 @@ for item in items:
     else:
         test = "AU Admission Test"
     
-    # Match with fee data
+
     matched_key = None
     for key in programs_dict.keys():
         if name in key or key in name:
@@ -168,37 +168,57 @@ for item in items:
     
     if matched_key:
         programs_dict[matched_key]["eligibility"] = Eligibility(
-            min_percentage_matric=0.0,
+            min_percentage_matric="No minimum percentage (used for merit only)",
             min_percentage_inter=inter,
             entry_test=test,
             notes=text.strip()
         )
 
-# Create programs
 final_programs = []
 for name, data in programs_dict.items():
     if "eligibility" not in data:
         data["eligibility"] = Eligibility(
-            min_percentage_matric=0.0,
+            min_percentage_matric=0.0, 
             min_percentage_inter=50.0,
             entry_test="AU Admission Test",
-            notes=""
+            notes="Matric marks have no minimum requirement but are used for merit calculation."
         )
+    
+
+    tuition_fee = data["fee"]
+    
+    admission_fee = 20000
+    endowment_fund = 5000
+    security_deposit = 10000
+    
+    misc_charges_sem1 = 6000
+    misc_charges_sem2 = 5500
+    
+    total_first_year = (
+        tuition_fee * 2 + 
+        admission_fee +
+        endowment_fund +
+        security_deposit +
+        misc_charges_sem1 +
+        misc_charges_sem2
+    ) if tuition_fee else None
+    
+    fee_notes = f"One-time charges: Admission Fee Rs.{admission_fee:,}, Endowment Fund Rs.{endowment_fund:,} (refundable), Security Deposit Rs.{security_deposit:,} (refundable). Miscellaneous charges: Rs.6,000 (1st sem), Rs.5,500 (subsequent semesters)."
+    eligibility_note = "Matric marks have no minimum requirement but are used for merit calculation."
+    
+    combined_notes = f"{eligibility_note} {fee_notes}"
     
     program = Program(
         name=name,
         department=get_department(name),
-        fee_per_semester=data["fee"],
-        total_fee_first_year=None,
+        fee_per_semester=tuition_fee,
+        total_fee_first_year=total_first_year,
         eligibility=data["eligibility"],
-        notes=""
+        notes=combined_notes  # Use combined_notes, not fee_notes
     )
     final_programs.append(program)
 
-print(f"Found {len(final_programs)} BS programs")
-print(f"Found {len(deadlines)} deadlines")
 
-# Create University
 au = University(
     name="AU",
     full_name="Air University",
