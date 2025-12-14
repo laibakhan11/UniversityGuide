@@ -104,43 +104,57 @@ management_eligibility = Eligibility(
 )
 
 common_notes = "Non-refundable admission fee: Rs. 75,000. Security deposit: Rs. 40,000 (refundable), 5% admin charges on semester payment. Annual payment waives admin charges."
-
 prg=requests.get("https://giki.edu.pk/programs/", verify=False)
 soup=BeautifulSoup(prg.text,'html.parser')
 programs=[]
 program_div=soup.find('div',class_="gdlr-core-feature-box-item-content").find('p').find_all('a')
+
 for p in program_div:
     program_name=p.text.strip()
-    if program_name in ["BS Chemical Engineering", "BS Electrical Engineering", "BS Mechanical Engineering", "BS Materials Engineering", "BS Civil Engineering", "BS Textile Engineering"]:
+    
+
+    if any(word in program_name.upper() for word in ['MS', 'PHD', 'MPHIL', 'M.PHIL']):
+        continue
+    
+
+    name_lower = program_name.lower()
+    
+
+    if any(word in name_lower for word in ['chemical', 'electrical', 'mechanical', 'materials', 'civil', 'textile', 'engineering']):
         program=Program(
             name=program_name,
-            department="Engineering",
+            department="Faculty of Engineering Sciences",
             fee_per_semester=engineering_semester,
             total_fee_first_year=engineering_annual,
             eligibility=engineering_eligibility,
             notes=common_notes
         )
-    elif program_name in ["BS Artificial Intelligence", "BS Computer Science", "BS Cyber Security", "BS Data Science", "BS Software Engineering"]:
+        programs.append(program)
+    
+
+    elif any(word in name_lower for word in ['computer', 'artificial intelligence', 'ai', 'cyber', 'data science', 'software']):
         program=Program(
             name=program_name,
-            department="Computing",
+            department="Faculty of Computer Science & Engineering",
             fee_per_semester=engineering_semester,
             total_fee_first_year=engineering_annual,
             eligibility=computing_eligibility,
             notes=common_notes
         )
-    elif program_name=="BS Management Sciences":
+        programs.append(program)
+    
+    elif 'management' in name_lower:
         program=Program(
             name=program_name,
-            department="Management Sciences",
+            department="Faculty of Management Sciences",
             fee_per_semester=management_semester,
             total_fee_first_year=management_annual,
             eligibility=management_eligibility,
             notes=common_notes
         )
-    else:
-        continue
-    programs.append(program)
+        programs.append(program)
+
+print(f"Found {len(programs)} programs")
 
 basicinfo=University(
     name="GIKI",
