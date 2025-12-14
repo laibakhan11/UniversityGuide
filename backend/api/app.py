@@ -105,6 +105,9 @@ async def serve_home():
         return HTMLResponse(f.read())
 '''
 
+@app.get("/health")
+async def health():
+    return {"status": "healthy"}
     
 @app.get("/api/cities/{city}")
 def get_universities_by_city(city: str):
