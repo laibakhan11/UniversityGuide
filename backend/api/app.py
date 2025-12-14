@@ -35,17 +35,24 @@ async def root():
 
 @app.post("/api/scrape-all")
 async def scrape_all_universities():
-
     try:
-       
-        scraper_path = Path(__file__).parent / "scrapers" / "uni.py"
+        # Get the backend directory (parent of app.py)
+        backend_dir = Path(__file__).parent
+        scraper_path = backend_dir / "scrapers" / "uni.py"
         
-        # Run the scraper
+        print(f"Looking for scraper at: {scraper_path}")  # Debug log
+        
+        if not scraper_path.exists():
+            return {
+                "status": "error", 
+                "message": f"Scraper not found at {scraper_path}"
+            }
+        
         result = subprocess.run(
             [sys.executable, str(scraper_path)],
             capture_output=True,
             text=True,
-            timeout=600,  
+            timeout=600,
             env={**os.environ, "PYTHONIOENCODING": "utf-8"}
         )
         
