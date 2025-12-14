@@ -10,9 +10,13 @@ from config.db import get_universities_collection
 from datetime import datetime
 from typing import Optional
 from pathlib import Path
-
+import subprocess
+import sys
+from pathlib import Path
+import os
 
 app = FastAPI(title="University Guide API", version="1.0.0")
+
 
 # CORS
 app.add_middleware(
@@ -27,6 +31,36 @@ app.add_middleware(
 @app.get("/")
 async def root():
     return {"message": "University Guide API is running!", "docs": "/docs"}
+
+
+@app.post("/api/scrape-all")
+async def scrape_all_universities():
+
+    try:
+       
+        scraper_path = Path(__file__).parent / "scrapers" / "uni.py"
+        
+        # Run the scraper
+        result = subprocess.run(
+            [sys.executable, str(scraper_path)],
+            capture_output=True,
+            text=True,
+            timeout=600,  
+            env={**os.environ, "PYTHONIOENCODING": "utf-8"}
+        )
+        
+        return {
+            "status": "success",
+            "message": "All scrapers completed",
+            "output": result.stdout,
+            "errors": result.stderr if result.stderr else None
+        }
+        
+    except subprocess.TimeoutExpired:
+        return {"status": "error", "message": "Scraping timeout (10 minutes)"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
 
 # All universities - for homepage cards
 @app.get("/api/universities")
@@ -63,11 +97,14 @@ def get_university(name: str):
     uni["_id"] = str(uni["_id"])
     return uni
 
+'''
 # Optional: Serve home.html directly
 @app.get("/home")
 async def serve_home():
     with open("../public/home.html", encoding="utf-8") as f:
         return HTMLResponse(f.read())
+'''
+
     
 @app.get("/api/cities/{city}")
 def get_universities_by_city(city: str):
@@ -258,4 +295,3 @@ def get_all_deadlines():
         "deadlines": all_deadlines
     }
 
-app.mount("/", StaticFiles(directory="../public", html=True), name="static")
