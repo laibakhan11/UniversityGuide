@@ -9,7 +9,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from config.db import get_universities_collection
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Dict, Any
 from pathlib import Path
 import subprocess
 import sys
