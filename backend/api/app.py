@@ -1,23 +1,21 @@
-from http.client import HTTPException
 from pathlib import Path
 import sys
-from pydantic import BaseModel
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-from fastapi import FastAPI
+
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse
 from config.db import get_universities_collection
 from datetime import datetime
 from typing import Optional, Dict, Any
-from pathlib import Path
 import subprocess
-import sys
-from pathlib import Path
 import os
+import re
+from pydantic import BaseModel
+
+# Import calculators from utils
+from utils.aggregate_calculators import UNIVERSITY_CALCULATORS
 
 app = FastAPI(title="University Guide API", version="1.0.0")
-
 
 # CORS
 app.add_middleware(
@@ -28,182 +26,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-def pct(obt, total):
-    return (obt / total) * 100 if total else 0
+# ============ PYDANTIC MODELS ============
 
-def comsatsAggregate_calculator(ssc_obtained, ssc_total, hssc_obtained, hssc_total, 
-                                entry_testmarks, total_entry_test_marks, **kwargs):
-    matric = pct(ssc_obtained, ssc_total)
-    inter = pct(hssc_obtained, hssc_total)
-    test = pct(entry_testmarks, total_entry_test_marks)
-    agg = (matric*0.10) + (inter*0.40) + (test*0.50)
-    return round(agg, 2)
-
-def puAggregate_calculator(ssc_obtained, ssc_total, hssc_obtained, hssc_total, 
-                           entry_testmarks, total_entry_test_marks, 
-                           additionalcategoryselected=None, weightage=100, gap_years=0, **kwargs):
-    additionalcategoryselected = additionalcategoryselected or {}
-    fixed_bonus = {"hafiz": 20, "diploma": 20, "combination": 10}
-    add_obt, add_total = 0, 0
-
-    for key, marks in fixed_bonus.items():
-        if additionalcategoryselected.get(key):
-            add_obt += marks
-            add_total += marks
-
-    elective = min(additionalcategoryselected.get('elective_marks', 0), 20)
-    add_obt += elective
-    add_total += 20
-
-    numerator = (ssc_obtained/4) + hssc_obtained + add_obt
-    denominator = (ssc_total/4) + hssc_total + add_total
-    academic = pct(numerator, denominator)
-    merit = academic - (min(gap_years, 5) * 2)
-    return round(merit, 2)
-
-def fastAggregate_calculator(ssc_obtained, ssc_total, hssc_obtained, hssc_total,
-                             entry_testmarks, total_entry_test_marks, is_engineering=False, **kwargs):
-    matric = pct(ssc_obtained, ssc_total)
-    inter = pct(hssc_obtained, hssc_total)
-    test = pct(entry_testmarks, total_entry_test_marks)
-    
-    if is_engineering:
-        agg = (matric*0.17) + (inter*0.50) + (test*0.33)
-    else:
-        agg = (matric*0.10) + (inter*0.40) + (test*0.50)
-    return round(agg, 2)
-
-def umtAggregate_calculator(ssc_obtained, ssc_total, hssc_obtained, hssc_total,
-                            entry_testmarks, total_entry_test_marks, is_engineering=False, **kwargs):
-    matric = pct(ssc_obtained, ssc_total)
-    inter = pct(hssc_obtained, hssc_total)
-    test = pct(entry_testmarks, total_entry_test_marks)
-    
-    if is_engineering and test < 33:
-        return {"error": "Test score must be ≥33% for Engineering"}
-    
-    if is_engineering:
-        agg = (matric*0.17) + (inter*0.50) + (test*0.33)
-    else:
-        agg = (matric*0.20) + (inter*0.50) + (test*0.30)
-    return round(agg, 2)
-
-def gikiAggregate_calculator(ssc_obtained, ssc_total, hssc_obtained, hssc_total,
-                             entry_testmarks, total_entry_test_marks, **kwargs):
-    inter = pct(hssc_obtained, hssc_total)
-    test = pct(entry_testmarks, total_entry_test_marks)
-    agg = (test * 0.85) + (inter * 0.15)
-    return round(agg, 2)
-
-def airAggregate_calculator(ssc_obtained, ssc_total, hssc_obtained, hssc_total,
-                            entry_testmarks, total_entry_test_marks, is_engineering=False, **kwargs):
-    matric = pct(ssc_obtained, ssc_total)
-    inter = pct(hssc_obtained, hssc_total)
-    test = pct(entry_testmarks, total_entry_test_marks)
-    
-    if is_engineering:
-        agg = (matric * 0.10) + (inter * 0.35) + (test * 0.55)
-    else:
-        agg = (matric * 0.15) + (inter * 0.40) + (test * 0.45)
-    return round(agg, 2)
-
-def ibaAggregate_calculator(ssc_obtained, ssc_total, hssc_obtained, hssc_total,
-                            entry_testmarks, total_entry_test_marks, **kwargs):
-    matric = pct(ssc_obtained, ssc_total)
-    inter = pct(hssc_obtained, hssc_total)
-    test = pct(entry_testmarks, total_entry_test_marks)
-    agg = (matric * 0.10) + (inter * 0.40) + (test * 0.50)
-    return round(agg, 2)
-
-def nustAggregate_calculator(ssc_obtained, ssc_total, hssc_obtained, hssc_total,
-                             entry_testmarks, total_entry_test_marks, **kwargs):
-    matric = pct(ssc_obtained, ssc_total)
-    inter = pct(hssc_obtained, hssc_total)
-    test = pct(entry_testmarks, total_entry_test_marks)
-    agg = (matric * 0.10) + (inter * 0.15) + (test * 0.75)
-    return round(agg, 2)
-
-def ituAggregate_calculator(ssc_obtained, ssc_total, hssc_obtained, hssc_total,
-                            entry_testmarks, total_entry_test_marks, **kwargs):
-    matric = pct(ssc_obtained, ssc_total)
-    inter = pct(hssc_obtained, hssc_total)
-    test = pct(entry_testmarks, total_entry_test_marks)
-    agg = (matric * 0.10) + (inter * 0.40) + (test * 0.50)
-    return round(agg, 2)
-
-def lseAggregate_calculator(ssc_obtained, ssc_total, hssc_obtained, hssc_total,
-                            entry_testmarks, total_entry_test_marks, **kwargs):
-    matric = pct(ssc_obtained, ssc_total)
-    inter = pct(hssc_obtained, hssc_total)
-    test = pct(entry_testmarks, total_entry_test_marks)
-    agg = (matric * 0.15) + (inter * 0.45) + (test * 0.40)
-    return round(agg, 2)
-
-# University Calculator Mapping
-UNIVERSITY_CALCULATORS = {
-    "COMSATS": {
-        "name": "COMSATS University",
-        "calculator": comsatsAggregate_calculator,
-        "formula": "10% Matric + 40% Inter + 50% Test",
-        "options": []
-    },
-    "PU": {
-        "name": "Punjab University (PU)",
-        "calculator": puAggregate_calculator,
-        "formula": "Academic Merit + Bonuses - Gap Years",
-        "options": ["hafiz", "diploma", "combination", "elective_marks", "gap_years"]
-    },
-    "FAST": {
-        "name": "FAST-NUCES",
-        "calculator": fastAggregate_calculator,
-        "formula": "Eng: 17%+50%+33% | Non-Eng: 10%+40%+50%",
-        "options": ["is_engineering"]
-    },
-    "UMT": {
-        "name": "University of Management & Technology (UMT)",
-        "calculator": umtAggregate_calculator,
-        "formula": "Eng: 17%+50%+33% | Non-Eng: 20%+50%+30%",
-        "options": ["is_engineering"]
-    },
-    "GIKI": {
-        "name": "Ghulam Ishaq Khan Institute (GIKI)",
-        "calculator": gikiAggregate_calculator,
-        "formula": "85% Test + 15% Inter",
-        "options": []
-    },
-    "AIR": {
-        "name": "Air University",
-        "calculator": airAggregate_calculator,
-        "formula": "Eng: 10%+35%+55% | Non-Eng: 15%+40%+45%",
-        "options": ["is_engineering"]
-    },
-    "IBA": {
-        "name": "IBA Karachi",
-        "calculator": ibaAggregate_calculator,
-        "formula": "10% Matric + 40% Inter + 50% Test",
-        "options": []
-    },
-    "NUST": {
-        "name": "NUST",
-        "calculator": nustAggregate_calculator,
-        "formula": "10% Matric + 15% Inter + 75% NET",
-        "options": []
-    },
-    "ITU": {
-        "name": "Information Technology University (ITU)",
-        "calculator": ituAggregate_calculator,
-        "formula": "10% Matric + 40% Inter + 50% Test",
-        "options": []
-    },
-    "LSE": {
-        "name": "Lahore School of Economics (LSE)",
-        "calculator": lseAggregate_calculator,
-        "formula": "15% Matric + 45% Inter + 40% Test",
-        "options": []
-    }
-}
-
-# Pydantic Models
 class AggregateRequest(BaseModel):
     university: str
     ssc_obtained: float
@@ -215,11 +39,98 @@ class AggregateRequest(BaseModel):
     is_engineering: bool = False
     additional_options: Optional[Dict[str, Any]] = None
 
+# ============ HELPER FUNCTIONS ============
+
+def parse_deadline_date(date_str):
+    """Parse various date formats and return a datetime object."""
+    if not date_str or not isinstance(date_str, str):
+        return None
+    
+    date_str = date_str.strip()
+    
+    # Remove weekday names
+    date_str = re.sub(
+        r'^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),?\s*',
+        '',
+        date_str,
+        flags=re.IGNORECASE
+    )
+    
+    formats = [
+        "%B %d, %Y", "%b %d, %Y", "%d-%m-%Y", "%d/%m/%Y",
+        "%Y-%m-%d", "%m/%d/%Y", "%d %B %Y", "%d %b %Y",
+    ]
+    
+    # Try extracting date range
+    range_pattern = r'([A-Za-z]+)\s+(\d{1,2})\s*-\s*(\d{1,2}),?\s*(\d{4})'
+    range_match = re.search(range_pattern, date_str)
+    if range_match:
+        month, day1, day2, year = range_match.groups()
+        date_str = f"{month} {day2}, {year}"
+    
+    for fmt in formats:
+        try:
+            return datetime.strptime(date_str, fmt)
+        except ValueError:
+            continue
+    
+    # Try extracting "Month Day, Year"
+    month_day_year = r'(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2}),?\s*(\d{4})'
+    match = re.search(month_day_year, date_str, re.IGNORECASE)
+    if match:
+        try:
+            extracted = f"{match.group(1)} {match.group(2)}, {match.group(3)}"
+            return datetime.strptime(extracted, "%B %d, %Y")
+        except ValueError:
+            pass
+    
+    return None
+
 # ============ API ENDPOINTS ============
 
 @app.get("/")
 async def root():
     return {"message": "University Guide API is running!", "docs": "/docs"}
+
+@app.get("/health")
+async def health():
+    return {"status": "healthy"}
+
+# ============ SCRAPER ENDPOINT ============
+
+@app.post("/api/scrape-all")
+async def scrape_all_universities():
+    try:
+        backend_dir = Path(__file__).parent
+        scraper_path = backend_dir / "scrapers" / "uni.py"
+        
+        if not scraper_path.exists():
+            return {
+                "status": "error", 
+                "message": f"Scraper not found at {scraper_path}"
+            }
+        
+        result = subprocess.run(
+            [sys.executable, str(scraper_path)],
+            capture_output=True,
+            text=True,
+            timeout=600,
+            env={**os.environ, "PYTHONIOENCODING": "utf-8"}
+        )
+        
+        return {
+            "status": "success",
+            "message": "All scrapers completed",
+            "output": result.stdout,
+            "errors": result.stderr if result.stderr else None
+        }
+        
+    except subprocess.TimeoutExpired:
+        return {"status": "error", "message": "Scraping timeout (10 minutes)"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+# ============ AGGREGATE CALCULATOR ENDPOINTS ============
 
 @app.get("/api/aggregate/universities")
 def get_aggregate_universities():
@@ -270,59 +181,15 @@ def calculate_aggregate(request: AggregateRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+# ============ UNIVERSITY DATA ENDPOINTS ============
 
-@app.get("/")
-async def root():
-    return {"message": "University Guide API is running!", "docs": "/docs"}
-
-
-@app.post("/api/scrape-all")
-async def scrape_all_universities():
-    try:
-        # Get the backend directory (parent of app.py)
-        backend_dir = Path(__file__).parent
-        scraper_path = backend_dir / "scrapers" / "uni.py"
-        
-        print(f"Looking for scraper at: {scraper_path}")  # Debug log
-        
-        if not scraper_path.exists():
-            return {
-                "status": "error", 
-                "message": f"Scraper not found at {scraper_path}"
-            }
-        
-        result = subprocess.run(
-            [sys.executable, str(scraper_path)],
-            capture_output=True,
-            text=True,
-            timeout=600,
-            env={**os.environ, "PYTHONIOENCODING": "utf-8"}
-        )
-        
-        return {
-            "status": "success",
-            "message": "All scrapers completed",
-            "output": result.stdout,
-            "errors": result.stderr if result.stderr else None
-        }
-        
-    except subprocess.TimeoutExpired:
-        return {"status": "error", "message": "Scraping timeout (10 minutes)"}
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
-
-
-# All universities - for homepage cards
 @app.get("/api/universities")
 def get_all_universities():
+    """Get all universities for homepage"""
     collection = get_universities_collection()
     universities = []
 
-    for uni in collection.find({}, {
-        "name": 1,
-        "full_name": 1,
-        "city": 1
-    }):
+    for uni in collection.find({}, {"name": 1, "full_name": 1, "city": 1}):
         universities.append({
             "name": uni.get("name", "Unknown"),
             "full_name": uni.get("full_name", ""),
@@ -331,12 +198,11 @@ def get_all_universities():
 
     return universities
 
-# Single university - for university.html?name=UMT
 @app.get("/api/university/{name}")
 def get_university(name: str):
+    """Get single university details"""
     collection = get_universities_collection()
 
-    # Search by ANY of these fields (case-insensitive)
     uni = collection.find_one({
         "$or": [
             {"name": {"$regex": f"^{name}$", "$options": "i"}},
@@ -348,24 +214,12 @@ def get_university(name: str):
     if not uni:
         return {"error": "University not found"}
 
-    # Convert ObjectId to string so JSON works
     uni["_id"] = str(uni["_id"])
     return uni
 
-'''
-# Optional: Serve home.html directly
-@app.get("/home")
-async def serve_home():
-    with open("../public/home.html", encoding="utf-8") as f:
-        return HTMLResponse(f.read())
-'''
-
-@app.get("/health")
-async def health():
-    return {"status": "healthy"}
-    
 @app.get("/api/cities/{city}")
 def get_universities_by_city(city: str):
+    """Get universities in a specific city"""
     collection = get_universities_collection()
     
     universities = []
@@ -389,9 +243,9 @@ def get_universities_by_city(city: str):
         "universities": universities
     }
 
-
 @app.get("/api/compare")
 def compare_universities(uni1: str, uni2: str):
+    """Compare two universities"""
     collection = get_universities_collection()
     
     university1 = collection.find_one({
@@ -460,9 +314,9 @@ def compare_universities(uni1: str, uni2: str):
     
     return comparison
 
-
 @app.get("/api/search")
 def search_all(q: str):
+    """Search across universities, programs, and scholarships"""
     if not q or len(q) < 2:
         return {"error": "Search query must be at least 2 characters", "results": []}
     
@@ -527,29 +381,53 @@ def search_all(q: str):
     
     return results
 
-
 @app.get("/api/deadlines")
 def get_all_deadlines():
+    """Get all deadlines sorted by date"""
     collection = get_universities_collection()
-    
     all_deadlines = []
+    
+    # Get current date at midnight for accurate comparison
+    current_date = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
     
     for uni in collection.find():
         uni_name = uni.get("name", "Unknown")
         deadlines = uni.get("deadlines", [])
         
         for deadline in deadlines:
-            all_deadlines.append({
-                "university_name": uni_name,
-                "title": deadline.get("title", ""),
-                "deadline_date": deadline.get("deadline_date", ""),
-                "university_city": uni.get("city", "")
-            })
+            original_date_str = deadline.get("deadline_date", "")
+            parsed_date = parse_deadline_date(original_date_str)
+            
+            # Only include deadlines that could be parsed successfully
+            if parsed_date:
+                # Set to end of day (23:59:59) for deadline comparison
+                # This way, a deadline on "today" is still considered upcoming
+                deadline_end_of_day = parsed_date.replace(hour=23, minute=59, second=59, microsecond=999999)
+                
+                all_deadlines.append({
+                    "university_name": uni_name,
+                    "title": deadline.get("title", ""),
+                    "deadline_date": original_date_str,
+                    "parsed_date": parsed_date.strftime("%Y-%m-%d"),
+                    "timestamp": parsed_date.timestamp(),
+                    "university_city": uni.get("city", ""),
+                    # A deadline is past if the end of that day has passed
+                    "is_past": deadline_end_of_day < current_date
+                })
     
-    all_deadlines.sort(key=lambda x: x.get("deadline_date", ""), reverse=True)
+    # Sort by timestamp (earliest first)
+    all_deadlines.sort(key=lambda x: x.get("timestamp", 0))
+    
+    # Separate into upcoming and past
+    upcoming_deadlines = [d for d in all_deadlines if not d.get("is_past", False)]
+    past_deadlines = [d for d in all_deadlines if d.get("is_past", False)]
+    past_deadlines.reverse()  # Most recent past deadlines first
     
     return {
         "total_deadlines": len(all_deadlines),
-        "deadlines": all_deadlines
+        "upcoming_count": len(upcoming_deadlines),
+        "past_count": len(past_deadlines),
+        "deadlines": upcoming_deadlines + past_deadlines,  # Upcoming first, then past
+        "upcoming_deadlines": upcoming_deadlines,
+        "past_deadlines": past_deadlines
     }
-
