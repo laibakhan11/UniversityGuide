@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Chat Assistant - UniGuide</title>
+  <link rel="stylesheet" href="home.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  
+  <style>
+    .chat-hero {
+      background: linear-gradient(135deg, #eef2ff, #c7d2fe);
+      padding: 3rem 0 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .chat-hero h1 {
+      font-size: 3.5rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #1e40af, #8b5cf6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+    
+    .chat-subtitle {
+      font-size: 1.2rem;
+      color: #64748b;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .chat-container {
+      max-width: 1400px;
+      margin: 2rem auto;
+      padding: 0 2rem 4rem;
+    }
+    
+    .chat-wrapper {
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+      overflow: hidden;
+      height: 75vh;
+      min-height: 600px;
+      position: relative;
+    }
+    
+    .chat-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    
+    .chat-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    
+    .feature-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 18px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+      border: 2px solid transparent;
+      transition: all 0.3s;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-5px);
+      border-color: #3b82f6;
+      box-shadow: 0 12px 30px rgba(59,130,246,0.15);
+    }
+    
+    .feature-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .feature-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #1e40af;
+      margin-bottom: 0.5rem;
+    }
+    
+    .feature-desc {
+      color: #64748b;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    
+    @media (max-width: 768px) {
+      .chat-hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .chat-wrapper {
+        height: 70vh;
+        min-height: 500px;
+      }
+      
+      .chat-features {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="container header-content">
+      <div class="logo">
+        <span class="logo-text">UniGuide</span>
+      </div>
+      <nav class="nav">
+        <a href="home.html" class="nav-link">Home</a>
+        <a href="deadlines.html" class="nav-link">Deadlines</a>
+        <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
+        <a href="chat.html" class="nav-link active">AI Chat</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="chat-hero">
+    <div class="container">
+      <h1>🤖 AI Chat Assistant</h1>
+      <p class="chat-subtitle">Get instant answers about universities, programs, admissions, and more!</p>
+    </div>
+  </section>
+
+  <div class="chat-container">
+    <div class="chat-features">
+      <div class="feature-card">
+        <div class="feature-icon">🎓</div>
+        <div class="feature-title">University Info</div>
+        <div class="feature-desc">Ask about any university's programs, fees, and admission requirements</div>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">📅</div>
+        <div class="feature-title">Deadlines</div>
+        <div class="feature-desc">Get up-to-date admission deadlines and important dates</div>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">🧮</div>
+        <div class="feature-title">Aggregate Help</div>
+        <div class="feature-desc">Calculate and understand aggregate requirements for different universities</div>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">💰</div>
+        <div class="feature-title">Scholarships</div>
+        <div class="feature-desc">Discover scholarship opportunities and financial aid options</div>
+      </div>
+    </div>
+
+    <div class="chat-wrapper">
+      <iframe 
+        src="https://app.rubikchat.com/chat/ZEWmLt8NsJw5kUIvD58ArwLH"
+        class="chat-frame"
+        allow="microphone; clipboard-write"
+        title="UniGuide AI Chat Assistant"
+      ></iframe>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="logo footer-logo">
+        <span class="logo-text">UniGuide</span>
+      </div>
+      <div class="footer-links">
+        <a href="home.html">Home</a>
+        <a href="deadlines.html">Deadlines</a>
+        <a href="aggregateCalculator.html">Aggregate Calculator</a>
+        <a href="chat.html">AI Chat</a>
+      </div>
+      <p class="copyright">© 2025 UniGuide. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
