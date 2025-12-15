@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +6,55 @@
   <title>UniGuide - Find Your Future</title>
   <link rel="stylesheet" href="home.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  
+  <style>
+    .search-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      max-height: 400px;
+      overflow-y: auto;
+      z-index: 1000;
+      margin-top: 0.5rem;
+      display: none;
+    }
+    .search-dropdown.show {
+      display: block;
+    }
+    .search-group {
+      position: relative;
+    }
+    .dropdown-item {
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      border-bottom: 1px solid #f1f5f9;
+      transition: all 0.2s;
+    }
+    .dropdown-item:hover {
+      background: linear-gradient(135deg, #dbeafe, #e0e7ff);
+    }
+    .dropdown-item:last-child {
+      border-bottom: none;
+    }
+    .program-name {
+      font-weight: 600;
+      color: #1e40af;
+      margin-bottom: 0.3rem;
+    }
+    .program-meta {
+      font-size: 0.9rem;
+      color: #64748b;
+    }
+    .no-results {
+      padding: 1.5rem;
+      text-align: center;
+      color: #94a3b8;
+    }
+  </style>
 </head>
 <body>
 
@@ -17,9 +65,9 @@
       </div>
       <nav class="nav">
         <a href="home.html" class="nav-link">Home</a>
-        <a href="universities.html" class="nav-link">Universities</a>
         <a href="deadlines.html" class="nav-link">Deadlines</a>
         <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
+        <a href="chat.html" class="nav-link">AI Chat</a>
       </nav>
     </div>
   </header>
@@ -30,17 +78,13 @@
       <p class="subtitle">Explore universities and programs across Pakistan.</p>
 
       <div class="search-section">
-        <h2>Get Started</h2>
+        <h2>Search Programs</h2>
         <div class="search-boxes">
           <div class="search-group">
-            <label>Enter Program</label>
-            <input type="text" placeholder="e.g., Computer Science" class="search-input" id="program-input"/>
+            <label>Enter Program (e.g. CS, BBA, MBBS)</label>
+            <input type="text" placeholder="Type to search programs..." class="search-input" id="program-input" autocomplete="off"/>
+            <div class="search-dropdown" id="program-dropdown"></div>
           </div>
-          <div class="search-group">
-            <label>Enter University</label>
-            <input type="text" placeholder="e.g., LUMS" class="search-input" id="uni-input"/>
-          </div>
-          <button class="search-btn" onclick="performSearch()">Search</button>
         </div>
       </div>
     </div>
@@ -64,85 +108,170 @@
       </div>
       <div class="footer-links">
         <a href="home.html">Home</a>
-        <a href="universities.html">Universities</a>
         <a href="deadlines.html">Deadlines</a>
         <a href="aggregateCalculator.html">Aggregate Calculator</a>
+        <a href="chat.html">AI Chat</a>
       </div>
       <p class="copyright">© 2025 UniGuide. All rights reserved.</p>
     </div>
   </footer>
 
   <script src="config.js"></script>
+  <script src="chatWidget.js"></script>
   <script>
     const API_URL = CONFIG.API_URL;
-    const grid = document.getElementById('universities-grid');
-    const loading = document.getElementById('loading');
-    const errorDiv = document.getElementById('error');
+    let allPrograms = [];
+    let universities = [];
+
+    // Program abbreviations mapping
+    const programAbbreviations = {
+      'cs': ['computer science', 'computer', 'software'],
+      'it': ['information technology', 'computer'],
+      'bba': ['business administration', 'business'],
+      'mba': ['business administration', 'management'],
+      'mbbs': ['medicine', 'medical', 'doctor'],
+      'bds': ['dental', 'dentistry'],
+      'llb': ['law', 'legal'],
+      'pharm': ['pharmacy'],
+      'eng': ['engineering'],
+      'ee': ['electrical engineering', 'electrical'],
+      'me': ['mechanical engineering', 'mechanical'],
+      'ce': ['civil engineering', 'civil'],
+      'ai': ['artificial intelligence', 'machine learning'],
+      'ds': ['data science', 'data'],
+      'se': ['software engineering', 'software']
+    };
 
     async function loadUniversities() {
       try {
-        console.log('Fetching from:', `${API_URL}/api/universities`);
         const response = await fetch(`${API_URL}/api/universities`);
+        if (!response.ok) throw new Error('Failed to load');
+
+        universities = await response.json();
+        document.getElementById('loading').style.display = 'none';
         
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        }
-
-        const universities = await response.json();
-        console.log('Loaded universities:', universities.length);
-
-        loading.style.display = 'none';
+        const grid = document.getElementById('universities-grid');
         grid.innerHTML = '';
-
-        if (universities.length === 0) {
-          grid.innerHTML = '<p style="text-align:center; color:#999;">No universities found in database</p>';
-          return;
-        }
 
         universities.forEach(uni => {
           const card = document.createElement('div');
           card.className = 'uni-card';
+          const shortName = uni.name;
+          const fullName = uni.full_name;
+          const city = uni.city;
+
           card.innerHTML = `
-            <h3>${uni.name}</h3>
-            <p>${uni.fullName || uni.full_name || uni.name}</p>
-            <button onclick="window.location.href='university.html?name=${encodeURIComponent(uni.name)}'" class="view-btn">View Details</button>
-          `;
+            <h3>${shortName}</h3>
+            ${fullName && fullName !== shortName ? `<p>${fullName}</p>` : ''}
+            <button onclick="window.location.href='university.html?name=${encodeURIComponent(shortName)}'" class="view-btn">
+              View Details
+            </button>`;
+
           grid.appendChild(card);
         });
 
+        // Load all programs for search
+        await loadAllPrograms();
+
       } catch (err) {
-        console.error('Error loading universities:', err);
-        loading.style.display = 'none';
-        errorDiv.style.display = 'block';
-        errorDiv.innerHTML = `
-          <p>⚠️ Error: Could not load universities</p>
-          <p style="font-size:0.9rem; color:#666;">${err.message}</p>
-          <p style="font-size:0.9rem; color:#666;">Make sure backend is running at: ${API_URL}</p>
-        `;
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('error').style.display = 'block';
+        document.getElementById('error').textContent = '⚠️ Error loading data';
       }
     }
 
-    function performSearch() {
-      const program = document.getElementById('program-input').value.trim();
-      const university = document.getElementById('uni-input').value.trim();
+    async function loadAllPrograms() {
+      for (const uni of universities) {
+        try {
+          const res = await fetch(`${API_URL}/api/university/${encodeURIComponent(uni.name)}`);
+          const data = await res.json();
+          if (data.programs) {
+            data.programs.forEach(p => {
+              allPrograms.push({
+                name: p.name,
+                university: data.name,
+                department: p.department || '',
+                fee: p.total_fee_first_year
+              });
+            });
+          }
+        } catch (err) {
+          console.error(`Error loading ${uni.name}:`, err);
+        }
+      }
+      console.log(`Loaded ${allPrograms.length} programs for search`);
+    }
+
+    function smartSearch(query) {
+      query = query.toLowerCase().trim();
+      if (!query) return [];
+
+      // Check if query is an abbreviation
+      let searchTerms = [query];
+      if (programAbbreviations[query]) {
+        searchTerms = [...searchTerms, ...programAbbreviations[query]];
+      }
+
+      const results = allPrograms.filter(prog => {
+        const progName = prog.name.toLowerCase();
+        return searchTerms.some(term => progName.includes(term));
+      });
+
+      // Sort by relevance (exact match first)
+      return results.sort((a, b) => {
+        const aExact = a.name.toLowerCase().startsWith(query);
+        const bExact = b.name.toLowerCase().startsWith(query);
+        if (aExact && !bExact) return -1;
+        if (!aExact && bExact) return 1;
+        return 0;
+      }).slice(0, 20); // Limit to 20 results
+    }
+
+    const programInput = document.getElementById('program-input');
+    const dropdown = document.getElementById('program-dropdown');
+
+    programInput.addEventListener('input', (e) => {
+      const query = e.target.value;
       
-      if (program || university) {
-        const query = program || university;
-        window.location.href = `search.html?q=${encodeURIComponent(query)}`;
-      } else {
-        alert('Please enter a program or university name');
+      if (query.length < 2) {
+        dropdown.classList.remove('show');
+        return;
       }
-    }
 
-    // Enter key support
-    document.getElementById('program-input').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') performSearch();
+      const results = smartSearch(query);
+      
+      if (results.length === 0) {
+        dropdown.innerHTML = '<div class="no-results">No programs found</div>';
+        dropdown.classList.add('show');
+        return;
+      }
+
+      dropdown.innerHTML = results.map(prog => `
+        <div class="dropdown-item" onclick="goToProgram('${prog.university.replace(/'/g, "\\'")}')">
+          <div class="program-name">${prog.name}</div>
+          <div class="program-meta">
+            🏛️ ${prog.university} • 📂 ${prog.department}
+            ${prog.fee ? ` • 💰 PKR ${prog.fee.toLocaleString()}` : ''}
+          </div>
+        </div>
+      `).join('');
+      
+      dropdown.classList.add('show');
     });
-    document.getElementById('uni-input').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') performSearch();
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.search-group')) {
+        dropdown.classList.remove('show');
+      }
     });
+
+    function goToProgram(uniName) {
+      window.location.href = `university.html?name=${encodeURIComponent(uniName)}`;
+    }
 
     loadUniversities();
   </script>
+  <script src="chatWidget.js"></script>
 </body>
 </html>
