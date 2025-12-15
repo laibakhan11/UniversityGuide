@@ -54,6 +54,33 @@
       text-align: center;
       color: #94a3b8;
     }
+    .nav-link {
+  margin-left: 2.5rem;
+  font-weight: 600;
+  color: #475569;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -6px;
+  left: 0;
+  background: #3b82f6;
+  transition: width 0.4s ease;
+}
+
+.nav-link:hover {
+  color: #3b82f6;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
   </style>
 </head>
 <body>
