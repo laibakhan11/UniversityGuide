@@ -320,8 +320,8 @@ def get_all_universities():
     for uni in collection.find({}, {"shortName": 1, "name": 1, "fullName": 1, "location": 1}):
         universities.append({
             "shortName": uni.get("shortName") or uni.get("name", "Unknown"),
-            "name": uni.get("name") or uni.get("fullName"),
-            "fullName": uni.get("fullName") or uni.get("name"),
+            "name": uni.get("name"),
+            "fullName": uni.get("fullName"),
             "location": uni.get("location", "Pakistan")
         })
     return universities
