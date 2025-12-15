@@ -14,7 +14,7 @@
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       line-height: 1.6;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: #f8fafc;
       min-height: 100vh;
     }
 
@@ -42,7 +42,7 @@
     .logo-text {
       font-size: 1.8rem;
       font-weight: bold;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -58,26 +58,50 @@
       color: #4a5568;
       font-weight: 500;
       transition: color 0.3s;
+      position: relative;
     }
 
-    .nav-link:hover, .nav-link.active {
-      color: #667eea;
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -6px;
+      left: 0;
+      background: #3b82f6;
+      transition: width 0.4s ease;
+    }
+
+    .nav-link:hover {
+      color: #3b82f6;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
     }
 
     .hero {
+      background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(139,92,246,0.08)), #ffffff;
       text-align: center;
-      color: white;
-      padding: 5rem 0 3rem;
+      color: #1e293b;
+      padding: 3rem 0 2rem;
+      border-bottom: 1px solid #e2e8f0;
     }
 
     .hero h1 {
-      font-size: 3.5rem;
-      margin-bottom: 1rem;
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #1e40af, #8b5cf6);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .subtitle {
-      font-size: 1.3rem;
-      opacity: 0.9;
+      font-size: 1.2rem;
+      color: #64748b;
+      margin: 0.3rem 0;
     }
 
     .deadlines-container {
@@ -89,117 +113,143 @@
     .stats-bar {
       display: flex;
       gap: 1.5rem;
-      margin-bottom: 2rem;
+      margin: 2rem 0;
       flex-wrap: wrap;
     }
 
     .stat-card {
-      background: white;
+      background: linear-gradient(135deg, #ffffff, #f1f5f9);
       padding: 1.5rem 2rem;
-      border-radius: 12px;
+      border-radius: 18px;
       flex: 1;
       min-width: 150px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
+      border: 2px solid rgba(59,130,246,0.2);
+      transition: all 0.3s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.1);
     }
 
     .stat-number {
       font-size: 2.5rem;
-      font-weight: bold;
-      color: #667eea;
+      font-weight: 800;
+      background: linear-gradient(135deg, #1e40af, #8b5cf6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
       margin-bottom: 0.5rem;
     }
 
     .stat-label {
-      color: #718096;
+      color: #64748b;
       font-size: 0.9rem;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      font-weight: 600;
     }
 
     .filters-bar {
       display: flex;
-      gap: 1rem;
-      margin-bottom: 2rem;
+      gap: 0.8rem;
+      margin: 2rem 0;
       flex-wrap: wrap;
+      position: sticky;
+      top: 70px;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(15px);
+      padding: 1.2rem;
+      border-radius: 50px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      z-index: 100;
     }
 
     .filter-btn {
-      background: white;
-      border: 2px solid transparent;
-      padding: 0.8rem 1.5rem;
-      border-radius: 25px;
+      background: #f1f5f9;
+      color: #475569;
+      border: none;
+      padding: 0.75rem 1.8rem;
+      border-radius: 50px;
       cursor: pointer;
       font-size: 1rem;
-      font-weight: 500;
+      font-weight: 600;
       transition: all 0.3s;
-      color: #4a5568;
     }
 
-    .filter-btn:hover {
+    .filter-btn:hover:not(.active) {
+      background: #e2e8f0;
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
     .filter-btn.active {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
       color: white;
-      border-color: transparent;
+      transform: scale(1.05);
     }
 
     .section-header {
-      color: white;
+      color: #1e40af;
       font-size: 1.8rem;
       margin: 2rem 0 1rem;
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      font-weight: 800;
     }
 
     .deadline-card {
-      background: white;
-      padding: 1.5rem;
-      border-radius: 12px;
-      margin-bottom: 1rem;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      border-left: 4px solid #667eea;
+      background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 50%, #f0f9ff 100%);
+      padding: 2rem;
+      border-radius: 20px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 10px 30px rgba(59, 130, 246, 0.25);
+      border: 3px solid #3b82f6;
       transition: all 0.3s;
     }
 
     .deadline-card:hover {
-      transform: translateX(5px);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 20px 45px rgba(59, 130, 246, 0.35);
+      border-color: #2563eb;
     }
 
     .deadline-card.passed {
-      opacity: 0.7;
+      opacity: 0.65;
       border-left-color: #cbd5e0;
     }
 
     .deadline-card.this-week {
-      border-left-color: #f59e0b;
-      background: #fffbeb;
+      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 50%, #6ee7b7 100%);
+      border: 3px solid #10b981;
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
     }
 
     .deadline-uni {
-      font-weight: bold;
-      color: #667eea;
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
+      font-weight: 800;
+      color: #1e40af;
+      font-size: 1.4rem;
+      margin-bottom: 0.8rem;
+      letter-spacing: -0.02em;
     }
 
     .deadline-title {
-      color: #4a5568;
-      font-size: 1rem;
-      margin-bottom: 0.8rem;
+      color: #334155;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+      line-height: 1.5;
     }
 
     .deadline-date {
-      color: #718096;
-      font-size: 0.95rem;
+      color: #475569;
+      font-size: 1.05rem;
       display: flex;
       align-items: center;
       gap: 0.5rem;
       flex-wrap: wrap;
+      font-weight: 600;
     }
 
     .urgency-badge {
@@ -224,15 +274,17 @@
 
     .loading, .no-results {
       text-align: center;
-      color: white;
+      color: #94a3b8;
       font-size: 1.2rem;
       padding: 3rem;
     }
 
     .footer {
-      background: white;
+      background: #1e293b;
       padding: 3rem 0;
       margin-top: 4rem;
+      border-top: 2px solid #e2e8f0;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.03);
     }
 
     .footer-content {
@@ -254,10 +306,27 @@
       color: #4a5568;
       text-decoration: none;
       transition: color 0.3s;
+      font-weight: 500;
+      position: relative;
+    }
+
+    .footer-links a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -6px;
+      left: 0;
+      background: #3b82f6;
+      transition: width 0.4s ease;
     }
 
     .footer-links a:hover {
-      color: #667eea;
+      color: #3b82f6;
+    }
+
+    .footer-links a:hover::after {
+      width: 100%;
     }
 
     .copyright {
@@ -276,6 +345,7 @@
         <a href="home.html" class="nav-link">Home</a>
         <a href="deadlines.html" class="nav-link">Deadlines</a>
         <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
+        <a href="compare.html" class="nav-link">Compare Universities</a>
         <a href="chat.html" class="nav-link">AI Chat</a>
       </nav>
     </div>
@@ -339,10 +409,11 @@
         <span class="logo-text">UniGuide</span>
       </div>
       <div class="footer-links">
-    <a href="home.html" class="nav-link">Home</a>
-        <a href="deadlines.html" class="nav-link">Deadlines</a>
-        <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
-        <a href="chat.html" class="nav-link">AI Chat</a>
+        <a href="home.html">Home</a>
+        <a href="deadlines.html">Deadlines</a>
+        <a href="aggregateCalculator.html">Aggregate Calculator</a>
+        <a href="compare.html">Compare Universities</a>
+        <a href="chat.html">AI Chat</a>
       </div>
       <p class="copyright">© 2025 UniGuide. All rights reserved.</p>
     </div>

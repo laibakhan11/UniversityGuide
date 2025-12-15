@@ -70,7 +70,7 @@
           color: white;
         ">
           <div>
-            <div style="font-weight: 700; font-size: 1.1rem;">🤖 UniGuide AI</div>
+            <div style="font-weight: 700; font-size: 1.1rem;"> UniGuide AI</div>
             <div style="font-size: 0.85rem; opacity: 0.9;">Ask me anything!</div>
           </div>
           <button id="chat-close-btn" style="
@@ -127,7 +127,7 @@
         right: -5px;
         width: 24px;
         height: 24px;
-        background: #ef4444;
+        background: #10b981;
         border-radius: 50%;
         display: none;
         align-items: center;
@@ -137,8 +137,7 @@
         font-weight: 700;
         border: 3px solid white;
         animation: pulse 2s infinite;
-      ">!</div>
-    </div>
+      ">👋</div>
 
     <style>
       @keyframes pulse {

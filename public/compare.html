@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Compare Universities - UniGuide</title>
+  
+  <link rel="stylesheet" href="home.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    .compare-hero {
+      background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1)), #ffffff;
+      padding: 4rem 0 3rem;
+      text-align: center;
+    }
+
+    .compare-hero h1 {
+      font-size: 3.5rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #1e40af, #8b5cf6);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 0 0 1rem 0;
+    }
+
+    .compare-hero p {
+      font-size: 1.2rem;
+      color: #64748b;
+      margin: 0;
+    }
+
+    .selector-section {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 24px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+      margin: 3rem 0;
+      border: 2px solid rgba(59,130,246,0.1);
+    }
+
+    .selector-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .selector-box {
+      position: relative;
+    }
+
+    .selector-label {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1e40af;
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+
+    .custom-select {
+      position: relative;
+      width: 100%;
+    }
+
+    .custom-select select {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #1e293b;
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 20px;
+      padding-right: 3rem;
+    }
+
+    .custom-select select:focus {
+      outline: none;
+      border-color: #3b82f6;
+      background: white;
+      box-shadow: 0 0 0 4px rgba(59,130,246,0.1);
+    }
+
+    .custom-select select:hover {
+      border-color: #3b82f6;
+    }
+
+    .compare-btn {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: white;
+      border: none;
+      padding: 1.2rem 3rem;
+      border-radius: 50px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 8px 20px rgba(59,130,246,0.3);
+      display: block;
+      margin: 0 auto;
+    }
+
+    .compare-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(59,130,246,0.4);
+    }
+
+    .compare-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .loading-message {
+      text-align: center;
+      padding: 2rem;
+      color: #64748b;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .comparison-container {
+      display: none;
+      margin: 3rem 0;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .uni-column {
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+      overflow: hidden;
+      border: 2px solid rgba(59,130,246,0.1);
+    }
+
+    .uni-header {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .uni-header h2 {
+      font-size: 2rem;
+      font-weight: 900;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .uni-header p {
+      font-size: 1rem;
+      opacity: 0.9;
+      margin: 0;
+    }
+
+    .uni-content {
+      padding: 2rem;
+    }
+
+    .info-section {
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 2px solid #f1f5f9;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .info-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .section-content {
+      flex: 1;
+      overflow-y: auto;
+      max-height: 400px;
+      padding-right: 0.5rem;
+    }
+
+    .section-content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .section-content::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 10px;
+    }
+
+    .section-content::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 10px;
+    }
+
+    .section-content::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #1e40af;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .info-item {
+      background: #f8fafc;
+      padding: 1rem;
+      border-radius: 12px;
+      margin: 0.5rem 0;
+      border-left: 4px solid #3b82f6;
+    }
+
+    .info-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.3rem;
+    }
+
+    .info-value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .fee-highlight {
+      background: linear-gradient(135deg, #fffbeb, #fef3c7);
+      padding: 1.5rem;
+      border-radius: 16px;
+      text-align: center;
+      border: 2px solid #fbbf24;
+      margin: 1rem 0;
+    }
+
+    .fee-amount {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #d97706;
+      margin-bottom: 0.3rem;
+    }
+
+    .fee-label {
+      font-size: 0.9rem;
+      color: #92400e;
+      font-weight: 600;
+    }
+
+    .programs-list {
+      /* Removed fixed max-height, now controlled by section-content */
+      padding-right: 0.5rem;
+    }
+
+    .program-chip {
+      background: linear-gradient(135deg, #dbeafe, #e0e7ff);
+      color: #1e40af;
+      padding: 0.6rem 1rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin: 0.3rem;
+      display: inline-block;
+    }
+
+    .deadline-item {
+      background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+      padding: 1rem;
+      border-radius: 12px;
+      margin: 0.5rem 0;
+      border-left: 4px solid #10b981;
+    }
+
+    .deadline-title {
+      font-weight: 700;
+      color: #065f46;
+      margin-bottom: 0.3rem;
+    }
+
+    .deadline-date {
+      font-weight: 600;
+      color: #059669;
+      font-size: 0.95rem;
+    }
+
+    .no-data {
+      text-align: center;
+      color: #94a3b8;
+      font-style: italic;
+      padding: 1rem;
+    }
+
+    .vs-badge {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: white;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: 900;
+      box-shadow: 0 8px 24px rgba(59,130,246,0.4);
+      z-index: 10;
+      border: 4px solid white;
+    }
+
+    @media (max-width: 1024px) {
+      .selector-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .vs-badge {
+        display: none;
+      }
+    }
+
+    /* Scrollbar styling */
+    .programs-list::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .programs-list::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 10px;
+    }
+
+    .programs-list::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 10px;
+    }
+
+    .programs-list::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="container header-content">
+      <div class="logo">
+        <span class="logo-text">UniGuide</span>
+      </div>
+      <nav class="nav">
+        <a href="home.html" class="nav-link">Home</a>
+        <a href="deadlines.html" class="nav-link">Deadlines</a>
+        <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
+        <a href="compare.html" class="nav-link">Compare Universities</a>
+        <a href="chat.html" class="nav-link">AI Chat</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="compare-hero">
+    <div class="container">
+      <h1>🎓 Compare Universities</h1>
+      <p>Make informed decisions by comparing universities side-by-side</p>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="selector-section">
+      <div class="selector-grid">
+        <div class="selector-box">
+          <label class="selector-label">🏛️ Select First University</label>
+          <div class="custom-select">
+            <select id="uni1-select">
+              <option value="">Loading universities...</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="selector-box">
+          <label class="selector-label">🏛️ Select Second University</label>
+          <div class="custom-select">
+            <select id="uni2-select">
+              <option value="">Loading universities...</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <button class="compare-btn" id="compare-btn" disabled>
+        Compare Universities
+      </button>
+    </div>
+
+    <div id="loading-message" class="loading-message" style="display: none;">
+      Loading comparison data...
+    </div>
+
+    <div id="comparison-container" class="comparison-container">
+      <div class="comparison-grid" style="position: relative;">
+        <div class="vs-badge">VS</div>
+        
+        <div class="uni-column" id="uni1-column"></div>
+        <div class="uni-column" id="uni2-column"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="logo footer-logo">
+        <span class="logo-text">UniGuide</span>
+      </div>
+      <div class="footer-links">
+        <a href="home.html">Home</a>
+        <a href="deadlines.html">Deadlines</a>
+        <a href="aggregateCalculator.html">Aggregate Calculator</a>
+        <a href="compare.html">Compare Universities</a>
+        <a href="chat.html">AI Chat</a>
+      </div>
+      <p class="copyright">© 2025 UniGuide. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script>
+    const API_URL = CONFIG.API_URL;
+    let universities = [];
+
+    // Load all universities
+    async function loadUniversities() {
+      try {
+        const res = await fetch(`${API_URL}/api/universities`);
+        const data = await res.json();
+        universities = data;
+
+        const select1 = document.getElementById('uni1-select');
+        const select2 = document.getElementById('uni2-select');
+
+        if (universities.length === 0) {
+          select1.innerHTML = '<option value="">No universities found</option>';
+          select2.innerHTML = '<option value="">No universities found</option>';
+          return;
+        }
+
+        const options = '<option value="">Choose a university...</option>' + 
+          universities.map(u => `<option value="${u.name}">${u.name}</option>`).join('');
+
+        select1.innerHTML = options;
+        select2.innerHTML = options;
+
+        // Enable compare button when both selected
+        [select1, select2].forEach(select => {
+          select.addEventListener('change', () => {
+            const uni1 = select1.value;
+            const uni2 = select2.value;
+            document.getElementById('compare-btn').disabled = !(uni1 && uni2 && uni1 !== uni2);
+          });
+        });
+
+      } catch (err) {
+        console.error('Error loading universities:', err);
+        document.getElementById('uni1-select').innerHTML = '<option value="">Error loading universities</option>';
+        document.getElementById('uni2-select').innerHTML = '<option value="">Error loading universities</option>';
+      }
+    }
+
+    // Load detailed university data
+    async function loadUniversityData(uniName) {
+      const res = await fetch(`${API_URL}/api/university/${encodeURIComponent(uniName)}`);
+      return await res.json();
+    }
+
+    // Render university column
+    function renderUniversityColumn(uni, columnId) {
+      const column = document.getElementById(columnId);
+      
+      // Calculate fee stats
+      const fees = (uni.programs || []).map(p => p.total_fee_first_year).filter(f => f && f > 0);
+      const avgFee = fees.length > 0 ? Math.round(fees.reduce((a,b) => a+b, 0) / fees.length) : 0;
+      const minFee = fees.length > 0 ? Math.min(...fees) : 0;
+      const maxFee = fees.length > 0 ? Math.max(...fees) : 0;
+
+      // Get unique departments
+      const departments = [...new Set((uni.programs || []).map(p => p.department).filter(Boolean))];
+
+      column.innerHTML = `
+        <div class="uni-header">
+          <h2>${uni.name}</h2>
+          <p>${uni.full_name || uni.fullName || ''}</p>
+        </div>
+
+        <div class="uni-content">
+          <!-- Basic Info -->
+          <div class="info-section">
+            <div class="section-title">📍 Location & Contact</div>
+            <div class="section-content">
+              ${uni.city ? `
+                <div class="info-item">
+                  <div class="info-label">City</div>
+                  <div class="info-value">${uni.city}</div>
+                </div>
+              ` : ''}
+              ${uni.address ? `
+                <div class="info-item">
+                  <div class="info-label">Address</div>
+                  <div class="info-value">${uni.address}</div>
+                </div>
+              ` : ''}
+              ${uni.email ? `
+                <div class="info-item">
+                  <div class="info-label">Email</div>
+                  <div class="info-value">${uni.email}</div>
+                </div>
+              ` : ''}
+              ${!uni.city && !uni.address && !uni.email ? '<div class="no-data">No contact information available</div>' : ''}
+            </div>
+          </div>
+
+          <!-- Fees -->
+          <div class="info-section">
+            <div class="section-title">💰 Fees Overview</div>
+            <div class="section-content">
+              ${avgFee > 0 ? `
+                <div class="fee-highlight">
+                  <div class="fee-amount">PKR ${avgFee.toLocaleString()}</div>
+                  <div class="fee-label">Average First Year Fee</div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label">Fee Range</div>
+                  <div class="info-value">PKR ${minFee.toLocaleString()} - ${maxFee.toLocaleString()}</div>
+                </div>
+              ` : '<div class="no-data">No fee data available</div>'}
+            </div>
+          </div>
+
+          <!-- Programs -->
+          <div class="info-section">
+            <div class="section-title">📚 Programs (${(uni.programs || []).length})</div>
+            <div class="section-content">
+              ${departments.length > 0 ? `
+                <div class="info-item">
+                  <div class="info-label">Departments</div>
+                  <div style="margin-top: 0.5rem;">
+                    ${departments.map(d => `<span class="program-chip">${d}</span>`).join('')}
+                  </div>
+                </div>
+              ` : ''}
+              ${(uni.programs || []).length > 0 ? `
+                <div class="programs-list" style="margin-top: 1rem;">
+                  ${uni.programs.slice(0, 10).map(p => `
+                    <div class="info-item">
+                      <div class="info-label">${p.department || 'General'}</div>
+                      <div class="info-value">${p.name}</div>
+                      ${p.total_fee_first_year ? `<div style="color: #059669; font-weight: 600; font-size: 0.9rem; margin-top: 0.3rem;">PKR ${p.total_fee_first_year.toLocaleString()}</div>` : ''}
+                    </div>
+                  `).join('')}
+                  ${uni.programs.length > 10 ? `<div class="no-data">+ ${uni.programs.length - 10} more programs</div>` : ''}
+                </div>
+              ` : '<div class="no-data">No programs listed</div>'}
+            </div>
+          </div>
+
+          <!-- Scholarships -->
+          ${(uni.scholarships || []).length > 0 ? `
+            <div class="info-section">
+              <div class="section-title">🎓 Scholarships (${uni.scholarships.length})</div>
+              <div class="section-content">
+                ${uni.scholarships.map(s => `
+                  <div class="info-item">
+                    <div class="info-value">${s.name}</div>
+                    <div style="color: #64748b; font-size: 0.85rem; margin-top: 0.3rem;">
+                      ${s.type || 'Merit/Need Based'}
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    // Compare button click
+    document.getElementById('compare-btn').addEventListener('click', async () => {
+      const uni1Name = document.getElementById('uni1-select').value;
+      const uni2Name = document.getElementById('uni2-select').value;
+
+      if (!uni1Name || !uni2Name) return;
+
+      // Show loading
+      document.getElementById('loading-message').style.display = 'block';
+      document.getElementById('comparison-container').style.display = 'none';
+
+      try {
+        // Load both universities
+        const [uni1, uni2] = await Promise.all([
+          loadUniversityData(uni1Name),
+          loadUniversityData(uni2Name)
+        ]);
+
+        // Render comparison
+        renderUniversityColumn(uni1, 'uni1-column');
+        renderUniversityColumn(uni2, 'uni2-column');
+
+        // Show results
+        document.getElementById('loading-message').style.display = 'none';
+        document.getElementById('comparison-container').style.display = 'block';
+
+        // Smooth scroll to results
+        document.getElementById('comparison-container').scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start' 
+        });
+
+      } catch (err) {
+        console.error('Error comparing universities:', err);
+        document.getElementById('loading-message').innerHTML = 
+          '<div style="color: #ef4444; font-weight: 700;">❌ Error loading comparison data. Please try again.</div>';
+      }
+    });
+
+    // Initialize
+    loadUniversities();
+  </script>
+  <script src="chatWidget.js"></script>
+</body>
+</html>
