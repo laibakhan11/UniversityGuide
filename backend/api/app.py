@@ -1,7 +1,10 @@
 from pathlib import Path
 import sys
-sys.path.append(str(Path(__file__).resolve().parent.parent))
-
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+import time
+sys.path.append('..')
+import os
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from config.db import get_universities_collection
@@ -13,7 +16,7 @@ import re
 from pydantic import BaseModel
 
 # Import calculators from utils
-from utils.aggregate_calculators import UNIVERSITY_CALCULATORS
+from utils.aggregate_calc import UNIVERSITY_CALCULATORS
 
 app = FastAPI(title="University Guide API", version="1.0.0")
 
