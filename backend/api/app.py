@@ -317,13 +317,18 @@ async def scrape_all_universities():
 def get_all_universities():
     collection = get_universities_collection()
     universities = []
-    for uni in collection.find({}, {"shortName": 1, "name": 1, "fullName": 1, "location": 1}):
+
+    for uni in collection.find({}, {
+        "name": 1,
+        "full_name": 1,
+        "city": 1
+    }):
         universities.append({
-            "shortName": uni.get("shortName") or uni.get("name", "Unknown"),
-            "name": uni.get("name"),
-            "fullName": uni.get("fullName"),
-            "location": uni.get("location", "Pakistan")
+            "name": uni.get("name", "Unknown"),
+            "full_name": uni.get("full_name", ""),
+            "city": uni.get("city", "Pakistan")
         })
+
     return universities
 
 # Single university - for university.html?name=UMT
