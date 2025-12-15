@@ -142,7 +142,6 @@
       border: 2px solid #fbbf24;
     }
 
-    /* Department Cards - Premium Collapsible */
     .department-card {
       background: white;
       border-radius: 20px;
@@ -152,7 +151,10 @@
       border: 1px solid rgba(59,130,246,0.1);
       transition: all 0.4s ease;
     }
-    .department-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.12); }
+    .department-card:hover { 
+      transform: translateY(-8px); 
+      box-shadow: 0 20px 40px rgba(0,0,0,0.12); 
+    }
 
     .dept-header {
       padding: 1.8rem 2rem;
@@ -166,7 +168,11 @@
     }
     .dept-header h3 { margin: 0; font-size: 1.5rem; font-weight: 700; }
     .dept-header small { opacity: 0.9; font-size: 0.95rem; }
-    .toggle-icon { font-size: 2.2rem; font-weight: 300; transition: transform 0.3s; }
+    .toggle-icon { 
+      font-size: 2.2rem; 
+      font-weight: 300; 
+      transition: transform 0.3s; 
+    }
 
     .programs-list {
       max-height: 0;
@@ -207,7 +213,13 @@
       margin-bottom: 0.8rem;
     }
     .fee { color: #059669; font-weight: bold; font-size: 1.15rem; }
-    .notes { color: #64748b; font-size: 0.95rem; display: block; margin-top: 0.8rem; }
+    .notes { 
+      color: #64748b; 
+      font-size: 0.95rem; 
+      display: block; 
+      margin-top: 0.8rem; 
+      font-style: italic;
+    }
 
     .scholarships-section {
       margin: 5rem 0;
@@ -235,8 +247,19 @@
       border-radius: 50px;
       text-decoration: none;
       font-weight: 600;
+      transition: all 0.3s;
     }
-    .view-details:hover { background: #d97706; }
+    .view-details:hover { 
+      background: #d97706; 
+      transform: translateY(-2px);
+    }
+
+    .loading {
+      text-align: center;
+      padding: 3rem;
+      font-size: 1.4rem;
+      color: #666;
+    }
 
     @media (max-width: 768px) {
       .uni-name { font-size: 3rem; }
@@ -254,9 +277,9 @@
       </div>
       <nav class="nav">
         <a href="home.html" class="nav-link">Home</a>
-        <a href="#" class="nav-link">Universities</a>
-        <a href="#" class="nav-link">Deadlines</a>
-        <a href="#" class="nav-link">Aggregate Calculator</a>
+        <a href="universities.html" class="nav-link">Universities</a>
+        <a href="deadlines.html" class="nav-link">Deadlines</a>
+        <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
       </nav>
     </div>
   </header>
@@ -271,7 +294,7 @@
   <div class="container">
     <div class="search-bar">
       <input type="text" id="program-search" placeholder="Search programs (e.g. Computer Science, BBA, MBBS...)"/>
-      <button>Search</button>
+      <button onclick="filterPrograms()">Search</button>
     </div>
 
     <div class="filters">
@@ -301,7 +324,7 @@
       Departments & Programs
     </h2>
 
-    <div id="loading" class="loading" style="padding: 3rem; font-size: 1.4rem;">Loading programs from database...</div>
+    <div id="loading" class="loading">Loading programs from database...</div>
     <div id="departments-container"></div>
 
     <div id="scholarships-section" class="scholarships-section" style="display:none;">
@@ -310,7 +333,24 @@
     </div>
   </div>
 
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="logo footer-logo">
+        <span class="logo-text">UniGuide</span>
+      </div>
+      <div class="footer-links">
+        <a href="home.html">Home</a>
+        <a href="universities.html">Universities</a>
+        <a href="deadlines.html">Deadlines</a>
+        <a href="aggregateCalculator.html">Aggregate Calculator</a>
+      </div>
+      <p class="copyright">© 2025 UniGuide. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="config.js"></script>
   <script>
+    const API_URL = CONFIG.API_URL;
     const urlParams = new URLSearchParams(window.location.search);
     const uniName = urlParams.get('name') || 'LUMS';
     document.getElementById('uni-name').textContent = uniName;
@@ -342,6 +382,10 @@
     }
 
     document.getElementById('program-search').addEventListener('input', filterPrograms);
+    document.getElementById('program-search').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') filterPrograms();
+    });
+
     document.querySelectorAll('.filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -352,11 +396,15 @@
 
     async function loadUniversity() {
       try {
-        const res = await fetch(`/api/university/${uniName}`);
+        console.log('Fetching university:', uniName);
+        const res = await fetch(`${API_URL}/api/university/${encodeURIComponent(uniName)}`);
         const uni = await res.json();
+        
         if (uni.error) throw new Error(uni.error);
 
-        document.getElementById('uni-fullname').textContent = uni.full_name || uni.name;
+        console.log('University data loaded:', uni);
+
+        document.getElementById('uni-fullname').textContent = uni.full_name || uni.fullName || uni.name;
         document.getElementById('loading').style.display = 'none';
 
         // Deadlines
@@ -380,12 +428,12 @@
           const min = Math.min(...fees);
           const max = Math.max(...fees);
           feeEl.innerHTML = `Average First Year: <strong>PKR ${avg.toLocaleString()}</strong><br>
-            <small>Range: PKR ${min.toLocaleString()} – ${max.toLocaleString()}</small>`;
+            <small>Range: PKR ${min.toLocaleString()} — ${max.toLocaleString()}</small>`;
         } else {
           feeEl.innerHTML = 'Fee information not available';
         }
 
-        // PROGRAMS BY DEPARTMENT - NOW WORKING 100%
+        // Programs by Department
         const deptMap = {};
         (uni.programs || []).forEach(p => {
           const dept = p.department?.trim() || "Other Programs";
@@ -408,9 +456,11 @@
             <div class="program-item">
               <div class="program-name">${p.name || 'Unnamed'}</div>
               <div><strong>First Year Fee:</strong> <span class="fee">PKR ${p.total_fee_first_year?.toLocaleString() || 'N/A'}</span></div>
-              <div><strong>Eligibility:</strong> FSc ≥ ${p.eligibility?.min_percentage_inter || 'N/A'}%</div>
-              <div><strong>Test:</strong> ${p.eligibility?.entry_test || 'Not Required'}</div>
-              ${p.eligibility?.notes ? `<em class="notes">${p.eligibility.notes}</em>` : ''}
+              <div><strong>Per Semester:</strong> PKR ${p.fee_per_semester?.toLocaleString() || 'N/A'}</div>
+              <div><strong>Eligibility:</strong> Matric ≥ ${p.eligibility?.min_percentage_matric || 'N/A'}%, Inter ≥ ${p.eligibility?.min_percentage_inter || 'N/A'}%</div>
+              <div><strong>Entry Test:</strong> ${p.eligibility?.entry_test || 'Not Required'}</div>
+              ${p.eligibility?.notes ? `<span class="notes">${p.eligibility.notes}</span>` : ''}
+              ${p.notes ? `<span class="notes">${p.notes}</span>` : ''}
             </div>
           `).join('');
 
@@ -446,7 +496,11 @@
           uni.scholarships.forEach(s => {
             list.innerHTML += `
               <div class="scholarship-item">
-                <div><strong>${s.name}</strong><br><small>${s.type || 'Merit/Need'}</small></div>
+                <div>
+                  <strong>${s.name}</strong><br>
+                  <small>${s.type || 'Merit/Need'}</small>
+                  ${s.notes ? `<br><small style="color:#64748b;">${s.notes}</small>` : ''}
+                </div>
                 ${s.link ? `<a href="${s.link}" target="_blank" class="view-details">Apply Now</a>` : ''}
               </div>
             `;
@@ -454,6 +508,7 @@
         }
 
       } catch (err) {
+        console.error('Error loading university:', err);
         document.getElementById('loading').innerHTML = `<p style="color:red; text-align:center;">Error: ${err.message}</p>`;
       }
     }

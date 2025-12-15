@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admission Deadlines - UniGuide</title>
+  <link rel="stylesheet" href="home.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    .deadlines-container {
+      max-width: 1200px;
+      margin: 3rem auto;
+      padding: 0 2rem;
+    }
+    .deadline-card {
+      background: white;
+      padding: 2rem;
+      margin: 1.5rem 0;
+      border-radius: 20px;
+      border-left: 6px solid #10b981;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      transition: all 0.3s;
+    }
+    .deadline-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+    }
+    .deadline-uni {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1e40af;
+      margin-bottom: 0.5rem;
+    }
+    .deadline-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.5rem;
+    }
+    .deadline-date {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #059669;
+      margin-top: 0.5rem;
+    }
+    .loading {
+      text-align: center;
+      padding: 4rem;
+      font-size: 1.4rem;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="container header-content">
+      <div class="logo">
+        <span class="logo-text">UniGuide</span>
+      </div>
+      <nav class="nav">
+        <a href="home.html" class="nav-link">Home</a>
+        <a href="universities.html" class="nav-link">Universities</a>
+        <a href="deadlines.html" class="nav-link active">Deadlines</a>
+        <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" style="padding: 5rem 0 3rem;">
+    <div class="container">
+      <h1 style="font-size: 3.5rem;">Admission Deadlines</h1>
+      <p class="subtitle">Stay updated with important dates</p>
+    </div>
+  </section>
+
+  <div class="deadlines-container">
+    <div id="loading" class="loading">Loading deadlines...</div>
+    <div id="deadlines-list"></div>
+  </div>
+
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="logo footer-logo">
+        <span class="logo-text">UniGuide</span>
+      </div>
+      <div class="footer-links">
+        <a href="home.html">Home</a>
+        <a href="universities.html">Universities</a>
+        <a href="deadlines.html">Deadlines</a>
+        <a href="aggregateCalculator.html">Aggregate Calculator</a>
+      </div>
+      <p class="copyright">© 2025 UniGuide. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script>
+    const API_URL = CONFIG.API_URL;
+    
+    async function loadDeadlines() {
+      try {
+        const res = await fetch(`${API_URL}/api/deadlines`);
+        const data = await res.json();
+        
+        document.getElementById('loading').style.display = 'none';
+        const container = document.getElementById('deadlines-list');
+        
+        if (data.deadlines && data.deadlines.length > 0) {
+          data.deadlines.forEach(deadline => {
+            const card = document.createElement('div');
+            card.className = 'deadline-card';
+            card.innerHTML = `
+              <div class="deadline-uni">${deadline.university_name}</div>
+              <div class="deadline-title">${deadline.title}</div>
+              <div class="deadline-date">📅 ${deadline.deadline_date}</div>
+            `;
+            container.appendChild(card);
+          });
+        } else {
+          container.innerHTML = '<p style="text-align:center; color:#999;">No deadlines available</p>';
+        }
+      } catch (err) {
+        document.getElementById('loading').innerHTML = '<p style="color:red;">Error loading deadlines</p>';
+      }
+    }
+    
+    loadDeadlines();
+  </script>
+</body>
+</html>

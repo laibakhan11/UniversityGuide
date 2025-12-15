@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,11 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>UniGuide - Find Your Future</title>
   <link rel="stylesheet" href="home.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 </head>
 <body>
 
-  <!-- Header -->
   <header class="header">
     <div class="container header-content">
       <div class="logo">
@@ -18,13 +18,12 @@
       <nav class="nav">
         <a href="home.html" class="nav-link">Home</a>
         <a href="universities.html" class="nav-link">Universities</a>
-        <a href="#" class="nav-link">Deadlines</a>
+        <a href="deadlines.html" class="nav-link">Deadlines</a>
         <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
       </nav>
     </div>
   </header>
 
-  <!-- Hero Section -->
   <section class="hero">
     <div class="container hero-content">
       <h1>Find Your Future.</h1>
@@ -36,33 +35,28 @@
           <div class="search-group">
             <label>Enter Program</label>
             <input type="text" placeholder="e.g., Computer Science" class="search-input" id="program-input"/>
-            <div class="dropdown" id="program-dropdown"></div>
           </div>
           <div class="search-group">
             <label>Enter University</label>
             <input type="text" placeholder="e.g., LUMS" class="search-input" id="uni-input"/>
           </div>
-          <button class="search-btn">Search</button>
+          <button class="search-btn" onclick="performSearch()">Search</button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Dynamic Institutions -->
   <section class="institutions">
     <div class="container">
       <h2 class="section-title">Explore Top Institutions</h2>
       
       <div id="loading" class="loading">Loading universities from database...</div>
-      <div id="error" class="error" style="display:none;"></div>
+      <div id="error" class="error" style="display:none; color:red; text-align:center;"></div>
 
-      <div class="cards-grid" id="universities-grid">
-        <!-- Cards will be injected here by JavaScript -->
-      </div>
+      <div class="cards-grid" id="universities-grid"></div>
     </div>
   </section>
 
-  <!-- Footer -->
   <footer class="footer">
     <div class="container footer-content">
       <div class="logo footer-logo">
@@ -70,12 +64,85 @@
       </div>
       <div class="footer-links">
         <a href="home.html">Home</a>
-        <a href="#">Aggregate Calculator</a>
-        <a href="#">Deadlines</a>
+        <a href="universities.html">Universities</a>
+        <a href="deadlines.html">Deadlines</a>
+        <a href="aggregateCalculator.html">Aggregate Calculator</a>
       </div>
       <p class="copyright">© 2025 UniGuide. All rights reserved.</p>
     </div>
   </footer>
-<script src = "home.js"></script>
+
+  <script src="config.js"></script>
+  <script>
+    const API_URL = CONFIG.API_URL;
+    const grid = document.getElementById('universities-grid');
+    const loading = document.getElementById('loading');
+    const errorDiv = document.getElementById('error');
+
+    async function loadUniversities() {
+      try {
+        console.log('Fetching from:', `${API_URL}/api/universities`);
+        const response = await fetch(`${API_URL}/api/universities`);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        const universities = await response.json();
+        console.log('Loaded universities:', universities.length);
+
+        loading.style.display = 'none';
+        grid.innerHTML = '';
+
+        if (universities.length === 0) {
+          grid.innerHTML = '<p style="text-align:center; color:#999;">No universities found in database</p>';
+          return;
+        }
+
+        universities.forEach(uni => {
+          const card = document.createElement('div');
+          card.className = 'uni-card';
+          card.innerHTML = `
+            <h3>${uni.name}</h3>
+            <p>${uni.fullName || uni.full_name || uni.name}</p>
+            <button onclick="window.location.href='university.html?name=${encodeURIComponent(uni.name)}'" class="view-btn">View Details</button>
+          `;
+          grid.appendChild(card);
+        });
+
+      } catch (err) {
+        console.error('Error loading universities:', err);
+        loading.style.display = 'none';
+        errorDiv.style.display = 'block';
+        errorDiv.innerHTML = `
+          <p>⚠️ Error: Could not load universities</p>
+          <p style="font-size:0.9rem; color:#666;">${err.message}</p>
+          <p style="font-size:0.9rem; color:#666;">Make sure backend is running at: ${API_URL}</p>
+        `;
+      }
+    }
+
+    function performSearch() {
+      const program = document.getElementById('program-input').value.trim();
+      const university = document.getElementById('uni-input').value.trim();
+      
+      if (program || university) {
+        const query = program || university;
+        window.location.href = `search.html?q=${encodeURIComponent(query)}`;
+      } else {
+        alert('Please enter a program or university name');
+      }
+    }
+
+    // Enter key support
+    document.getElementById('program-input').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') performSearch();
+    });
+    document.getElementById('uni-input').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') performSearch();
+    });
+
+    loadUniversities();
+  </script>
 </body>
 </html>

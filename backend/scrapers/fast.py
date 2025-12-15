@@ -15,6 +15,8 @@ deadline=[]
 table=soup.find('table',class_="edu-table-responsive table-condensed table-bordered table-hover table-striped")
 for row in table.find('tbody',class_="table-body").find_all('tr'):
     dd=row.find_all('td')[:2]
+    if len(dd) < 2 or dd[1].text.strip() in ['-', '']:
+       continue
     e = EmbeddedDeadline(
     title = dd[0].text.strip(),
     deadline_date = dd[1].text.strip())
@@ -75,6 +77,9 @@ ACTIVITIES_PER_SEM = 2500
 def calculate_first_year_fee(credits: int) -> int:
     return ADMISSION_FEE + SECURITY_DEPOSIT + (credits * TUITION_PER_CREDIT) + (ACTIVITIES_PER_SEM * 2)
 
+def calculate_semester_fee(credits: int) -> int:
+    return (credits * TUITION_PER_CREDIT) + ACTIVITIES_PER_SEM
+
 FEE_NOTES = "Rs. 11,000 per credit hour + Rs. 2,500 activities per semester. First-year includes one-time Rs. 30,000 admission + Rs. 20,000 refundable security."
 
 computing_eligibility = Eligibility(
@@ -102,21 +107,30 @@ programs = [
     Program(
         name="BS Electrical Engineering",
         department="Faculty of Engineering",
+        fee_per_semester=calculate_semester_fee(18),
         total_fee_first_year=calculate_first_year_fee(37),
         eligibility=engineering_eligibility,
         notes=FEE_NOTES
     ),
-    Program(name="BS Artificial Intelligence",  department="School of Computing", total_fee_first_year=calculate_first_year_fee(36), eligibility=computing_eligibility, notes=FEE_NOTES),
-    Program(name="BS Computer Science",         department="School of Computing", total_fee_first_year=calculate_first_year_fee(36), eligibility=computing_eligibility, notes=FEE_NOTES),
-    Program(name="BS Cyber Security",           department="School of Computing", total_fee_first_year=calculate_first_year_fee(36), eligibility=computing_eligibility, notes=FEE_NOTES),
-    Program(name="BS Data Science",             department="School of Computing", total_fee_first_year=calculate_first_year_fee(36), eligibility=computing_eligibility, notes=FEE_NOTES),
-    Program(name="BS Software Engineering",    department="School of Computing", total_fee_first_year=calculate_first_year_fee(36), eligibility=computing_eligibility, notes=FEE_NOTES),
+        Program(
+        name="BS Civil Engineering",
+        department="Faculty of Engineering",
+        fee_per_semester=calculate_semester_fee(18),
+        total_fee_first_year=calculate_first_year_fee(37),
+        eligibility=engineering_eligibility,
+        notes=FEE_NOTES
+    ),
+    Program(name="BS Artificial Intelligence",  department="School of Computing",fee_per_semester=calculate_semester_fee(18), total_fee_first_year=calculate_first_year_fee(36), eligibility=computing_eligibility, notes=FEE_NOTES),
+    Program(name="BS Computer Science",         department="School of Computing",  fee_per_semester=calculate_semester_fee(18),total_fee_first_year=calculate_first_year_fee(36), eligibility=computing_eligibility, notes=FEE_NOTES),
+    Program(name="BS Cyber Security",           department="School of Computing", fee_per_semester=calculate_semester_fee(18), total_fee_first_year=calculate_first_year_fee(36), eligibility=computing_eligibility, notes=FEE_NOTES),
+    Program(name="BS Data Science",             department="School of Computing", fee_per_semester=calculate_semester_fee(18), total_fee_first_year=calculate_first_year_fee(36), eligibility=computing_eligibility, notes=FEE_NOTES),
+    Program(name="BS Software Engineering",    department="School of Computing",  fee_per_semester=calculate_semester_fee(18),total_fee_first_year=calculate_first_year_fee(36), eligibility=computing_eligibility, notes=FEE_NOTES),
 
 
-    Program(name="BBA",                               department="Faculty of Management Sciences", total_fee_first_year=calculate_first_year_fee(35), eligibility=business_eligibility, notes=FEE_NOTES),
-    Program(name="BS Accounting & Finance",           department="Faculty of Management Sciences", total_fee_first_year=calculate_first_year_fee(35), eligibility=business_eligibility, notes=FEE_NOTES),
-    Program(name="BS Business Analytics",             department="Faculty of Management Sciences", total_fee_first_year=calculate_first_year_fee(35), eligibility=business_eligibility, notes=FEE_NOTES),
-    Program(name="BS Financial Technology",           department="Faculty of Management Sciences", total_fee_first_year=calculate_first_year_fee(37), eligibility=business_eligibility, notes=FEE_NOTES),
+    Program(name="BBA",                               department="Faculty of Management Sciences", fee_per_semester=calculate_semester_fee(16),total_fee_first_year=calculate_first_year_fee(35), eligibility=business_eligibility, notes=FEE_NOTES),
+    Program(name="BS Accounting & Finance",           department="Faculty of Management Sciences", fee_per_semester=calculate_semester_fee(17),total_fee_first_year=calculate_first_year_fee(35), eligibility=business_eligibility, notes=FEE_NOTES),
+    Program(name="BS Business Analytics",             department="Faculty of Management Sciences", fee_per_semester=calculate_semester_fee(17),total_fee_first_year=calculate_first_year_fee(35), eligibility=business_eligibility, notes=FEE_NOTES),
+    Program(name="BS Financial Technology",           department="Faculty of Management Sciences", fee_per_semester=calculate_semester_fee(17),total_fee_first_year=calculate_first_year_fee(37), eligibility=business_eligibility, notes=FEE_NOTES),
 ]
 
 fast = University(

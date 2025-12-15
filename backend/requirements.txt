@@ -1,9 +1,8 @@
-pymongo
-pydantic
 fastapi
 uvicorn[standard]
+pymongo
 beautifulsoup4
 requests
 python-multipart
-selenium
-PyPDF2
+python-dotenv
+lxml
