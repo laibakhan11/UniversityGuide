@@ -153,6 +153,7 @@ pifd = University(
     name="PIFD",
     full_name="Pakistan Institute of Fashion and Design",
     city="Lahore",
+    address="51-J/3, Johar Town, Lahore, Pakistan",
     email="info@pifd.edu.pk",
     website="https://pifd.edu.pk",
     admission_link=url,
