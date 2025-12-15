@@ -1,6 +1,14 @@
+import sys
+sys.path.append('..')
 import requests
 from bs4 import BeautifulSoup
-from pudata import University, Program, Eligibility, Scholarship, EmbeddedDeadline, collection
+import os
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+from config.db import get_db
+from models.university import University, Program, Eligibility, Scholarship, EmbeddedDeadline
+from models.deadline import Deadline
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # Scrape Programs
 program_url = "https://lahoreschoolofeconomics.edu.pk/getAcademicProgramsListings/1"
@@ -125,6 +133,8 @@ lse_data = University(
     scholarships=lse_scholarships,
     deadlines=lse_deadlines
 )
+db = get_db()
+collection = db["universities"]
 
 result = collection.replace_one(
     {"name": lse_data.name},
