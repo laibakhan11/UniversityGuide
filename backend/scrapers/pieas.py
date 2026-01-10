@@ -51,7 +51,7 @@ FEE_NOTES = (
 pieas_scholarships = []
 
 url_scholarships = "https://www.pieas.edu.pk/scholarships/"
-r = requests.get(url_scholarships)
+r = requests.get(url_scholarships, verify=False)
 soup = BeautifulSoup(r.text, "html.parser")
 
 menu_div = soup.find("div", id="menu1")
@@ -207,7 +207,7 @@ embedded_deadlines = []
 standalone_deadlines = []
 
 url = "https://admissions.pieas.edu.pk/Admissions/schedule.html"
-r = requests.get(url)
+r = requests.get(url, verify=False)
 soup = BeautifulSoup(r.text, "html.parser")
 
 content = soup.find("div", class_="blog-content")
@@ -248,7 +248,7 @@ if content:
 
 programs = []
 url_programs = "https://admissions.pieas.edu.pk/Admissions/BS.html"
-r = requests.get(url_programs)
+r = requests.get(url_programs, verify=False)
 soup = BeautifulSoup(r.text, "html.parser")
 
 table = soup.find("table", class_="table table-bordered")

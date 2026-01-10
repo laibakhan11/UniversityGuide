@@ -121,14 +121,14 @@ driver = webdriver.Chrome(options=chrome_options)
 scraped_programs = []
 
 try:
-    print("🔍 Opening NUST UG programs page for scraping...")
+    print("Opening NUST UG programs page for scraping...")
     driver.get("https://nust.edu.pk/admissions/undergraduates/list-of-ug-programmes-and-institutions/")
     time.sleep(5)
 
     html = driver.page_source
     soup = BeautifulSoup(html, 'html.parser')
     tables = soup.find_all('table')
-    print(f"📋 Found {len(tables)} tables on page")
+    print(f"Found {len(tables)} tables on page")
 
     for table in tables:
         for row in table.find_all('tr'):
@@ -160,10 +160,10 @@ try:
             )
             scraped_programs.append(program_obj)
 
-    print(f"✓ Scraped {len(scraped_programs)} Islamabad programs")
+    print(f"Scraped {len(scraped_programs)} Islamabad programs")
     
 except Exception as e:
-    print(f"❌ Error scraping programs: {str(e)}")
+    print(f"Error scraping programs: {str(e)}")
 
 # =========================================================
 # Scrape Deadlines
@@ -172,7 +172,7 @@ embedded_deadlines = []
 standalone_deadlines = []
 
 try:
-    print("\n🔍 Opening NUST deadlines page...")
+    print("\nOpening NUST deadlines page...")
     driver.get("https://nust.edu.pk/admissions/undergraduates/dates-to-remember/")
     time.sleep(5)
 
@@ -246,14 +246,14 @@ try:
                 )
             )
 
-    print(f"✓ Scraped {len(embedded_deadlines)} deadlines")
+    print(f"Scraped {len(embedded_deadlines)} deadlines")
 
 except Exception as e:
-    print(f"❌ Error scraping deadlines: {str(e)}")
+    print(f"Error scraping deadlines: {str(e)}")
 
 finally:
     driver.quit()
-    print("✓ Browser closed")
+    print("Browser closed")
 
 # =========================================================
 # Save to MongoDB
@@ -263,7 +263,7 @@ if scraped_programs:
     
     # Delete existing NUST data
     db.universities.delete_many({"name": "NUST Islamabad"})
-    print("\n🗑️ Deleted previous NUST data from universities collection")
+    print("\nDeleted previous NUST data from universities collection")
 
     # Create university document
     nust_data = University(
@@ -274,7 +274,7 @@ if scraped_programs:
         website="https://nust.edu.pk/",
         email="ugadmissions@nust.edu.pk",
         admission_link="https://nust.edu.pk/admissions/",
-        introduction = "National University of Sciences and Technology (NUST), established in 1991, is Pakistan’s highest-ranked and most competitive public university. It is famous for its rigorous NET entrance exam, world-class research facilities, and excellence in engineering, computer science, business, and natural sciences. NUST offers undergraduate, graduate, and doctoral programs through multiple specialized schools, including SEECS and NUST Business School. Its main campus is located in Islamabad, with additional campuses in Rawalpindi and other cities. NUST graduates consistently secure placements in multinational corporations, defense organizations, and top global universities, making it the dream institution for Pakistan’s highest-achieving students.",
+        introduction = "National University of Sciences and Technology (NUST), established in 1991, is Pakistan's highest-ranked and most competitive public university. It is famous for its rigorous NET entrance exam, world-class research facilities, and excellence in engineering, computer science, business, and natural sciences. NUST offers undergraduate, graduate, and doctoral programs through multiple specialized schools, including SEECS and NUST Business School. Its main campus is located in Islamabad, with additional campuses in Rawalpindi and other cities. NUST graduates consistently secure placements in multinational corporations, defense organizations, and top global universities, making it the dream institution for Pakistan's highest-achieving students.",
 
         programs=scraped_programs,
         scholarships=nust_scholarships,
@@ -284,12 +284,12 @@ if scraped_programs:
     # Insert university
     try:
         insert_result = db.universities.insert_one(nust_data.dict())
-        print(f"✅ Inserted NUST with {len(scraped_programs)} programs")
+        print(f"Inserted NUST with {len(scraped_programs)} programs")
     except Exception as e:
-        print(f"❌ Error inserting university: {e}")
+        print(f"Error inserting university: {e}")
 
     # Insert standalone deadlines
     if standalone_deadlines:
         get_deadlines_collection().delete_many({"university_name": "NUST Islamabad"})
         get_deadlines_collection().insert_many([d.dict() for d in standalone_deadlines])
-        print(f"✅ Inserted {len(standalone_deadlines)} standalone deadlines")
+        print(f"Inserted {len(standalone_deadlines)} standalone deadlines")

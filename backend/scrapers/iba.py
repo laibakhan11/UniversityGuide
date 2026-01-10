@@ -154,7 +154,7 @@ for li in programs_ul.find_all("li"):
         )
     )
 
-print(f"✓ Scraped {len(iba_programs)} programs")
+print(f"Scraped {len(iba_programs)} programs")
 
 # =========================================================
 # Scrape Scholarships
@@ -187,7 +187,7 @@ for li in soup.select("ul.iba-news li"):
         )
     )
 
-print(f"✓ Scraped {len(scholarships)} scholarships")
+print(f"Scraped {len(scholarships)} scholarships")
 
 # =========================================================
 # Scrape Deadlines
@@ -235,7 +235,7 @@ for i, table in enumerate(tables, start=1):
                 continue
 
             programs = program_row[idx].get_text(strip=True)
-            text_parts.append(f"{date} → {programs}")
+            text_parts.append(f"{date} -> {programs}")
 
             standalone_deadlines.append(
                 Deadline(
@@ -254,8 +254,8 @@ for i, table in enumerate(tables, start=1):
                 )
             )
 
-print(f"✓ Scraped {len(embedded_deadlines)} embedded deadlines")
-print(f"✓ Scraped {len(standalone_deadlines)} standalone deadlines")
+print(f"Scraped {len(embedded_deadlines)} embedded deadlines")
+print(f"Scraped {len(standalone_deadlines)} standalone deadlines")
 
 # =========================================================
 # Selenium Fee Scraper
@@ -324,7 +324,7 @@ def best_match(scraped_name, programs):
     return best if best_score >= 0.4 else None
 
 try:
-    print("\n🔍 Scraping fees from IBA website...")
+    print("\nScraping fees from IBA website...")
     driver.get("https://www.iba.edu.pk/fee-structure.php")
     time.sleep(5)
 
@@ -333,14 +333,14 @@ try:
     # Find the undergraduate section
     undergrad_div = soup.find("div", id="Undergraduate")
     if not undergrad_div:
-        print("⚠️ Could not find Undergraduate section")
+        print("Could not find Undergraduate section")
     else:
         tbody = undergrad_div.find("tbody")
         if not tbody:
-            print("⚠️ Could not find tbody in Undergraduate section")
+            print("Could not find tbody in Undergraduate section")
         else:
             rows = tbody.find_all("tr")[2:]  # Skip header rows
-            print(f"📋 Found {len(rows)} fee rows")
+            print(f"Found {len(rows)} fee rows")
             
             matched_count = 0
             matched_programs = set()  # Track which programs we've matched
@@ -356,7 +356,7 @@ try:
                 try:
                     fee = float(fee_text)
                 except:
-                    print(f"⚠️ Could not parse fee for '{scraped_program}': {fee_text}")
+                    print(f"Could not parse fee for '{scraped_program}': {fee_text}")
                     continue
 
                 prog = best_match(scraped_program, iba_programs)
@@ -365,16 +365,16 @@ try:
                     prog.total_fee_first_year = int(fee * 2)
                     matched_programs.add(prog.name)
                     matched_count += 1
-                    print(f"✓ Matched '{scraped_program}' → '{prog.name}' (Fee: {fee})")
+                    print(f"Matched '{scraped_program}' -> '{prog.name}' (Fee: {fee})")
                 elif prog:
-                    print(f"⚠️ '{scraped_program}' already matched to '{prog.name}', skipping")
+                    print(f"'{scraped_program}' already matched to '{prog.name}', skipping")
                 else:
-                    print(f"✗ No match found for '{scraped_program}'")
+                    print(f"No match found for '{scraped_program}'")
             
-            print(f"\n✓ Successfully matched fees for {matched_count}/{len(rows)} programs")
+            print(f"\nSuccessfully matched fees for {matched_count}/{len(rows)} programs")
 
 except Exception as e:
-    print(f"❌ Error scraping fees: {str(e)}")
+    print(f"Error scraping fees: {str(e)}")
 finally:
     driver.quit()
 
@@ -387,13 +387,13 @@ print("="*60)
 programs_with_fees = [p for p in iba_programs if p.fee_per_semester]
 programs_without_fees = [p for p in iba_programs if not p.fee_per_semester]
 
-print(f"\n✓ Programs WITH fees ({len(programs_with_fees)}):")
+print(f"\nPrograms WITH fees ({len(programs_with_fees)}):")
 for p in programs_with_fees:
-    print(f"  • {p.name}: {p.fee_per_semester}/semester")
+    print(f"  {p.name}: {p.fee_per_semester}/semester")
 
-print(f"\n✗ Programs WITHOUT fees ({len(programs_without_fees)}):")
+print(f"\nPrograms WITHOUT fees ({len(programs_without_fees)}):")
 for p in programs_without_fees:
-    print(f"  • {p.name}")
+    print(f"  {p.name}")
 
 # =========================================================
 # Save to MongoDB
@@ -410,7 +410,7 @@ db.universities.insert_one(
         website="https://www.iba.edu.pk",
         email="admissions@iba.edu.pk",
         admission_link="https://admissions.iba.edu.pk",
-        introduction = "Institute of Business Administration (IBA) Karachi, established in 1955 with support from the Wharton School of the University of Pennsylvania, is Pakistan’s oldest and most prestigious business school. It is most famous for setting the standard of business, economics, and management education in the country and for its highly competitive admissions process. IBA offers undergraduate, graduate, and doctoral programs in business administration, economics, computer science, social sciences, and accounting. The university has two main campuses in Karachi: the City Campus and the modern Main Campus at University Road. IBA graduates are widely respected and hold leadership positions in multinational corporations, banks, startups, and public sector organizations across Pakistan and abroad.",
+        introduction = "Institute of Business Administration (IBA) Karachi, established in 1955 with support from the Wharton School of the University of Pennsylvania, is Pakistan's oldest and most prestigious business school. It is most famous for setting the standard of business, economics, and management education in the country and for its highly competitive admissions process. IBA offers undergraduate, graduate, and doctoral programs in business administration, economics, computer science, social sciences, and accounting. The university has two main campuses in Karachi: the City Campus and the modern Main Campus at University Road. IBA graduates are widely respected and hold leadership positions in multinational corporations, banks, startups, and public sector organizations across Pakistan and abroad.",
         programs=iba_programs,
         scholarships=scholarships,
         deadlines=embedded_deadlines
@@ -422,4 +422,4 @@ get_deadlines_collection().insert_many(
     [d.dict() for d in standalone_deadlines]
 )
 
-print("\n✅ IBA data scraped & saved successfully to MongoDB!")
+print("\nIBA data scraped & saved successfully to MongoDB!")
