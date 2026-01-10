@@ -1,4 +1,4 @@
-<!-- Enhanced university.html with program deep linking -->
+<!-- Enhanced university.html with introduction section -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,6 +42,32 @@
       flex-direction: column;
       align-items: center;
       gap: 0.3rem;
+    }
+
+    /* NEW: Introduction section */
+    .intro-section {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 18px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+      border: 2px solid rgba(59,130,246,0.15);
+      margin: 2rem 0;
+      text-align: center;
+    }
+
+    .intro-section h2 {
+      font-size: 1.8rem;
+      color: #1e40af;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .intro-text {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #475569;
+      max-width: 900px;
+      margin: 0 auto;
     }
 
     .filters {
@@ -253,7 +279,6 @@
       display: none !important;
     }
 
-    /* Highlighted program styles */
     .program-item.highlighted {
       background: linear-gradient(135deg, #fef3c7, #fde68a);
       border-left: 4px solid #f59e0b;
@@ -369,6 +394,7 @@
       </div>
       <nav class="nav">
         <a href="home.html" class="nav-link">Home</a>
+        <a href="programs.html" class="nav-link">Programs</a>
         <a href="deadlines.html" class="nav-link">Deadlines</a>
         <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
         <a href="compare.html" class="nav-link">Compare Universities</a>
@@ -386,6 +412,12 @@
   </section>
 
   <div class="container">
+    <!-- NEW: Introduction Section -->
+    <div id="intro-section" class="intro-section" style="display:none;">
+      <h2>📖 About</h2>
+      <p class="intro-text" id="intro-text"></p>
+    </div>
+
     <div class="filters">
       <button class="filter-btn active" data-filter="all">All Programs</button>
       <button class="filter-btn" data-filter="cs">CS / IT</button>
@@ -428,6 +460,7 @@
       </div>
       <div class="footer-links">
         <a href="home.html">Home</a>
+        <a href="programs.html" class="nav-link">Programs</a>
         <a href="deadlines.html">Deadlines</a>
         <a href="aggregateCalculator.html">Aggregate Calculator</a>
         <a href="compare.html">Compare Universities</a>
@@ -442,7 +475,7 @@
     const API_URL = CONFIG.API_URL;
     const urlParams = new URLSearchParams(window.location.search);
     const uniName = urlParams.get('name') || 'LUMS';
-    const targetProgram = urlParams.get('program'); // Get program from URL
+    const targetProgram = urlParams.get('program');
     
     document.getElementById('uni-name').textContent = uniName;
     document.title = uniName + " - UniGuide";
@@ -526,7 +559,6 @@
     function highlightAndScrollToProgram(programName) {
       if (!programName) return;
 
-      // Find the program element
       const allPrograms = document.querySelectorAll('.program-item');
       let foundProgram = null;
 
@@ -539,7 +571,6 @@
       });
 
       if (foundProgram) {
-        // Find parent department and open it
         const parentList = foundProgram.closest('.programs-list');
         const parentCard = foundProgram.closest('.department-card');
         const parentHeader = parentCard.querySelector('.dept-header');
@@ -549,7 +580,6 @@
           parentHeader.classList.add('open');
         }
 
-        // Scroll to the program with delay to ensure DOM is ready
         setTimeout(() => {
           const yOffset = -150;
           const y = foundProgram.getBoundingClientRect().top + window.pageYOffset + yOffset;
@@ -572,6 +602,12 @@
         if (uni.address) details.push(`🏢 ${uni.address}`);
         if (uni.email) details.push(`📧 ${uni.email}`);
         document.getElementById('uni-details').innerHTML = details.join(' • ');
+
+        // NEW: Display introduction if available
+        if (uni.introduction && uni.introduction.trim()) {
+          document.getElementById('intro-section').style.display = 'block';
+          document.getElementById('intro-text').textContent = uni.introduction;
+        }
 
         document.getElementById('loading').style.display = 'none';
 
@@ -668,7 +704,6 @@
             container.appendChild(card);
           });
 
-          // Highlight target program if specified in URL
           if (targetProgram) {
             highlightAndScrollToProgram(targetProgram);
           }

@@ -315,6 +315,7 @@
       </div>
       <nav class="nav">
         <a href="home.html" class="nav-link">Home</a>
+         <a href="programs.html" class="nav-link">Programs</a>
         <a href="deadlines.html" class="nav-link">Deadlines</a>
         <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
         <a href="compare.html" class="nav-link">Compare Universities</a>
@@ -325,8 +326,8 @@
 
   <section class="hero">
     <div class="container">
-      <h1 id="program-title">All Programs</h1>
-      <p class="hero-subtitle" id="program-subtitle">Explore universities offering this program</p>
+      <h1 id="program-title">Find Programs</h1>
+      <p class="hero-subtitle">Search and explore programs across all universities in Pakistan</p>
       
       <div class="search-bar">
         <input 
@@ -343,15 +344,11 @@
     <div id="stats-bar" class="stats-bar" style="display:none;">
       <div class="stat-card">
         <div class="stat-number" id="stat-programs">0</div>
-        <div class="stat-label">Programs</div>
+        <div class="stat-label">Programs Found</div>
       </div>
       <div class="stat-card">
         <div class="stat-number" id="stat-universities">0</div>
         <div class="stat-label">Universities</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number" id="stat-avg-fee">0</div>
-        <div class="stat-label">Avg Fee (PKR)</div>
       </div>
     </div>
 
@@ -373,6 +370,7 @@
       </div>
       <div class="footer-links">
         <a href="home.html">Home</a>
+         <a href="programs.html" class="nav-link">Programs</a>
         <a href="deadlines.html">Deadlines</a>
         <a href="aggregateCalculator.html">Aggregate Calculator</a>
         <a href="compare.html">Compare Universities</a>
@@ -392,10 +390,8 @@
 
     // Update page title
     if (programQuery) {
-      document.getElementById('program-title').textContent = programQuery;
-      document.getElementById('program-subtitle').textContent = `Universities offering ${programQuery}`;
-      document.title = `${programQuery} - UniGuide`;
       document.getElementById('program-search').value = programQuery;
+      document.title = `${programQuery} - UniGuide`;
     }
 
     async function loadAllPrograms() {
@@ -446,27 +442,116 @@
       }
     }
 
+    // Enhanced abbreviation mappings - EXACT matches only
+    const programMappings = {
+      // Computer Science & IT
+      'cs': ['computer science'],
+      'bscs': ['computer science', 'bs computer science', 'bachelor of computer science'],
+      'mscs': ['master of computer science', 'ms computer science'],
+      'it': ['information technology'],
+      'bsit': ['information technology', 'bs information technology'],
+      'se': ['software engineering'],
+      'bsse': ['software engineering', 'bs software engineering'],
+      'ai': ['artificial intelligence'],
+      'ds': ['data science'],
+      'cyber': ['cybersecurity', 'cyber security'],
+      
+      // Business
+      'bba': ['business administration'],
+      'mba': ['master of business administration', 'mba'],
+      'mcom': ['master of commerce', 'm.com'],
+      'finance': ['finance'],
+      'marketing': ['marketing'],
+      'hr': ['human resource management'],
+      
+      // Engineering
+      'eng': ['engineering'],
+      'ee': ['electrical engineering'],
+      'bsee': ['electrical engineering', 'bs electrical engineering'],
+      'me': ['mechanical engineering'],
+      'bsme': ['mechanical engineering', 'bs mechanical engineering'],
+      'ce': ['civil engineering'],
+      'bsce': ['civil engineering', 'bs civil engineering'],
+      'chemical': ['chemical engineering'],
+      'telecom': ['telecommunication engineering'],
+      
+      // Medical
+      'mbbs': ['bachelor of medicine and bachelor of surgery', 'mbbs'],
+      'bds': ['bachelor of dental surgery', 'bds'],
+      'dpt': ['doctor of physical therapy', 'dpt'],
+      'pharm': ['pharmacy'],
+      'pharmd': ['doctor of pharmacy', 'pharm.d'],
+      'nursing': ['nursing', 'bsn'],
+      
+      // Law
+      'llb': ['bachelor of laws', 'llb'],
+      'llm': ['master of laws', 'llm'],
+      
+      // Humanities & Social Sciences
+      'psychology': ['psychology'],
+      'sociology': ['sociology'],
+      'english': ['english'],
+      'mass comm': ['mass communication'],
+      'journalism': ['journalism'],
+      'political': ['political science'],
+      'economics': ['economics'],
+      'education': ['education']
+    };
+
+    function normalizeText(text) {
+      return text.toLowerCase()
+        .replace(/[^\w\s]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
     function filterPrograms(query) {
       if (!query || query.length < 2) {
         displayPrograms(allPrograms);
         return;
       }
 
-      const queryLower = query.toLowerCase();
+      const normQuery = normalizeText(query);
       
+      // Check if it's a known abbreviation
+      let searchTerms = [normQuery];
+      if (programMappings[normQuery]) {
+        // ONLY use the full names from mapping
+        searchTerms = programMappings[normQuery];
+      }
+      
+      // SUPER STRICT matching - program name must contain the EXACT search term
       filteredPrograms = allPrograms.filter(prog => {
-        const progName = prog.name.toLowerCase();
-        const dept = prog.department.toLowerCase();
-        return progName.includes(queryLower) || dept.includes(queryLower);
+        const normProgName = normalizeText(prog.name);
+        
+        for (const term of searchTerms) {
+          const termWords = term.split(' ');
+          const progWords = normProgName.split(' ');
+          
+          // Check if ALL words from search term exist in program name
+          const allWordsMatch = termWords.every(searchWord => 
+            progWords.some(progWord => progWord === searchWord)
+          );
+          
+          if (allWordsMatch) {
+            return true;
+          }
+        }
+        
+        return false;
       });
-
-      // Sort by relevance (exact match first)
+      
+      // Sort: exact match first, then alphabetically
       filteredPrograms.sort((a, b) => {
-        const aExact = a.name.toLowerCase().startsWith(queryLower);
-        const bExact = b.name.toLowerCase().startsWith(queryLower);
-        if (aExact && !bExact) return -1;
-        if (!aExact && bExact) return 1;
-        return 0;
+        const normA = normalizeText(a.name);
+        const normB = normalizeText(b.name);
+        
+        for (const term of searchTerms) {
+          if (normA === term && normB !== term) return -1;
+          if (normB === term && normA !== term) return 1;
+        }
+        
+        return a.name.localeCompare(b.name);
       });
 
       displayPrograms(filteredPrograms);
@@ -488,15 +573,10 @@
       
       // Calculate stats
       const uniqueUnis = new Set(programs.map(p => p.university)).size;
-      const feesWithData = programs.filter(p => p.fee && p.fee > 0);
-      const avgFee = feesWithData.length > 0 
-        ? Math.round(feesWithData.reduce((sum, p) => sum + p.fee, 0) / feesWithData.length)
-        : 0;
 
       // Update stats
       document.getElementById('stat-programs').textContent = programs.length;
       document.getElementById('stat-universities').textContent = uniqueUnis;
-      document.getElementById('stat-avg-fee').textContent = avgFee.toLocaleString();
       document.getElementById('stats-bar').style.display = 'flex';
 
       // Render program cards
@@ -544,12 +624,8 @@
         
         // Update title
         if (query) {
-          document.getElementById('program-title').textContent = query;
-          document.getElementById('program-subtitle').textContent = `Universities offering ${query}`;
           document.title = `${query} - UniGuide`;
         } else {
-          document.getElementById('program-title').textContent = 'All Programs';
-          document.getElementById('program-subtitle').textContent = 'Explore universities offering programs';
           document.title = 'Programs - UniGuide';
         }
         

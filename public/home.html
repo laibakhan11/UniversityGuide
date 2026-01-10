@@ -178,24 +178,114 @@
     let allPrograms = [];
     let universities = [];
 
-    // Program abbreviations mapping
-    const programAbbreviations = {
-      'cs': ['computer science', 'computer', 'software'],
-      'it': ['information technology', 'computer'],
-      'bba': ['business administration', 'business'],
-      'mba': ['business administration', 'management'],
-      'mbbs': ['medicine', 'medical', 'doctor'],
-      'bds': ['dental', 'dentistry'],
-      'llb': ['law', 'legal'],
-      'pharm': ['pharmacy'],
+    // Enhanced program mappings - EXACT matches only
+    const programMappings = {
+      // Computer Science & IT
+      'cs': ['computer science'],
+      'bscs': ['computer science', 'bs computer science'],
+      'mscs': ['master of computer science', 'ms computer science'],
+      'it': ['information technology'],
+      'bsit': ['information technology', 'bs information technology'],
+      'se': ['software engineering'],
+      'bsse': ['software engineering', 'bs software engineering'],
+      'ai': ['artificial intelligence'],
+      'ds': ['data science'],
+      'cyber': ['cybersecurity', 'cyber security'],
+      
+      // Business
+      'bba': ['business administration'],
+      'mba': ['master of business administration'],
+      'mcom': ['master of commerce'],
+      'finance': ['finance'],
+      'marketing': ['marketing'],
+      'hr': ['human resource management'],
+      
+      // Engineering
       'eng': ['engineering'],
-      'ee': ['electrical engineering', 'electrical'],
-      'me': ['mechanical engineering', 'mechanical'],
-      'ce': ['civil engineering', 'civil'],
-      'ai': ['artificial intelligence', 'machine learning'],
-      'ds': ['data science', 'data'],
-      'se': ['software engineering', 'software']
+      'ee': ['electrical engineering'],
+      'bsee': ['electrical engineering', 'bs electrical engineering'],
+      'me': ['mechanical engineering'],
+      'bsme': ['mechanical engineering', 'bs mechanical engineering'],
+      'ce': ['civil engineering'],
+      'bsce': ['civil engineering', 'bs civil engineering'],
+      'chemical': ['chemical engineering'],
+      'telecom': ['telecommunication engineering'],
+      
+      // Medical
+      'mbbs': ['bachelor of medicine and bachelor of surgery', 'mbbs'],
+      'bds': ['bachelor of dental surgery'],
+      'dpt': ['doctor of physical therapy'],
+      'pharm': ['pharmacy'],
+      'pharmd': ['doctor of pharmacy'],
+      'nursing': ['nursing'],
+      
+      // Law
+      'llb': ['bachelor of laws', 'llb'],
+      'llm': ['master of laws', 'llm'],
+      
+      // Humanities & Social Sciences
+      'psychology': ['psychology'],
+      'sociology': ['sociology'],
+      'english': ['english'],
+      'mass comm': ['mass communication'],
+      'journalism': ['journalism'],
+      'political': ['political science'],
+      'economics': ['economics'],
+      'education': ['education']
     };
+
+    function normalizeText(text) {
+      return text.toLowerCase()
+        .replace(/[^\w\s]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function calculateMatchScore(programName, query) {
+      const normProg = normalizeText(programName);
+      const normQuery = normalizeText(query);
+      
+      if (normProg === normQuery) return 1000;
+      if (normProg.startsWith(normQuery)) return 900;
+      
+      // Check abbreviation mappings FIRST
+      if (programMappings[normQuery]) {
+        const synonyms = programMappings[normQuery];
+        for (const synonym of synonyms) {
+          if (normProg.includes(synonym)) {
+            return 850;
+          }
+        }
+      }
+      
+      const progWords = normProg.split(' ');
+      const queryWords = normQuery.split(' ');
+      
+      // Acronym match - STRICT
+      if (queryWords.length === 1 && normQuery.length <= 4) {
+        const acronym = progWords.map(w => w[0]).join('');
+        if (acronym === normQuery) {
+          return 800;
+        }
+      }
+      
+      // Contains exact query as whole word
+      const progContainsQuery = ` ${normProg} `.includes(` ${normQuery} `);
+      if (progContainsQuery) return 750;
+      
+      let completeWordMatches = 0;
+      queryWords.forEach(qWord => {
+        if (progWords.some(pWord => pWord === qWord || pWord.startsWith(qWord))) {
+          completeWordMatches++;
+        }
+      });
+      
+      if (completeWordMatches === queryWords.length) {
+        return 700 + (completeWordMatches * 10);
+      }
+      
+      return 0;
+    }
 
     async function loadUniversities() {
       try {
@@ -260,25 +350,33 @@
       query = query.toLowerCase().trim();
       if (!query) return [];
 
-      // Check if query is an abbreviation
-      let searchTerms = [query];
-      if (programAbbreviations[query]) {
-        searchTerms = [...searchTerms, ...programAbbreviations[query]];
+      const normQuery = normalizeText(query);
+      
+      // Expand query with synonyms
+      let expandedQueries = [normQuery];
+      if (programMappings[normQuery]) {
+        expandedQueries = [...expandedQueries, ...programMappings[normQuery]];
       }
 
-      const results = allPrograms.filter(prog => {
-        const progName = prog.name.toLowerCase();
-        return searchTerms.some(term => progName.includes(term));
+      // Calculate match scores for all programs
+      const scoredPrograms = allPrograms.map(prog => {
+        let maxScore = 0;
+        
+        for (const expandedQuery of expandedQueries) {
+          const nameScore = calculateMatchScore(prog.name, expandedQuery);
+          const deptScore = calculateMatchScore(prog.department, expandedQuery) * 0.7;
+          maxScore = Math.max(maxScore, nameScore, deptScore);
+        }
+        
+        return { ...prog, matchScore: maxScore };
       });
 
-      // Sort by relevance (exact match first)
-      return results.sort((a, b) => {
-        const aExact = a.name.toLowerCase().startsWith(query);
-        const bExact = b.name.toLowerCase().startsWith(query);
-        if (aExact && !bExact) return -1;
-        if (!aExact && bExact) return 1;
-        return 0;
-      });
+      // Filter and sort by score
+      const results = scoredPrograms
+        .filter(p => p.matchScore > 0)
+        .sort((a, b) => b.matchScore - a.matchScore);
+
+      return results;
     }
 
     const programInput = document.getElementById('program-input');
