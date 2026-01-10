@@ -19,66 +19,60 @@
     }
 
     .header {
-      background: white;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
+  background: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 2rem;
-    }
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+}
 
-    .header-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.5rem 2rem;
-    }
+.logo-text {
+  font-size: 1.8rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-    .logo-text {
-      font-size: 1.8rem;
-      font-weight: bold;
-      background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+.nav {
+  display: flex;
+  gap: 2rem;
+}
 
-    .nav {
-      display: flex;
-      gap: 2rem;
-    }
+.nav-link {
+  text-decoration: none;
+  color: #4a5568;
+  font-weight: 500;
+  position: relative;
+  transition: color 0.3s;
+}
 
-    .nav-link {
-      text-decoration: none;
-      color: #4a5568;
-      font-weight: 500;
-      transition: color 0.3s;
-      position: relative;
-    }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -6px;
+  left: 0;
+  background: #3b82f6;
+  transition: width 0.4s ease;
+}
 
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      width: 0;
-      height: 2px;
-      bottom: -6px;
-      left: 0;
-      background: #3b82f6;
-      transition: width 0.4s ease;
-    }
+.nav-link:hover {
+  color: #3b82f6;
+}
 
-    .nav-link:hover {
-      color: #3b82f6;
-    }
+.nav-link:hover::after {
+  width: 100%;
+}
 
-    .nav-link:hover::after {
-      width: 100%;
-    }
 
     .hero {
       background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(139,92,246,0.08)), #ffffff;
@@ -337,20 +331,21 @@
 </head>
 <body>
   <header class="header">
-    <div class="container header-content">
-      <div class="logo">
-        <span class="logo-text">UniGuide</span>
-      </div>
-      <nav class="nav">
-        <a href="home.html" class="nav-link">Home</a>
-        <a href="programs.html" class="nav-link">Programs</a>
-        <a href="deadlines.html" class="nav-link">Deadlines</a>
-        <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
-        <a href="compare.html" class="nav-link">Compare Universities</a>
-        <a href="chat.html" class="nav-link">AI Chat</a>
-      </nav>
+  <div class="container header-content">
+    <div class="logo">
+      <span class="logo-text">UniGuide</span>
     </div>
-  </header>
+    <nav class="nav">
+      <a href="home.html" class="nav-link">Home</a>
+      <a href="programs.html" class="nav-link">Programs</a>
+      <a href="deadlines.html" class="nav-link">Deadlines</a>
+      <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
+      <a href="compare.html" class="nav-link">Compare Universities</a>
+      <a href="chat.html" class="nav-link">AI Chat</a>
+    </nav>
+  </div>
+ </header>
+
 
   <section class="hero">
     <div class="container">
