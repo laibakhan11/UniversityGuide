@@ -580,11 +580,12 @@
           parentHeader.classList.add('open');
         }
 
-        setTimeout(() => {
-          const yOffset = -150;
-          const y = foundProgram.getBoundingClientRect().top + window.pageYOffset + yOffset;
-          window.scrollTo({ top: y, behavior: 'smooth' });
-        }, 500);
+        // Wait for layout to be fully calculated
+       setTimeout(() => {
+         foundProgram.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'center'
+          });}, 800);
       }
     }
 
