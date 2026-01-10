@@ -227,6 +227,7 @@ au = University(
     website="https://www.au.edu.pk",
     email="admissions@au.edu.pk",
     admission_link="https://portals.au.edu.pk/admissions/",
+    introduction = "Air University, established in 2002 and managed by the Pakistan Air Force, is a leading public-sector university known for discipline, academic quality, and character building. It is famous for strong engineering, aerospace, and computer science programs, along with strict attendance and evaluation policies. Air University offers undergraduate and graduate programs in engineering, computing, business administration, and social sciences. The university has campuses in Islamabad (E-9), Multan, and Kamra. Its graduates are highly regarded in defense organizations, aviation-related industries, and the private sector due to their strong technical skills and disciplined training.",
     programs=final_programs,
     scholarships=scholarships,
     deadlines=deadlines

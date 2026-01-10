@@ -169,6 +169,7 @@ try:
         website="https://pu.edu.pk/#intro",
         email="infocell@pu.edu.pk",
         admission_link="https://pu.edu.pk//home/more/4",
+        introduction = "University of the Punjab (PU), established in 1882, is Pakistan’s oldest and largest public university with a rich academic and historical legacy. It is famous for producing national leaders, intellectuals, judges, and politicians who shaped Pakistan’s history. PU offers the widest range of programs in the country across sciences, arts, law, engineering, medicine, commerce, and social sciences. The university has a historic Old Campus in central Lahore and a vast New Campus spread over more than 1,800 acres. Despite affordable fees, PU degrees carry strong academic and professional recognition nationwide.",
         programs=pu_programs,
         scholarships=pu_scholarships,
         deadlines=[EmbeddedDeadline(title="Test & Admission Form Portal Open Date", deadline_date="18 September, 2025, Thursday"),EmbeddedDeadline(title="Test & Admission Form Portal Close Date", deadline_date="25 September, 2025, Thursday"),EmbeddedDeadline(title="Last Date of Fee Deposit Final Merit List", deadline_date="13 October, 2025, Monday")]

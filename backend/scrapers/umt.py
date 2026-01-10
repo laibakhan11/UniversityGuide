@@ -227,6 +227,7 @@ umt = University(
     website="https://umt.edu.pk",
     email="admissions@umt.edu.pk",
     admission_link="https://admissions.umt.edu.pk",
+    introduction = "University of Management and Technology (UMT), established in 1990, is one of Lahore’s leading private universities offering a wide range of professional degree programs. It is famous for its modern infrastructure, engineering and business programs, and strong focus on professional education. UMT offers undergraduate and graduate programs in engineering, computer science, business administration, health sciences, and social sciences. Located in Johar Town, Lahore, the university features well-equipped laboratories, a teaching hospital, and extensive campus facilities. Its industry linkages, scholarships, and placement support make it popular among middle-class students.",
     programs=programs,
     scholarships=scholarships,
     deadlines=deadlines

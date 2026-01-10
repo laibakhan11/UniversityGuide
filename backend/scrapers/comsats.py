@@ -186,6 +186,7 @@ comsats_university = University(
     website="https://lahore.comsats.edu.pk",
     email="admissions@cuilahore.edu.pk",
     admission_link=url,
+    introduction = "COMSATS University Islamabad, established in 1998, is Pakistan’s largest multi-campus public university with campuses in Islamabad, Lahore, Abbottabad, Wah, Attock, Sahiwal, and Vehari. It is especially famous for producing the highest number of computer science and engineering graduates in Pakistan each year. COMSATS offers a wide range of undergraduate, graduate, and PhD programs in computer science, engineering, management sciences, natural sciences, and humanities. The university is known for its affordable fee structure, strong research culture, and numerous HEC-recognized PhD programs. COMSATS graduates play a major role in Pakistan’s IT industry, software houses, and research organizations, making it a top choice for middle-class students seeking quality education.",
     programs=programs,
     scholarships=scholarships,
     deadlines=alldeadlines

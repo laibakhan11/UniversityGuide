@@ -344,6 +344,7 @@ db.universities.insert_one(
         website="https://www.pieas.edu.pk",
         email="admissions@pieas.edu.pk",
         admission_link="https://admissions.pieas.edu.pk",
+        introduction = "Pakistan Institute of Engineering and Applied Sciences (PIEAS), established in 2000 under the Pakistan Atomic Energy Commission, is one of the country’s most elite technical universities. It is famous for offering fully funded education with zero tuition fees and maintaining exceptionally high academic standards. PIEAS specializes in engineering and applied sciences, offering programs in nuclear engineering, electrical engineering, mechanical engineering, physics, and materials science. Located in Nilore, Islamabad, the university provides advanced laboratories and research facilities. PIEAS graduates commonly work in national research organizations, PAEC facilities, and international scientific institutions.",
         programs=programs,
         scholarships=pieas_scholarships,
         deadlines=embedded_deadlines

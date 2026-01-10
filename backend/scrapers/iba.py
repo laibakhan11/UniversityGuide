@@ -410,6 +410,7 @@ db.universities.insert_one(
         website="https://www.iba.edu.pk",
         email="admissions@iba.edu.pk",
         admission_link="https://admissions.iba.edu.pk",
+        introduction = "Institute of Business Administration (IBA) Karachi, established in 1955 with support from the Wharton School of the University of Pennsylvania, is Pakistan’s oldest and most prestigious business school. It is most famous for setting the standard of business, economics, and management education in the country and for its highly competitive admissions process. IBA offers undergraduate, graduate, and doctoral programs in business administration, economics, computer science, social sciences, and accounting. The university has two main campuses in Karachi: the City Campus and the modern Main Campus at University Road. IBA graduates are widely respected and hold leadership positions in multinational corporations, banks, startups, and public sector organizations across Pakistan and abroad.",
         programs=iba_programs,
         scholarships=scholarships,
         deadlines=embedded_deadlines

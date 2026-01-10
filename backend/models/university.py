@@ -33,6 +33,7 @@ class University(BaseModel):
     website: str
     email: str
     admission_link: str
+    introduction: Optional[str] = ""  
     programs: List[Program] = []
     scholarships: List[Scholarship] = []
     deadlines: List[EmbeddedDeadline] = [] 

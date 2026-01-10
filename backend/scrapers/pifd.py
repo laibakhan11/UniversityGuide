@@ -157,6 +157,7 @@ pifd = University(
     email="info@pifd.edu.pk",
     website="https://pifd.edu.pk",
     admission_link=url,
+    introduction = "Pakistan Institute of Fashion and Design (PIFD), established in 1994, is Pakistan’s leading institution for fashion, textile, and design education. It is most famous for producing the country’s top fashion designers and creative professionals who dominate the national fashion industry. PIFD offers specialized undergraduate and postgraduate programs in fashion design, textile design, fashion marketing, luxury management, and accessory design. Located in Lahore, the institute provides industry-oriented education through modern studios, workshops, and strong industry linkages. Its annual graduation fashion show is one of Pakistan’s most prestigious fashion events, attracting designers, brands, and media from across the country.",
     programs=programs,
     scholarships=scholarships,
     deadlines=deadlines[:20],

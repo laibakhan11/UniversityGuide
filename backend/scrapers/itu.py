@@ -214,6 +214,7 @@ itu = University(
     website="https://itu.edu.pk",
     email="admissions@itu.edu.pk",
     admission_link="https://itu.edu.pk/admissions/",
+    introduction = "Information Technology University (ITU) Punjab, established in 2012, is a modern public-sector university focused on advanced technology and research-based education. It is famous for offering fully funded education and cutting-edge research in artificial intelligence, data science, cybersecurity, and computer science. ITU offers undergraduate and graduate programs in computing and engineering disciplines. Located in Lahore, the university promotes innovation through startup incubation centers, industry partnerships, and research collaboration. Despite its young age, ITU has quickly gained a strong reputation for producing highly skilled, research-oriented technology graduates.",
     programs=programs,                 
     scholarships=scholarships,        
     deadlines=deadlines                

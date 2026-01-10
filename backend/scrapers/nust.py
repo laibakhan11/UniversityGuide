@@ -274,6 +274,8 @@ if scraped_programs:
         website="https://nust.edu.pk/",
         email="ugadmissions@nust.edu.pk",
         admission_link="https://nust.edu.pk/admissions/",
+        introduction = "National University of Sciences and Technology (NUST), established in 1991, is Pakistan’s highest-ranked and most competitive public university. It is famous for its rigorous NET entrance exam, world-class research facilities, and excellence in engineering, computer science, business, and natural sciences. NUST offers undergraduate, graduate, and doctoral programs through multiple specialized schools, including SEECS and NUST Business School. Its main campus is located in Islamabad, with additional campuses in Rawalpindi and other cities. NUST graduates consistently secure placements in multinational corporations, defense organizations, and top global universities, making it the dream institution for Pakistan’s highest-achieving students.",
+
         programs=scraped_programs,
         scholarships=nust_scholarships,
         deadlines=embedded_deadlines

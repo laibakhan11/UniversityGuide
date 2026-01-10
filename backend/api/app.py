@@ -192,11 +192,12 @@ def get_all_universities():
     collection = get_universities_collection()
     universities = []
 
-    for uni in collection.find({}, {"name": 1, "full_name": 1, "city": 1}):
+    for uni in collection.find({}, {"name": 1, "full_name": 1, "city": 1, "introduction": 1}):
         universities.append({
             "name": uni.get("name", "Unknown"),
             "full_name": uni.get("full_name", ""),
-            "city": uni.get("city", "Pakistan")
+            "city": uni.get("city", "Pakistan"),
+            "introduction": uni.get("introduction", "")
         })
 
     return universities
@@ -218,6 +219,9 @@ def get_university(name: str):
         return {"error": "University not found"}
 
     uni["_id"] = str(uni["_id"])
+    # Ensure introduction field is always present
+    if "introduction" not in uni:
+        uni["introduction"] = ""
     return uni
 
 @app.get("/api/cities/{city}")
@@ -233,6 +237,7 @@ def get_universities_by_city(city: str):
             "city": uni.get("city"),
             "address": uni.get("address", ""),
             "website": uni.get("website", ""),
+            "introduction": uni.get("introduction", ""),
             "total_programs": len(uni.get("programs", [])),
             "has_scholarships": len(uni.get("scholarships", [])) > 0
         })
@@ -295,6 +300,7 @@ def compare_universities(uni1: str, uni2: str):
             "city": university1.get("city"),
             "address": university1.get("address", ""),
             "website": university1.get("website", ""),
+            "introduction": university1.get("introduction", ""),
             "total_programs": len(university1.get("programs", [])),
             "departments": get_departments(university1.get("programs", [])),
             "fee_range": get_fee_stats(university1.get("programs", [])),
@@ -307,6 +313,7 @@ def compare_universities(uni1: str, uni2: str):
             "city": university2.get("city"),
             "address": university2.get("address", ""),
             "website": university2.get("website", ""),
+            "introduction": university2.get("introduction", ""),
             "total_programs": len(university2.get("programs", [])),
             "departments": get_departments(university2.get("programs", [])),
             "fee_range": get_fee_stats(university2.get("programs", [])),
@@ -342,6 +349,7 @@ def search_all(q: str):
                 "name": uni_name,
                 "full_name": uni_full,
                 "city": uni.get("city"),
+                "introduction": uni.get("introduction", ""),
                 "type": "university"
             })
         
@@ -430,7 +438,7 @@ def get_all_deadlines():
         "total_deadlines": len(all_deadlines),
         "upcoming_count": len(upcoming_deadlines),
         "past_count": len(past_deadlines),
-        "deadlines": upcoming_deadlines + past_deadlines,  # Upcoming first, then past
+        "deadlines": upcoming_deadlines + past_deadlines, 
         "upcoming_deadlines": upcoming_deadlines,
         "past_deadlines": past_deadlines
     }

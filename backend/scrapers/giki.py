@@ -164,6 +164,7 @@ basicinfo=University(
     website="https://giki.edu.pk/",
     email="admissions@giki.edu.pk",
     admission_link="https://admissions.giki.edu.pk/register/?_gl=1*asglo0*_ga*MTUyMjkxNTYzNi4xNzY0OTI4NDMw*_ga_8XS4Z2GJ4Z*czE3NjQ5NjA5ODckbzUkZzEkdDE3NjQ5NjI3NDckajYwJGwwJGgw&_ga=2.247546063.990410628.1764928432-1522915636.1764928430",
+    introduction = "Ghulam Ishaq Khan Institute of Engineering Sciences and Technology (GIKI), established in 1993, is Pakistan’s most selective engineering university. It is famous for its extremely tough entrance exam, highly rigorous academic environment, and strong focus on engineering and technology education. GIKI offers undergraduate and graduate programs in various engineering disciplines, computer science, and management sciences. Located in Topi, Khyber Pakhtunkhwa, the university operates on a fully residential 400-acre campus. Its small class sizes, internationally qualified faculty, and strong academic culture enable graduates to secure admissions and careers at top global universities and organizations.",
     programs=programs,
     scholarships=scholarships,
     deadlines=deadlines

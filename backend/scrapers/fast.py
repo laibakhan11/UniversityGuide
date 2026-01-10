@@ -141,6 +141,7 @@ fast = University(
     website="https://lhr.nu.edu.pk",
     email="admissions@nu.edu.pk",
     admission_link="https://www.nu.edu.pk/Admissions",
+    introduction = "FAST-NUCES (National University of Computer and Emerging Sciences), established in 2000, is Pakistan’s most respected university dedicated primarily to computer science and information technology education. It is famous for its extremely rigorous curriculum, strict grading system, and strong competitive programming culture. FAST offers undergraduate and graduate programs in computer science, software engineering, artificial intelligence, data science, and related fields. With campuses in Karachi, Lahore, Islamabad, Peshawar, and Chiniot-Faisalabad, FAST graduates are highly sought after by multinational tech companies and leading software firms. Its tough admission test and demanding academic environment ensure that only highly motivated and disciplined students succeed.",
     programs=programs,
     scholarships=scholarships,  
     deadlines=emdeadlines        

@@ -31,7 +31,7 @@ lums = University(
     website="https://lums.edu.pk",
     email="admissions@lums.edu.pk",
     admission_link="https://admission.lums.edu.pk",
-    
+    introduction="Lahore University of Management Sciences (LUMS), established in 1984, is Pakistan’s most prestigious private university and is internationally recognized for academic excellence, research, and leadership development. It is most famous for its highly competitive admissions process, generous need-based financial aid program, and the renowned Suleman Dawood School of Business, which ranks among Asia’s top business schools. LUMS offers undergraduate and graduate programs in business, economics, computer science, engineering, law, social sciences, and humanities. Located in Lahore, its 100-acre purpose-built campus hosts students from diverse socioeconomic backgrounds and promotes critical thinking, innovation, and interdisciplinary learning. LUMS graduates consistently secure top positions in multinational companies, global consulting firms, tech giants, and policy institutions.",
     programs=[
         # Business School Programs
         Program(

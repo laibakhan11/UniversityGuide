@@ -128,6 +128,7 @@ lse_data = University(
     website="https://www.lahoreschoolofeconomics.edu.pk/",
     email="mahjabeen@lahoreschool.edu.pk",
     admission_link="https://admissions.lahoreschool.edu.pk/",
+    introduction = "Lahore School of Economics (LSE), established in 1993, is Pakistan’s premier institution for economics, finance, and social sciences education. It is famous for producing top economists, policy analysts, and development professionals working in government, international organizations, and financial institutions. LSE offers undergraduate and graduate programs in economics, finance, business administration, and social sciences. Located in Lahore, the university emphasizes analytical thinking, research methodology, and small interactive classes. Its rigorous academic environment and highly qualified faculty make it a leading choice for students interested in economics and public policy careers.",
     application_fee=None,
     programs=program_objects,
     scholarships=lse_scholarships,
