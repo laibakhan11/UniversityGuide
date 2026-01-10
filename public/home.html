@@ -54,33 +54,58 @@
       text-align: center;
       color: #94a3b8;
     }
+    .dropdown-header {
+      padding: 0.8rem 1.5rem;
+      background: linear-gradient(135deg, #dbeafe, #e0e7ff);
+      font-weight: 700;
+      color: #1e40af;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .view-all-btn {
+      padding: 1rem 1.5rem;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: white;
+      text-align: center;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      border-top: 2px solid #e2e8f0;
+    }
+    .view-all-btn:hover {
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+    }
     .nav-link {
-  margin-left: 2.5rem;
-  font-weight: 600;
-  color: #475569;
-  text-decoration: none;
-  position: relative;
-  transition: color 0.3s;
-}
+      margin-left: 2.5rem;
+      font-weight: 600;
+      color: #475569;
+      text-decoration: none;
+      position: relative;
+      transition: color 0.3s;
+    }
 
-.nav-link::after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 2px;
-  bottom: -6px;
-  left: 0;
-  background: #3b82f6;
-  transition: width 0.4s ease;
-}
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -6px;
+      left: 0;
+      background: #3b82f6;
+      transition: width 0.4s ease;
+    }
 
-.nav-link:hover {
-  color: #3b82f6;
-}
+    .nav-link:hover {
+      color: #3b82f6;
+    }
 
-.nav-link:hover::after {
-  width: 100%;
-}
+    .nav-link:hover::after {
+      width: 100%;
+    }
   </style>
 </head>
 <body>
@@ -91,7 +116,8 @@
         <span class="logo-text">UniGuide</span>
       </div>
       <nav class="nav">
-       <a href="home.html" class="nav-link">Home</a>
+        <a href="home.html" class="nav-link">Home</a>
+        <a href="programs.html" class="nav-link">Programs</a>
         <a href="deadlines.html" class="nav-link">Deadlines</a>
         <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
         <a href="compare.html" class="nav-link">Compare Universities</a>
@@ -135,11 +161,12 @@
         <span class="logo-text">UniGuide</span>
       </div>
       <div class="footer-links">
-         <a href="home.html" class="nav-link">Home</a>
-        <a href="deadlines.html" class="nav-link">Deadlines</a>
-        <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
-        <a href="compare.html" class="nav-link">Compare Universities</a>
-        <a href="chat.html" class="nav-link">AI Chat</a>
+        <a href="home.html">Home</a>
+        <a href="programs.html">Programs</a>
+        <a href="deadlines.html">Deadlines</a>
+        <a href="aggregateCalculator.html">Aggregate Calculator</a>
+        <a href="compare.html">Compare Universities</a>
+        <a href="chat.html">AI Chat</a>
       </div>
       <p class="copyright">© 2025 UniGuide. All rights reserved.</p>
     </div>
@@ -186,7 +213,6 @@
           card.className = 'uni-card';
           const shortName = uni.name;
           const fullName = uni.full_name;
-          const city = uni.city;
 
           card.innerHTML = `
             <h3>${shortName}</h3>
@@ -252,7 +278,7 @@
         if (aExact && !bExact) return -1;
         if (!aExact && bExact) return 1;
         return 0;
-      }).slice(0, 20); // Limit to 20 results
+      });
     }
 
     const programInput = document.getElementById('program-input');
@@ -274,15 +300,38 @@
         return;
       }
 
-      dropdown.innerHTML = results.map(prog => `
-        <div class="dropdown-item" onclick="goToProgram('${prog.university.replace(/'/g, "\\'")}')">
-          <div class="program-name">${prog.name}</div>
-          <div class="program-meta">
-            🏛️ ${prog.university} • 📂 ${prog.department}
-            ${prog.fee ? ` • 💰 PKR ${prog.fee.toLocaleString()}` : ''}
-          </div>
+      // Count unique programs
+      const uniquePrograms = {};
+      results.forEach(prog => {
+        if (!uniquePrograms[prog.name]) {
+          uniquePrograms[prog.name] = [];
+        }
+        uniquePrograms[prog.name].push(prog);
+      });
+
+      const uniqueCount = Object.keys(uniquePrograms).length;
+      const displayLimit = 8;
+      const limitedResults = results.slice(0, displayLimit);
+
+      dropdown.innerHTML = `
+        <div class="dropdown-header">
+          Found ${results.length} results (${uniqueCount} unique programs)
         </div>
-      `).join('');
+        ${limitedResults.map(prog => `
+          <div class="dropdown-item" onclick="goToProgram('${prog.university.replace(/'/g, "\\'")}', '${prog.name.replace(/'/g, "\\'")}')">
+            <div class="program-name">${prog.name}</div>
+            <div class="program-meta">
+              🏛️ ${prog.university} • 📂 ${prog.department}
+              ${prog.fee ? ` • 💰 PKR ${prog.fee.toLocaleString()}` : ''}
+            </div>
+          </div>
+        `).join('')}
+        ${results.length > displayLimit ? `
+          <div class="view-all-btn" onclick="viewAllPrograms('${query.replace(/'/g, "\\'")}')">
+            📋 View All ${results.length} Results
+          </div>
+        ` : ''}
+      `;
       
       dropdown.classList.add('show');
     });
@@ -294,8 +343,24 @@
       }
     });
 
-    function goToProgram(uniName) {
-      window.location.href = `university.html?name=${encodeURIComponent(uniName)}`;
+    // Enter key to view all results
+    programInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        const query = e.target.value.trim();
+        if (query) {
+          viewAllPrograms(query);
+        }
+      }
+    });
+
+    function goToProgram(uniName, programName) {
+      // Navigate directly to university page with program highlighted
+      window.location.href = `university.html?name=${encodeURIComponent(uniName)}&program=${encodeURIComponent(programName)}`;
+    }
+
+    function viewAllPrograms(query) {
+      // Navigate to programs page showing all results
+      window.location.href = `programs.html?program=${encodeURIComponent(query)}`;
     }
 
     loadUniversities();

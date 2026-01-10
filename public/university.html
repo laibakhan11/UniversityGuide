@@ -1,7 +1,4 @@
-<!-- ========================================
-     COMPLETE FILE: university.html (FULL VERSION)
-     ======================================== -->
-
+<!-- Enhanced university.html with program deep linking -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,11 +27,13 @@
       -webkit-text-fill-color: transparent;
       margin: 0 0 0.5rem 0;
     }
+    
     .uni-fullname {
       font-size: 1.2rem;
       color: #64748b;
       margin: 0.3rem 0;
     }
+    
     .uni-details {
       font-size: 0.95rem;
       color: #94a3b8;
@@ -60,6 +59,7 @@
       box-shadow: 0 6px 20px rgba(0,0,0,0.1);
       z-index: 100;
     }
+    
     .filter-btn {
       background: #f1f5f9;
       color: #475569;
@@ -71,11 +71,13 @@
       transition: all 0.3s;
       font-size: 1rem;
     }
+    
     .filter-btn.active {
       background: linear-gradient(135deg, #3b82f6, #8b5cf6);
       color: white;
       transform: scale(1.05);
     }
+    
     .filter-btn:hover:not(.active) {
       background: #e2e8f0;
       transform: translateY(-2px);
@@ -106,6 +108,7 @@
       border: 1px solid rgba(59,130,246,0.1);
       margin-bottom: 1.5rem;
     }
+    
     .info-card h3 {
       font-size: 1.3rem;
       color: #1e40af;
@@ -120,17 +123,20 @@
       max-height: 300px;
       overflow-y: auto;
     }
+    
     .deadline-item {
       background: linear-gradient(135deg, #ecfdf5, #d1fae5);
       padding: 1rem;
       border-radius: 12px;
       border-left: 4px solid #10b981;
     }
+    
     .deadline-title { 
       font-weight: 700; 
       font-size: 0.95rem; 
       color: #065f46; 
     }
+    
     .deadline-date { 
       font-weight: 600; 
       color: #059669; 
@@ -145,12 +151,14 @@
       text-align: center;
       border: 2px solid #fbbf24;
     }
+    
     .fee-main {
       font-size: 1.6rem;
       font-weight: 800;
       color: #d97706;
       margin-bottom: 0.6rem;
     }
+    
     .fee-range {
       font-size: 0.9rem;
       color: #92400e;
@@ -175,10 +183,12 @@
       border: 1px solid rgba(59,130,246,0.08);
       transition: all 0.3s;
     }
+    
     .department-card:hover { 
       transform: translateY(-3px); 
       box-shadow: 0 12px 28px rgba(0,0,0,0.1); 
     }
+    
     .department-card.hidden {
       display: none !important;
     }
@@ -193,21 +203,25 @@
       cursor: pointer;
       user-select: none;
     }
+    
     .dept-header h4 { 
       margin: 0; 
       font-size: 1.2rem; 
       font-weight: 700; 
     }
+    
     .dept-header small { 
       opacity: 0.9; 
       font-size: 0.85rem; 
       display: block;
       margin-top: 0.2rem;
     }
+    
     .toggle-icon { 
       font-size: 1.8rem; 
       transition: transform 0.3s; 
     }
+    
     .dept-header.open .toggle-icon {
       transform: rotate(45deg);
     }
@@ -218,6 +232,7 @@
       transition: max-height 0.4s ease;
       background: #fafafa;
     }
+    
     .programs-list.open {
       max-height: 80vh;
       overflow-y: auto;
@@ -230,9 +245,25 @@
       margin: 0.7rem 0;
       border-radius: 12px;
       border-left: 4px solid #3b82f6;
+      transition: all 0.3s;
+      scroll-margin-top: 200px;
     }
+    
     .program-item.hidden {
       display: none !important;
+    }
+
+    /* Highlighted program styles */
+    .program-item.highlighted {
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
+      border-left: 4px solid #f59e0b;
+      box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
+      animation: highlight-pulse 2s ease-in-out;
+    }
+
+    @keyframes highlight-pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
     }
 
     .program-name {
@@ -241,15 +272,23 @@
       color: #1e40af;
       margin-bottom: 0.6rem;
     }
+    
+    .program-item.highlighted .program-name {
+      color: #d97706;
+      font-size: 1.15rem;
+    }
+    
     .program-detail {
       margin: 0.3rem 0;
       color: #475569;
       font-size: 0.9rem;
     }
+    
     .fee-value { 
       color: #059669; 
       font-weight: 700; 
     }
+    
     .program-notes {
       color: #64748b;
       font-size: 0.85rem;
@@ -265,6 +304,7 @@
       border-radius: 18px;
       border: 2px solid #fbbf24;
     }
+    
     .scholarships-section h2 {
       color: #d97706;
       font-size: 1.8rem;
@@ -272,6 +312,7 @@
       margin-bottom: 1.5rem;
       font-weight: 800;
     }
+    
     .scholarship-item {
       background: white;
       padding: 1.2rem;
@@ -283,17 +324,20 @@
       align-items: center;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
+    
     .scholarship-name {
       font-weight: 700;
       font-size: 1rem;
       color: #1e293b;
     }
+    
     .scholarship-type {
       color: #d97706;
       font-size: 0.85rem;
       font-weight: 600;
       margin-top: 0.3rem;
     }
+    
     .view-details {
       background: #f59e0b;
       color: white;
@@ -324,7 +368,7 @@
         <span class="logo-text">UniGuide</span>
       </div>
       <nav class="nav">
-         <a href="home.html" class="nav-link">Home</a>
+        <a href="home.html" class="nav-link">Home</a>
         <a href="deadlines.html" class="nav-link">Deadlines</a>
         <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
         <a href="compare.html" class="nav-link">Compare Universities</a>
@@ -383,11 +427,11 @@
         <span class="logo-text">UniGuide</span>
       </div>
       <div class="footer-links">
-         <a href="home.html" class="nav-link">Home</a>
-        <a href="deadlines.html" class="nav-link">Deadlines</a>
-        <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
-        <a href="compare.html" class="nav-link">Compare Universities</a>
-        <a href="chat.html" class="nav-link">AI Chat</a>
+        <a href="home.html">Home</a>
+        <a href="deadlines.html">Deadlines</a>
+        <a href="aggregateCalculator.html">Aggregate Calculator</a>
+        <a href="compare.html">Compare Universities</a>
+        <a href="chat.html">AI Chat</a>
       </div>
       <p class="copyright">© 2025 UniGuide. All rights reserved.</p>
     </div>
@@ -396,33 +440,25 @@
   <script src="config.js"></script>
   <script>
     const API_URL = CONFIG.API_URL;
-    const uniName = new URLSearchParams(window.location.search).get('name') || 'LUMS';
+    const urlParams = new URLSearchParams(window.location.search);
+    const uniName = urlParams.get('name') || 'LUMS';
+    const targetProgram = urlParams.get('program'); // Get program from URL
+    
     document.getElementById('uni-name').textContent = uniName;
     document.title = uniName + " - UniGuide";
 
     let allDeptCards = [];
     let currentFilter = 'all';
 
-   const filterPatterns = {
-  all: () => true,
-cs: (t) =>
-  /\bcomputer\b|\bcomputing\b|\bsoftware\b|\bcs\b|\bit\b|\bict\b|\bcyber\b|\bcybersecurity\b|\bdata\b|\bdatascience\b|\bai\b|\bartificial\b|\bintelligence\b|\bmachine\b|\bml\b|\bdeep\b|\binformation\b|\bsystems\b|\binformatics\b|\bnetwork\b|\bcloud\b|\bblockchain\b|\bprogramming\b|\bcoding\b|\bweb\b|\bmobile\b|\bapp\b|\bdev\b|\bdevelopment\b/i.test(t),
-
-  bba: (t) =>
-    /bba|business|management|finance|financial|accounting|accounts|commerce|economics|eco|marketing|hr|human\s?resource|supply|logistics|administration|admin|entrepreneur|banking|investment|audit|tax|corporate|mba/i.test(t),
-
-  eng: (t) =>
-    /engineering|engineer|electrical|electronics|mechanical|civil|chemical|automotive|aerospace|industrial|mechatronics|biomedical|petroleum|mining|metallurgy|materials|telecom|computer\s?engineering|power|energy|structural|construction/i.test(t),
-
-  law: (t) =>
-    /law|llb|llm|legal|jurisprudence|advocate|attorney|bar|corporate\s?law|criminal|civil\s?law|international\s?law|constitutional|sharia|islamic\s?law/i.test(t),
-
-  med: (t) =>
-    /medicine|medical|mbbs|bds|dpt|pharmacy|pharm|pharmd|biology|biomedical|health|healthcare|doctor|nursing|physiotherapy|radiology|pathology|anatomy|physiology|public\s?health|dentistry|veterinary|vet|clinical/i.test(t),
-
-  hum: (t) =>
-    /english|history|psychology|political|politics|sociology|social\s?science|media|mass\s?communication|journalism|art|fine\s?arts|design|literature|islamic|islamiyat|urdu|arabic|philosophy|anthropology|education|linguistics|geography|civics|cultural/i.test(t)
-};
+    const filterPatterns = {
+      all: () => true,
+      cs: (t) => /\bcomputer\b|\bcomputing\b|\bsoftware\b|\bcs\b|\bit\b|\bict\b|\bcyber\b|\bcybersecurity\b|\bdata\b|\bdatascience\b|\bai\b|\bartificial\b|\bintelligence\b|\bmachine\b|\bml\b|\bdeep\b|\binformation\b|\bsystems\b|\binformatics\b|\bnetwork\b|\bcloud\b|\bblockchain\b|\bprogramming\b|\bcoding\b|\bweb\b|\bmobile\b|\bapp\b|\bdev\b|\bdevelopment\b/i.test(t),
+      bba: (t) => /bba|business|management|finance|financial|accounting|accounts|commerce|economics|eco|marketing|hr|human\s?resource|supply|logistics|administration|admin|entrepreneur|banking|investment|audit|tax|corporate|mba/i.test(t),
+      eng: (t) => /engineering|engineer|electrical|electronics|mechanical|civil|chemical|automotive|aerospace|industrial|mechatronics|biomedical|petroleum|mining|metallurgy|materials|telecom|computer\s?engineering|power|energy|structural|construction/i.test(t),
+      law: (t) => /law|llb|llm|legal|jurisprudence|advocate|attorney|bar|corporate\s?law|criminal|civil\s?law|international\s?law|constitutional|sharia|islamic\s?law/i.test(t),
+      med: (t) => /medicine|medical|mbbs|bds|dpt|pharmacy|pharm|pharmd|biology|biomedical|health|healthcare|doctor|nursing|physiotherapy|radiology|pathology|anatomy|physiology|public\s?health|dentistry|veterinary|vet|clinical/i.test(t),
+      hum: (t) => /english|history|psychology|political|politics|sociology|social\s?science|media|mass\s?communication|journalism|art|fine\s?arts|design|literature|islamic|islamiyat|urdu|arabic|philosophy|anthropology|education|linguistics|geography|civics|cultural/i.test(t)
+    };
 
     function applyFilter() {
       let totalVisible = 0;
@@ -448,7 +484,6 @@ cs: (t) =>
           if (countEl) countEl.textContent = `${visibleInDept} program${visibleInDept > 1 ? 's' : ''}`;
           visibleDepts++;
           
-          // Auto-expand if filtering
           if (currentFilter !== 'all') {
             const list = card.querySelector('.programs-list');
             const header = card.querySelector('.dept-header');
@@ -470,47 +505,65 @@ cs: (t) =>
       }
     }
 
-   document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        applyFilter();
 
-    currentFilter = btn.dataset.filter;
-    applyFilter();
+        setTimeout(() => {
+          const firstVisibleDept = document.querySelector('.department-card:not(.hidden) .dept-header');
+          if (firstVisibleDept) {
+            const yOffset = -140;
+            const y = firstVisibleDept.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+          }
+        }, 100);
+      });
+    });
 
-    // ✅ Scroll to first visible department
-    setTimeout(() => {
-      const firstVisibleDept = document.querySelector(
-        '.department-card:not(.hidden) .dept-header'
-      );
+    function highlightAndScrollToProgram(programName) {
+      if (!programName) return;
 
-      if (firstVisibleDept) {
-        const yOffset = -140; // adjust for sticky filter bar
-        const y =
-          firstVisibleDept.getBoundingClientRect().top +
-          window.pageYOffset +
-          yOffset;
+      // Find the program element
+      const allPrograms = document.querySelectorAll('.program-item');
+      let foundProgram = null;
 
-        window.scrollTo({
-          top: y,
-          behavior: 'smooth'
-        });
+      allPrograms.forEach(item => {
+        const itemName = item.querySelector('.program-name').textContent.trim();
+        if (itemName.toLowerCase() === programName.toLowerCase()) {
+          foundProgram = item;
+          item.classList.add('highlighted');
+        }
+      });
+
+      if (foundProgram) {
+        // Find parent department and open it
+        const parentList = foundProgram.closest('.programs-list');
+        const parentCard = foundProgram.closest('.department-card');
+        const parentHeader = parentCard.querySelector('.dept-header');
+
+        if (parentList && parentHeader) {
+          parentList.classList.add('open');
+          parentHeader.classList.add('open');
+        }
+
+        // Scroll to the program with delay to ensure DOM is ready
+        setTimeout(() => {
+          const yOffset = -150;
+          const y = foundProgram.getBoundingClientRect().top + window.pageYOffset + yOffset;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }, 500);
       }
-    }, 100); // small delay so DOM updates first
-  });
-});
+    }
 
     async function loadUniversity() {
       try {
-        console.log('Fetching:', `${API_URL}/api/university/${encodeURIComponent(uniName)}`);
         const res = await fetch(`${API_URL}/api/university/${encodeURIComponent(uniName)}`);
         const uni = await res.json();
         
-        if (uni.error) {
-          throw new Error(uni.error);
-        }
-
-        console.log('University loaded:', uni);
+        if (uni.error) throw new Error(uni.error);
 
         document.getElementById('uni-fullname').textContent = uni.full_name || uni.fullName || uni.name;
         
@@ -576,10 +629,10 @@ cs: (t) =>
             const progsHTML = progs.map(p => {
               const e = p.eligibility || {};
               return `
-                <div class="program-item">
+                <div class="program-item" data-program="${p.name}">
                   <div class="program-name">${p.name || 'Unnamed'}</div>
                   <div class="program-detail">💰 First Year: <span class="fee-value">PKR ${(p.total_fee_first_year || 0).toLocaleString()}</span></div>
-                  ${p.fee_per_semester ? `<div class="program-detail">📝 Per Semester: PKR ${p.fee_per_semester.toLocaleString()}</div>` : ''}
+                  ${p.fee_per_semester ? `<div class="program-detail">📅 Per Semester: PKR ${p.fee_per_semester.toLocaleString()}</div>` : ''}
                   <div class="program-detail">📋 Eligibility: Matric ≥ ${e.min_percentage_matric || 'N/A'}%, Inter ≥ ${e.min_percentage_inter || 'N/A'}%</div>
                   <div class="program-detail">📝 Test: ${e.entry_test || 'None'}</div>
                   ${e.notes ? `<div class="program-notes">ℹ️ ${e.notes}</div>` : ''}
@@ -614,6 +667,11 @@ cs: (t) =>
             allDeptCards.push({ card, programs: progElements });
             container.appendChild(card);
           });
+
+          // Highlight target program if specified in URL
+          if (targetProgram) {
+            highlightAndScrollToProgram(targetProgram);
+          }
         }
 
         // Scholarships
@@ -647,6 +705,6 @@ cs: (t) =>
 
     loadUniversity();
   </script>
- <script src="chatWidget.js"></script>
+  <script src="chatWidget.js"></script>
 </body>
 </html>
