@@ -20,7 +20,6 @@
       line-height: 1.6;
     }
 
-
     .hero {
       background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1)), #ffffff;
       padding: 4rem 0 3rem;
@@ -98,84 +97,118 @@
       margin-top: 0.3rem;
     }
 
-    .programs-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-      gap: 1.5rem;
-      margin: 3rem 0;
+    /* ONE BIG COMBINED CARD */
+    .programs-container {
+      margin: 3rem auto;
+      max-width: 1400px;
     }
 
-    .program-card {
+    .combined-card {
       background: white;
-      border-radius: 18px;
-      padding: 2rem;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
-      border: 1px solid rgba(59,130,246,0.1);
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      border: 2px solid rgba(59,130,246,0.12);
+    }
+
+    .card-header {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .search-term-title {
+      font-size: 2.5rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #1e40af, #8b5cf6);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .results-count {
+      color: #64748b;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .programs-table {
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    .table-header {
+      display: grid;
+      grid-template-columns: 2fr 2fr 1fr 1.5fr auto;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: white;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .program-row {
+      display: grid;
+      grid-template-columns: 2fr 2fr 1fr 1.5fr auto;
+      gap: 1rem;
+      align-items: center;
+      background: #f8fafc;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      border-left: 4px solid #3b82f6;
       transition: all 0.3s;
       cursor: pointer;
-      position: relative;
-      overflow: hidden;
     }
 
-    .program-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      transform: translateX(-100%);
-      transition: transform 0.3s;
+    .program-row:hover {
+      background: linear-gradient(135deg, #dbeafe, #e0e7ff);
+      transform: translateX(5px);
+      box-shadow: 0 4px 12px rgba(59,130,246,0.2);
     }
 
-    .program-card:hover::before {
-      transform: translateX(0);
-    }
-
-    .program-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 30px rgba(59,130,246,0.15);
-      border-color: #3b82f6;
-    }
-
-    .program-name {
-      font-size: 1.4rem;
+    .program-name-cell {
       font-weight: 700;
       color: #1e40af;
-      margin-bottom: 1rem;
+      font-size: 0.95rem;
     }
 
-    .university-name {
-      font-size: 1rem;
-      color: #475569;
+    .uni-name-cell {
       font-weight: 600;
-      margin-bottom: 0.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      color: #475569;
+      font-size: 0.95rem;
     }
 
-    .program-meta {
+    .city-cell {
       color: #64748b;
-      font-size: 0.9rem;
-      margin: 0.4rem 0;
+      font-size: 0.85rem;
     }
 
-    .fee-highlight {
+    .fee-cell {
       color: #059669;
       font-weight: 700;
+      font-size: 0.9rem;
+      text-align: right;
     }
 
-    .program-badge {
-      display: inline-block;
-      padding: 0.3rem 0.8rem;
-      background: linear-gradient(135deg, #dbeafe, #e0e7ff);
-      color: #1e40af;
+    .view-btn {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: white;
+      padding: 0.5rem 1.2rem;
       border-radius: 50px;
-      font-size: 0.8rem;
+      border: none;
       font-weight: 600;
-      margin-top: 0.8rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+
+    .view-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(59,130,246,0.4);
     }
 
     .loading {
@@ -230,18 +263,29 @@
       font-size: 0.9rem;
     }
 
-    @media (max-width: 768px) {
-      .programs-grid {
-        grid-template-columns: 1fr;
+    @media (max-width: 968px) {
+      .table-header {
+        display: none;
       }
-      
+
+      .program-row {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        text-align: left;
+      }
+
+      .fee-cell {
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 768px) {
       .hero h1 {
         font-size: 2rem;
       }
       
-      .nav {
-        flex-wrap: wrap;
-        gap: 1rem;
+      .search-term-title {
+        font-size: 1.8rem;
       }
     }
   </style>
@@ -264,7 +308,6 @@
   </div>
 </header>
 
-
   <section class="hero">
     <div class="container">
       <h1 id="program-title">Find Programs</h1>
@@ -274,7 +317,7 @@
         <input 
           type="text" 
           id="program-search" 
-          placeholder="Search programs (e.g., Computer Science, BBA, Engineering)..."
+          placeholder="Search programs (e.g., CS, BBA, Engineering)..."
           autocomplete="off"
         />
       </div>
@@ -284,18 +327,22 @@
   <div class="container">
     <div id="stats-bar" class="stats-bar" style="display:none;">
       <div class="stat-card">
-        <div class="stat-number" id="stat-programs">0</div>
-        <div class="stat-label">Programs Found</div>
+        <div class="stat-number" id="stat-results">0</div>
+        <div class="stat-label">Total Results</div>
       </div>
       <div class="stat-card">
         <div class="stat-number" id="stat-universities">0</div>
         <div class="stat-label">Universities</div>
       </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-variations">0</div>
+        <div class="stat-label">Program Variations</div>
+      </div>
     </div>
 
     <div id="loading" class="loading">🔍 Loading programs...</div>
     
-    <div id="programs-container" class="programs-grid"></div>
+    <div id="programs-container" class="programs-container"></div>
     
     <div id="no-results" class="no-results" style="display:none;">
       <div class="no-results-icon">🔍</div>
@@ -311,7 +358,7 @@
       </div>
       <div class="footer-links">
         <a href="home.html">Home</a>
-         <a href="programs.html" class="nav-link">Programs</a>
+        <a href="programs.html">Programs</a>
         <a href="deadlines.html">Deadlines</a>
         <a href="aggregateCalculator.html">Aggregate Calculator</a>
         <a href="compare.html">Compare Universities</a>
@@ -329,7 +376,6 @@
     let allPrograms = [];
     let filteredPrograms = [];
 
-    // Update page title
     if (programQuery) {
       document.getElementById('program-search').value = programQuery;
       document.title = `${programQuery} - UniGuide`;
@@ -337,11 +383,9 @@
 
     async function loadAllPrograms() {
       try {
-        // Get all universities
         const uniRes = await fetch(`${API_URL}/api/universities`);
         const universities = await uniRes.json();
         
-        // Load programs from each university
         for (const uni of universities) {
           try {
             const res = await fetch(`${API_URL}/api/university/${encodeURIComponent(uni.name)}`);
@@ -369,11 +413,10 @@
         
         console.log(`Loaded ${allPrograms.length} programs`);
         
-        // Filter if query exists
         if (programQuery) {
           filterPrograms(programQuery);
         } else {
-          displayPrograms(allPrograms);
+          document.getElementById('loading').style.display = 'none';
         }
         
       } catch (err) {
@@ -383,12 +426,10 @@
       }
     }
 
-    // Enhanced abbreviation mappings - EXACT matches only
+    // YOUR EXACT MAPPINGS from document 8
     const programMappings = {
-      // Computer Science & IT
       'cs': ['computer science'],
       'bscs': ['computer science', 'bs computer science', 'bachelor of computer science'],
-      'mscs': ['master of computer science', 'ms computer science'],
       'it': ['information technology'],
       'bsit': ['information technology', 'bs information technology'],
       'se': ['software engineering'],
@@ -396,16 +437,12 @@
       'ai': ['artificial intelligence'],
       'ds': ['data science'],
       'cyber': ['cybersecurity', 'cyber security'],
-      
-      // Business
       'bba': ['business administration'],
       'mba': ['master of business administration', 'mba'],
       'mcom': ['master of commerce', 'm.com'],
       'finance': ['finance'],
       'marketing': ['marketing'],
       'hr': ['human resource management'],
-      
-      // Engineering
       'eng': ['engineering'],
       'ee': ['electrical engineering'],
       'bsee': ['electrical engineering', 'bs electrical engineering'],
@@ -415,20 +452,14 @@
       'bsce': ['civil engineering', 'bs civil engineering'],
       'chemical': ['chemical engineering'],
       'telecom': ['telecommunication engineering'],
-      
-      // Medical
       'mbbs': ['bachelor of medicine and bachelor of surgery', 'mbbs'],
       'bds': ['bachelor of dental surgery', 'bds'],
       'dpt': ['doctor of physical therapy', 'dpt'],
       'pharm': ['pharmacy'],
       'pharmd': ['doctor of pharmacy', 'pharm.d'],
       'nursing': ['nursing', 'bsn'],
-      
-      // Law
       'llb': ['bachelor of laws', 'llb'],
       'llm': ['master of laws', 'llm'],
-      
-      // Humanities & Social Sciences
       'psychology': ['psychology'],
       'sociology': ['sociology'],
       'english': ['english'],
@@ -446,9 +477,11 @@
         .trim();
     }
 
+    // YOUR EXACT FILTER LOGIC from document 8
     function filterPrograms(query) {
       if (!query || query.length < 2) {
-        displayPrograms(allPrograms);
+        document.getElementById('programs-container').innerHTML = '';
+        document.getElementById('stats-bar').style.display = 'none';
         return;
       }
 
@@ -457,11 +490,10 @@
       // Check if it's a known abbreviation
       let searchTerms = [normQuery];
       if (programMappings[normQuery]) {
-        // ONLY use the full names from mapping
         searchTerms = programMappings[normQuery];
       }
       
-      // SUPER STRICT matching - program name must contain the EXACT search term
+      // YOUR EXACT STRICT MATCHING
       filteredPrograms = allPrograms.filter(prog => {
         const normProgName = normalizeText(prog.name);
         
@@ -469,7 +501,6 @@
           const termWords = term.split(' ');
           const progWords = normProgName.split(' ');
           
-          // Check if ALL words from search term exist in program name
           const allWordsMatch = termWords.every(searchWord => 
             progWords.some(progWord => progWord === searchWord)
           );
@@ -482,7 +513,7 @@
         return false;
       });
       
-      // Sort: exact match first, then alphabetically
+      // Sort
       filteredPrograms.sort((a, b) => {
         const normA = normalizeText(a.name);
         const normB = normalizeText(b.name);
@@ -495,10 +526,11 @@
         return a.name.localeCompare(b.name);
       });
 
-      displayPrograms(filteredPrograms);
+      // NOW SHOW IN ONE BIG CARD
+      displayOneBigCard(query, filteredPrograms);
     }
 
-    function displayPrograms(programs) {
+    function displayOneBigCard(searchQuery, programs) {
       document.getElementById('loading').style.display = 'none';
       const container = document.getElementById('programs-container');
       const noResults = document.getElementById('no-results');
@@ -512,43 +544,53 @@
 
       noResults.style.display = 'none';
       
-      // Calculate stats
       const uniqueUnis = new Set(programs.map(p => p.university)).size;
+      const uniquePrograms = new Set(programs.map(p => p.name)).size;
 
-      // Update stats
-      document.getElementById('stat-programs').textContent = programs.length;
+      document.getElementById('stat-results').textContent = programs.length;
       document.getElementById('stat-universities').textContent = uniqueUnis;
+      document.getElementById('stat-variations').textContent = uniquePrograms;
       document.getElementById('stats-bar').style.display = 'flex';
 
-      // Render program cards
-      container.innerHTML = programs.map(prog => {
-        const eligText = prog.eligibility.min_percentage_inter 
-          ? `Inter ≥ ${prog.eligibility.min_percentage_inter}%`
-          : 'Check requirements';
-
-        return `
-          <div class="program-card" onclick="goToProgram('${prog.university.replace(/'/g, "\\'")}', '${prog.name.replace(/'/g, "\\'")}')">
-            <div class="program-name">${prog.name}</div>
-            <div class="university-name">
-              🏛️ ${prog.university}
-            </div>
-            <div class="program-meta">📍 ${prog.city}</div>
-            <div class="program-meta">📂 ${prog.department}</div>
-            ${prog.fee ? `<div class="program-meta">💰 First Year: <span class="fee-highlight">PKR ${prog.fee.toLocaleString()}</span></div>` : ''}
-            ${prog.feeSemester ? `<div class="program-meta">📅 Per Semester: PKR ${prog.feeSemester.toLocaleString()}</div>` : ''}
-            <div class="program-meta">📋 ${eligText}</div>
-            <span class="program-badge">Click to view details</span>
+      // ONE BIG CARD with ALL results
+      container.innerHTML = `
+        <div class="combined-card">
+          <div class="card-header">
+            <h2 class="search-term-title">${searchQuery.toUpperCase()}</h2>
+            <p class="results-count">
+              Found ${programs.length} programs across ${uniqueUnis} universities 
+              (${uniquePrograms} variations)
+            </p>
           </div>
-        `;
-      }).join('');
+
+          <div class="programs-table">
+            <div class="table-header">
+              <div>Program Name</div>
+              <div>University</div>
+              <div>City</div>
+              <div style="text-align:right;">Fee (1st Year)</div>
+              <div></div>
+            </div>
+            ${programs.map(prog => `
+              <div class="program-row" onclick="goToProgram('${prog.university.replace(/'/g, "\\'")}', '${prog.name.replace(/'/g, "\\'")}')">
+                <div class="program-name-cell">${prog.name}</div>
+                <div class="uni-name-cell">🏛️ ${prog.university}</div>
+                <div class="city-cell">📍 ${prog.city}</div>
+                <div class="fee-cell">${prog.fee ? `PKR ${prog.fee.toLocaleString()}` : 'N/A'}</div>
+                <button class="view-btn" onclick="event.stopPropagation(); goToProgram('${prog.university.replace(/'/g, "\\'")}', '${prog.name.replace(/'/g, "\\'")}')">
+                  View Details
+                </button>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
     }
 
     function goToProgram(university, programName) {
-      // Navigate to university page with program highlight
       window.location.href = `university.html?name=${encodeURIComponent(university)}&program=${encodeURIComponent(programName)}`;
     }
 
-    // Search functionality
     const searchInput = document.getElementById('program-search');
     let searchTimeout;
 
@@ -557,33 +599,17 @@
       searchTimeout = setTimeout(() => {
         const query = e.target.value.trim();
         
-        // Update URL without reload
         const newUrl = query 
           ? `programs.html?program=${encodeURIComponent(query)}`
           : 'programs.html';
         window.history.pushState({}, '', newUrl);
         
-        // Update title
-        if (query) {
-          document.title = `${query} - UniGuide`;
-        } else {
-          document.title = 'Programs - UniGuide';
-        }
+        document.title = query ? `${query} - UniGuide` : 'Programs - UniGuide';
         
         filterPrograms(query);
       }, 300);
     });
 
-    searchInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        const query = e.target.value.trim();
-        if (query) {
-          window.location.href = `programs.html?program=${encodeURIComponent(query)}`;
-        }
-      }
-    });
-
-    // Load programs on page load
     loadAllPrograms();
   </script>
 </body>
