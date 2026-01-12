@@ -3,166 +3,362 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>UniGuide - Find Your Future</title>
-  <link rel="stylesheet" href="home.css"/>
+  <title id="page-title">Programs - UniGuide</title>
+  <link rel="stylesheet" href="home.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   
   <style>
-    .search-dropdown {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-      max-height: 400px;
-      overflow-y: auto;
-      z-index: 1000;
-      margin-top: 0.5rem;
-      display: none;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    .search-dropdown.show {
-      display: block;
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f8fafc;
+      line-height: 1.6;
     }
-    .search-group {
+
+    .hero {
+      background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1)), #ffffff;
+      padding: 4rem 0 3rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+          font-size: 5rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #1e40af, #8b5cf6);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      color: #64748b;
+      margin-bottom: 2rem;
+    }
+
+    .search-bar {
+      max-width: 700px;
+      margin: 2rem auto 0;
       position: relative;
     }
-    .dropdown-item {
-      padding: 1rem 1.5rem;
-      cursor: pointer;
-      border-bottom: 1px solid #f1f5f9;
-      transition: all 0.2s;
+
+    .search-bar input {
+      width: 100%;
+      padding: 1.2rem 1.5rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      font-size: 1.1rem;
+      outline: none;
+      transition: all 0.3s;
     }
-    .dropdown-item:hover {
-      background: linear-gradient(135deg, #dbeafe, #e0e7ff);
+
+    .search-bar input:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 4px rgba(59,130,246,0.1);
     }
-    .dropdown-item:last-child {
-      border-bottom: none;
+
+    .stats-bar {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      margin: 3rem 0;
+      flex-wrap: wrap;
     }
-    .program-name {
-      font-weight: 600;
-      color: #1e40af;
-      margin-bottom: 0.3rem;
+
+    .stat-card {
+      background: white;
+      padding: 1.5rem 2.5rem;
+      border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+      border: 2px solid rgba(59,130,246,0.15);
     }
-    .program-meta {
-      font-size: 0.9rem;
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #1e40af, #8b5cf6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat-label {
       color: #64748b;
-    }
-    .no-results {
-      padding: 1.5rem;
-      text-align: center;
-      color: #94a3b8;
-    }
-    .dropdown-header {
-      padding: 0.8rem 1.5rem;
-      background: linear-gradient(135deg, #dbeafe, #e0e7ff);
-      font-weight: 700;
-      color: #1e40af;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      font-weight: 600;
+      margin-top: 0.3rem;
     }
-    .view-all-btn {
+
+    /* ONE BIG COMBINED CARD */
+    .programs-container {
+      margin: 3rem auto;
+      max-width: 1400px;
+    }
+
+    .combined-card {
+      background: white;
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      border: 2px solid rgba(59,130,246,0.12);
+    }
+
+    .card-header {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .search-term-title {
+      font-size: 2.5rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #1e40af, #8b5cf6);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .results-count {
+      color: #64748b;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .programs-table {
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    .table-header {
+      display: grid;
+      grid-template-columns: 2fr 2fr 1fr 1.5fr auto;
+      gap: 1rem;
       padding: 1rem 1.5rem;
       background: linear-gradient(135deg, #3b82f6, #8b5cf6);
       color: white;
-      text-align: center;
+      border-radius: 12px;
       font-weight: 700;
-      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .program-row {
+      display: grid;
+      grid-template-columns: 2fr 2fr 1fr 1.5fr auto;
+      gap: 1rem;
+      align-items: center;
+      background: #f8fafc;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      border-left: 4px solid #3b82f6;
       transition: all 0.3s;
-      border-top: 2px solid #e2e8f0;
+      cursor: pointer;
     }
-    .view-all-btn:hover {
-      background: linear-gradient(135deg, #2563eb, #7c3aed);
+
+    .program-row:hover {
+      background: linear-gradient(135deg, #dbeafe, #e0e7ff);
+      transform: translateX(5px);
+      box-shadow: 0 4px 12px rgba(59,130,246,0.2);
     }
-    .nav-link {
-      margin-left: 2.5rem;
+
+    .program-name-cell {
+      font-weight: 700;
+      color: #1e40af;
+      font-size: 0.95rem;
+    }
+
+    .uni-name-cell {
       font-weight: 600;
       color: #475569;
+      font-size: 0.95rem;
+    }
+
+    .city-cell {
+      color: #64748b;
+      font-size: 0.85rem;
+    }
+
+    .fee-cell {
+      color: #059669;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-align: right;
+    }
+
+    .view-btn {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: white;
+      padding: 0.5rem 1.2rem;
+      border-radius: 50px;
+      border: none;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+
+    .view-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(59,130,246,0.4);
+    }
+
+    .loading {
+      text-align: center;
+      padding: 4rem;
+      font-size: 1.3rem;
+      color: #94a3b8;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 4rem 2rem;
+      background: white;
+      border-radius: 18px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+    }
+
+    .no-results-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+
+    .footer {
+      background: #1e293b;
+      padding: 3rem 0;
+      margin-top: 4rem;
+    }
+
+    .footer-content {
+      text-align: center;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links a {
+      color: #94a3b8;
       text-decoration: none;
-      position: relative;
       transition: color 0.3s;
     }
 
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      width: 0;
-      height: 2px;
-      bottom: -6px;
-      left: 0;
-      background: #3b82f6;
-      transition: width 0.4s ease;
-    }
-
-    .nav-link:hover {
+    .footer-links a:hover {
       color: #3b82f6;
     }
 
-    .nav-link:hover::after {
-      width: 100%;
+    .copyright {
+      color: #718096;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 968px) {
+      .table-header {
+        display: none;
+      }
+
+      .program-row {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        text-align: left;
+      }
+
+      .fee-cell {
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+      
+      .search-term-title {
+        font-size: 1.8rem;
+      }
     }
   </style>
 </head>
 <body>
 
-  <header class="header">
-    <div class="container header-content">
-      <div class="logo">
-        <span class="logo-text">UniGuide</span>
-      </div>
-      <nav class="nav">
-        <a href="home.html" class="nav-link">Home</a>
-        <a href="programs.html" class="nav-link">Programs</a>
-        <a href="deadlines.html" class="nav-link">Deadlines</a>
-        <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
-        <a href="compare.html" class="nav-link">Compare Universities</a>
-        <a href="chat.html" class="nav-link">AI Chat</a>
-      </nav>
+ <header class="header">
+  <div class="container header-content">
+    <div class="logo">
+      <span class="logo-text">UniGuide</span>
     </div>
-  </header>
+    <nav class="nav">
+      <a href="home.html" class="nav-link">Home</a>
+      <a href="universities.html" class="nav-link">Universities</a>
+      <a href="deadlines.html" class="nav-link">Deadlines</a>
+      <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
+      <a href="compare.html" class="nav-link">Compare Universities</a>
+      <a href="chat.html" class="nav-link">AI Chat</a>
+    </nav>
+  </div>
+</header>
 
   <section class="hero">
-    <div class="container hero-content">
-      <h1>Find Your Future.</h1>
-      <p class="subtitle">Explore universities and programs across Pakistan.</p>
-
-      <div class="search-section">
-        <h2>Search Programs</h2>
-        <div class="search-boxes">
-          <div class="search-group">
-            <label>Enter Program (e.g. CS, BBA, MBBS)</label>
-            <input type="text" placeholder="Type to search programs..." class="search-input" id="program-input" autocomplete="off"/>
-            <div class="search-dropdown" id="program-dropdown"></div>
-          </div>
-        </div>
+    <div class="container">
+      <h1 id="program-title">Find Programs</h1>
+      <p class="hero-subtitle">Search and explore programs across all universities in Pakistan</p>
+      
+      <div class="search-bar">
+        <input 
+          type="text" 
+          id="program-search" 
+          placeholder="Search programs (e.g., CS, BBA, Engineering)..."
+          autocomplete="off"
+        />
       </div>
     </div>
   </section>
 
-  <section class="institutions">
-    <div class="container">
-      <h2 class="section-title">Explore Top Institutions</h2>
-      
-      <div id="loading" class="loading">Loading universities from database...</div>
-      <div id="error" class="error" style="display:none; color:red; text-align:center;"></div>
-
-      <div class="cards-grid" id="universities-grid"></div>
+  <div class="container">
+    <div id="stats-bar" class="stats-bar" style="display:none;">
+      <div class="stat-card">
+        <div class="stat-number" id="stat-results">0</div>
+        <div class="stat-label">Total Results</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-universities">0</div>
+        <div class="stat-label">Universities</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-variations">0</div>
+        <div class="stat-label">Program Variations</div>
+      </div>
     </div>
-  </section>
+
+    <div id="loading" class="loading">🔍 Loading programs...</div>
+    
+    <div id="programs-container" class="programs-container"></div>
+    
+    <div id="no-results" class="no-results" style="display:none;">
+      <div class="no-results-icon">🔍</div>
+      <h3>No programs found</h3>
+      <p>Try searching with different keywords</p>
+    </div>
+  </div>
 
   <footer class="footer">
     <div class="container footer-content">
-      <div class="logo footer-logo">
+      <div class="logo">
         <span class="logo-text">UniGuide</span>
       </div>
       <div class="footer-links">
         <a href="home.html">Home</a>
-        <a href="programs.html">Programs</a>
+        <a href="universities.html">Universities</a>
         <a href="deadlines.html">Deadlines</a>
         <a href="aggregateCalculator.html">Aggregate Calculator</a>
         <a href="compare.html">Compare Universities</a>
@@ -172,18 +368,68 @@
     </div>
   </footer>
 
-  <script src="config.js"></script>
   <script>
-    const API_URL = CONFIG.API_URL;
+    const API_URL = 'https://universityguide.onrender.com';
+    const urlParams = new URLSearchParams(window.location.search);
+    const programQuery = urlParams.get('program') || '';
+    
     let allPrograms = [];
-    let universities = [];
+    let filteredPrograms = [];
 
-    // Enhanced program mappings - EXACT matches only
+    if (programQuery) {
+      document.getElementById('program-search').value = programQuery;
+      document.title = `${programQuery} - UniGuide`;
+    }
+
+    async function loadAllPrograms() {
+      try {
+        const uniRes = await fetch(`${API_URL}/api/universities`);
+        const universities = await uniRes.json();
+        
+        for (const uni of universities) {
+          try {
+            const res = await fetch(`${API_URL}/api/university/${encodeURIComponent(uni.name)}`);
+            const data = await res.json();
+            
+            if (data.programs) {
+              data.programs.forEach(program => {
+                allPrograms.push({
+                  name: program.name,
+                  university: data.name,
+                  universityFull: data.full_name || data.name,
+                  city: data.city || 'Pakistan',
+                  department: program.department || 'General',
+                  fee: program.total_fee_first_year,
+                  feeSemester: program.fee_per_semester,
+                  eligibility: program.eligibility || {},
+                  notes: program.notes || ''
+                });
+              });
+            }
+          } catch (err) {
+            console.error(`Error loading ${uni.name}:`, err);
+          }
+        }
+        
+        console.log(`Loaded ${allPrograms.length} programs`);
+        
+        if (programQuery) {
+          filterPrograms(programQuery);
+        } else {
+          document.getElementById('loading').style.display = 'none';
+        }
+        
+      } catch (err) {
+        console.error('Error loading programs:', err);
+        document.getElementById('loading').innerHTML = 
+          '<div style="color:#ef4444;">❌ Error loading programs. Please try again.</div>';
+      }
+    }
+
+    // YOUR EXACT MAPPINGS from document 8
     const programMappings = {
-      // Computer Science & IT
       'cs': ['computer science'],
-      'bscs': ['computer science', 'bs computer science'],
-      'mscs': ['master of computer science', 'ms computer science'],
+      'bscs': ['computer science', 'bs computer science', 'bachelor of computer science'],
       'it': ['information technology'],
       'bsit': ['information technology', 'bs information technology'],
       'se': ['software engineering'],
@@ -191,16 +437,12 @@
       'ai': ['artificial intelligence'],
       'ds': ['data science'],
       'cyber': ['cybersecurity', 'cyber security'],
-      
-      // Business
       'bba': ['business administration'],
-      'mba': ['master of business administration'],
-      'mcom': ['master of commerce'],
+      'mba': ['master of business administration', 'mba'],
+      'mcom': ['master of commerce', 'm.com'],
       'finance': ['finance'],
       'marketing': ['marketing'],
       'hr': ['human resource management'],
-      
-      // Engineering
       'eng': ['engineering'],
       'ee': ['electrical engineering'],
       'bsee': ['electrical engineering', 'bs electrical engineering'],
@@ -210,20 +452,14 @@
       'bsce': ['civil engineering', 'bs civil engineering'],
       'chemical': ['chemical engineering'],
       'telecom': ['telecommunication engineering'],
-      
-      // Medical
       'mbbs': ['bachelor of medicine and bachelor of surgery', 'mbbs'],
-      'bds': ['bachelor of dental surgery'],
-      'dpt': ['doctor of physical therapy'],
+      'bds': ['bachelor of dental surgery', 'bds'],
+      'dpt': ['doctor of physical therapy', 'dpt'],
       'pharm': ['pharmacy'],
-      'pharmd': ['doctor of pharmacy'],
-      'nursing': ['nursing'],
-      
-      // Law
+      'pharmd': ['doctor of pharmacy', 'pharm.d'],
+      'nursing': ['nursing', 'bsn'],
       'llb': ['bachelor of laws', 'llb'],
       'llm': ['master of laws', 'llm'],
-      
-      // Humanities & Social Sciences
       'psychology': ['psychology'],
       'sociology': ['sociology'],
       'english': ['english'],
@@ -241,228 +477,140 @@
         .trim();
     }
 
-    function calculateMatchScore(programName, query) {
-      const normProg = normalizeText(programName);
-      const normQuery = normalizeText(query);
-      
-      if (normProg === normQuery) return 1000;
-      if (normProg.startsWith(normQuery)) return 900;
-      
-      // Check abbreviation mappings FIRST
-      if (programMappings[normQuery]) {
-        const synonyms = programMappings[normQuery];
-        for (const synonym of synonyms) {
-          if (normProg.includes(synonym)) {
-            return 850;
-          }
-        }
-      }
-      
-      const progWords = normProg.split(' ');
-      const queryWords = normQuery.split(' ');
-      
-      // Acronym match - STRICT
-      if (queryWords.length === 1 && normQuery.length <= 4) {
-        const acronym = progWords.map(w => w[0]).join('');
-        if (acronym === normQuery) {
-          return 800;
-        }
-      }
-      
-      // Contains exact query as whole word
-      const progContainsQuery = ` ${normProg} `.includes(` ${normQuery} `);
-      if (progContainsQuery) return 750;
-      
-      let completeWordMatches = 0;
-      queryWords.forEach(qWord => {
-        if (progWords.some(pWord => pWord === qWord || pWord.startsWith(qWord))) {
-          completeWordMatches++;
-        }
-      });
-      
-      if (completeWordMatches === queryWords.length) {
-        return 700 + (completeWordMatches * 10);
-      }
-      
-      return 0;
-    }
-
-    async function loadUniversities() {
-      try {
-        const response = await fetch(`${API_URL}/api/universities`);
-        if (!response.ok) throw new Error('Failed to load');
-
-        universities = await response.json();
-        document.getElementById('loading').style.display = 'none';
-        
-        const grid = document.getElementById('universities-grid');
-        grid.innerHTML = '';
-
-        universities.forEach(uni => {
-          const card = document.createElement('div');
-          card.className = 'uni-card';
-          const shortName = uni.name;
-          const fullName = uni.full_name;
-
-          card.innerHTML = `
-            <h3>${shortName}</h3>
-            ${fullName && fullName !== shortName ? `<p>${fullName}</p>` : ''}
-            <button onclick="window.location.href='university.html?name=${encodeURIComponent(shortName)}'" class="view-btn">
-              View Details
-            </button>`;
-
-          grid.appendChild(card);
-        });
-
-        // Load all programs for search
-        await loadAllPrograms();
-
-      } catch (err) {
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('error').style.display = 'block';
-        document.getElementById('error').textContent = '⚠️ Error loading data';
-      }
-    }
-
-    async function loadAllPrograms() {
-      for (const uni of universities) {
-        try {
-          const res = await fetch(`${API_URL}/api/university/${encodeURIComponent(uni.name)}`);
-          const data = await res.json();
-          if (data.programs) {
-            data.programs.forEach(p => {
-              allPrograms.push({
-                name: p.name,
-                university: data.name,
-                department: p.department || '',
-                fee: p.total_fee_first_year
-              });
-            });
-          }
-        } catch (err) {
-          console.error(`Error loading ${uni.name}:`, err);
-        }
-      }
-      console.log(`Loaded ${allPrograms.length} programs for search`);
-    }
-
-    function smartSearch(query) {
-      query = query.toLowerCase().trim();
-      if (!query) return [];
-
-      const normQuery = normalizeText(query);
-      
-      // Expand query with synonyms
-      let expandedQueries = [normQuery];
-      if (programMappings[normQuery]) {
-        expandedQueries = [...expandedQueries, ...programMappings[normQuery]];
-      }
-
-      // Calculate match scores for all programs
-      const scoredPrograms = allPrograms.map(prog => {
-        let maxScore = 0;
-        
-        for (const expandedQuery of expandedQueries) {
-          const nameScore = calculateMatchScore(prog.name, expandedQuery);
-          const deptScore = calculateMatchScore(prog.department, expandedQuery) * 0.7;
-          maxScore = Math.max(maxScore, nameScore, deptScore);
-        }
-        
-        return { ...prog, matchScore: maxScore };
-      });
-
-      // Filter and sort by score
-      const results = scoredPrograms
-        .filter(p => p.matchScore > 0)
-        .sort((a, b) => b.matchScore - a.matchScore);
-
-      return results;
-    }
-
-    const programInput = document.getElementById('program-input');
-    const dropdown = document.getElementById('program-dropdown');
-
-    programInput.addEventListener('input', (e) => {
-      const query = e.target.value;
-      
-      if (query.length < 2) {
-        dropdown.classList.remove('show');
+    // YOUR EXACT FILTER LOGIC from document 8
+    function filterPrograms(query) {
+      if (!query || query.length < 2) {
+        document.getElementById('programs-container').innerHTML = '';
+        document.getElementById('stats-bar').style.display = 'none';
         return;
       }
 
-      const results = smartSearch(query);
+      const normQuery = normalizeText(query);
       
-      if (results.length === 0) {
-        dropdown.innerHTML = '<div class="no-results">No programs found</div>';
-        dropdown.classList.add('show');
+      // Check if it's a known abbreviation
+      let searchTerms = [normQuery];
+      if (programMappings[normQuery]) {
+        searchTerms = programMappings[normQuery];
+      }
+      
+      // YOUR EXACT STRICT MATCHING
+      filteredPrograms = allPrograms.filter(prog => {
+        const normProgName = normalizeText(prog.name);
+        
+        for (const term of searchTerms) {
+          const termWords = term.split(' ');
+          const progWords = normProgName.split(' ');
+          
+          const allWordsMatch = termWords.every(searchWord => 
+            progWords.some(progWord => progWord === searchWord)
+          );
+          
+          if (allWordsMatch) {
+            return true;
+          }
+        }
+        
+        return false;
+      });
+      
+      // Sort
+      filteredPrograms.sort((a, b) => {
+        const normA = normalizeText(a.name);
+        const normB = normalizeText(b.name);
+        
+        for (const term of searchTerms) {
+          if (normA === term && normB !== term) return -1;
+          if (normB === term && normA !== term) return 1;
+        }
+        
+        return a.name.localeCompare(b.name);
+      });
+
+      // NOW SHOW IN ONE BIG CARD
+      displayOneBigCard(query, filteredPrograms);
+    }
+
+    function displayOneBigCard(searchQuery, programs) {
+      document.getElementById('loading').style.display = 'none';
+      const container = document.getElementById('programs-container');
+      const noResults = document.getElementById('no-results');
+      
+      if (programs.length === 0) {
+        container.innerHTML = '';
+        noResults.style.display = 'block';
+        document.getElementById('stats-bar').style.display = 'none';
         return;
       }
 
-      // Count unique programs
-      const uniquePrograms = {};
-      results.forEach(prog => {
-        if (!uniquePrograms[prog.name]) {
-          uniquePrograms[prog.name] = [];
-        }
-        uniquePrograms[prog.name].push(prog);
-      });
+      noResults.style.display = 'none';
+      
+      const uniqueUnis = new Set(programs.map(p => p.university)).size;
+      const uniquePrograms = new Set(programs.map(p => p.name)).size;
 
-      const uniqueCount = Object.keys(uniquePrograms).length;
-      const displayLimit = 8;
-      const limitedResults = results.slice(0, displayLimit);
+      document.getElementById('stat-results').textContent = programs.length;
+      document.getElementById('stat-universities').textContent = uniqueUnis;
+      document.getElementById('stat-variations').textContent = uniquePrograms;
+      document.getElementById('stats-bar').style.display = 'flex';
 
-      dropdown.innerHTML = `
-        <div class="dropdown-header">
-          Found ${results.length} results (${uniqueCount} unique programs)
-        </div>
-        ${limitedResults.map(prog => `
-          <div class="dropdown-item" onclick="goToProgram('${prog.university.replace(/'/g, "\\'")}', '${prog.name.replace(/'/g, "\\'")}')">
-            <div class="program-name">${prog.name}</div>
-            <div class="program-meta">
-              🏛️ ${prog.university} • 📂 ${prog.department}
-              ${prog.fee ? ` • 💰 PKR ${prog.fee.toLocaleString()}` : ''}
+      // ONE BIG CARD with ALL results
+      container.innerHTML = `
+        <div class="combined-card">
+          <div class="card-header">
+            <h2 class="search-term-title">${searchQuery.toUpperCase()}</h2>
+            <p class="results-count">
+              Found ${programs.length} programs across ${uniqueUnis} universities 
+              (${uniquePrograms} variations)
+            </p>
+          </div>
+
+          <div class="programs-table">
+            <div class="table-header">
+              <div>Program Name</div>
+              <div>University</div>
+              <div>City</div>
+              <div style="text-align:right;">Fee (1st Year)</div>
+              <div></div>
             </div>
+            ${programs.map(prog => `
+              <div class="program-row" onclick="goToProgram('${prog.university.replace(/'/g, "\\'")}', '${prog.name.replace(/'/g, "\\'")}')">
+                <div class="program-name-cell">${prog.name}</div>
+                <div class="uni-name-cell">🏛️ ${prog.university}</div>
+                <div class="city-cell">📍 ${prog.city}</div>
+                <div class="fee-cell">${prog.fee ? `PKR ${prog.fee.toLocaleString()}` : 'N/A'}</div>
+                <button class="view-btn" onclick="event.stopPropagation(); goToProgram('${prog.university.replace(/'/g, "\\'")}', '${prog.name.replace(/'/g, "\\'")}')">
+                  View Details
+                </button>
+              </div>
+            `).join('')}
           </div>
-        `).join('')}
-        ${results.length > displayLimit ? `
-          <div class="view-all-btn" onclick="viewAllPrograms('${query.replace(/'/g, "\\'")}')">
-            📋 View All ${results.length} Results
-          </div>
-        ` : ''}
+        </div>
       `;
-      
-      dropdown.classList.add('show');
-    });
+    }
 
-    // Close dropdown when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.search-group')) {
-        dropdown.classList.remove('show');
-      }
-    });
+    function goToProgram(university, programName) {
+      window.location.href = `university.html?name=${encodeURIComponent(university)}&program=${encodeURIComponent(programName)}`;
+    }
 
-    // Enter key to view all results
-    programInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
+    const searchInput = document.getElementById('program-search');
+    let searchTimeout;
+
+    searchInput.addEventListener('input', (e) => {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
         const query = e.target.value.trim();
-        if (query) {
-          viewAllPrograms(query);
-        }
-      }
+        
+        const newUrl = query 
+          ? `home.html?program=${encodeURIComponent(query)}`
+          : 'home.html';
+        window.history.pushState({}, '', newUrl);
+        
+        document.title = query ? `${query} - UniGuide` : 'Programs - UniGuide';
+        
+        filterPrograms(query);
+      }, 300);
     });
 
-    function goToProgram(uniName, programName) {
-      // Navigate directly to university page with program highlighted
-      window.location.href = `university.html?name=${encodeURIComponent(uniName)}&program=${encodeURIComponent(programName)}`;
-    }
-
-    function viewAllPrograms(query) {
-      // Navigate to programs page showing all results
-      window.location.href = `programs.html?program=${encodeURIComponent(query)}`;
-    }
-
-    loadUniversities();
+    loadAllPrograms();
   </script>
-  <script src="chatWidget.js"></script>
 </body>
 </html>

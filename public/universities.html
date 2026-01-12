@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>UniGuide - Find Your Future</title>
+  <link rel="stylesheet" href="home.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  
+  <style>
+    .nav-link {
+      margin-left: 2.5rem;
+      font-weight: 600;
+      color: #475569;
+      text-decoration: none;
+      position: relative;
+      transition: color 0.3s;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -6px;
+      left: 0;
+      background: #3b82f6;
+      transition: width 0.4s ease;
+    }
+
+    .nav-link:hover {
+      color: #3b82f6;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1)), #ffffff;
+      padding: 5rem 0 4rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #1e40af, #8b5cf6);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+
+    .subtitle {
+      font-size: 1.3rem;
+      color: #64748b;
+      margin-bottom: 3rem;
+    }
+
+    .search-section {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .search-section h2 {
+      font-size: 1.5rem;
+      color: #1e40af;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .search-group {
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 1.2rem 1.5rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      font-size: 1.1rem;
+      outline: none;
+      transition: all 0.3s;
+    }
+
+    .search-input:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 4px rgba(59,130,246,0.1);
+    }
+
+    .search-stats {
+      text-align: center;
+      margin-top: 1rem;
+      color: #64748b;
+      font-size: 0.95rem;
+    }
+
+    .filter-chips {
+      display: flex;
+      gap: 0.8rem;
+      justify-content: center;
+      margin: 1.5rem 0;
+      flex-wrap: wrap;
+    }
+
+    .filter-chip {
+      padding: 0.6rem 1.5rem;
+      background: white;
+      border: 2px solid #e2e8f0;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 600;
+      color: #64748b;
+    }
+
+    .filter-chip:hover, .filter-chip.active {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: white;
+      border-color: transparent;
+    }
+
+    .institutions {
+      padding: 4rem 0;
+      background: #f8fafc;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #1e40af, #8b5cf6);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 3rem;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 3rem;
+      font-size: 1.2rem;
+      color: #94a3b8;
+    }
+
+    .error {
+      text-align: center;
+      padding: 2rem;
+      color: #ef4444;
+      font-size: 1.1rem;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      padding: 0 1rem;
+      scroll-margin-top: 100px;
+    }
+
+    .uni-card {
+      background: white;
+      padding: 0;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(59, 130, 246, 0.12);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 2px solid rgba(59, 130, 246, 0.25);
+      display: flex;
+      flex-direction: column;
+      min-height: 200px;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(white, white) padding-box,
+                  linear-gradient(135deg, rgba(59, 130, 246, 0.4), rgba(139, 92, 246, 0.4)) border-box;
+    }
+
+    .uni-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .uni-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .uni-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(59, 130, 246, 0.35);
+      border-color: rgba(59, 130, 246, 0.6);
+    }
+
+    .uni-card-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem;
+    }
+
+    .uni-card h3 {
+      font-size: 1.4rem;
+      color: #1e293b;
+      margin-bottom: 0.6rem;
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+      position: relative;
+      display: inline-block;
+      width: fit-content;
+    }
+
+    .uni-card h3::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      border-radius: 2px;
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .uni-card:hover h3::after {
+      width: 100%;
+    }
+
+    .uni-card p {
+      color: #64748b;
+      margin-bottom: 1.2rem;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      flex: 1;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .view-btn {
+      background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 100%;
+      margin-top: auto;
+      font-size: 0.9rem;
+      letter-spacing: 0.02em;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .view-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s;
+    }
+
+    .view-btn:hover::before {
+      left: 100%;
+    }
+
+    .view-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+      background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+    }
+
+    .view-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 4rem 2rem;
+      background: white;
+      border-radius: 18px;
+      margin: 2rem auto;
+      max-width: 500px;
+    }
+
+    .no-results-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Filter notification styles */
+    .filter-notification {
+      position: fixed;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-120%);
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+      z-index: 1000;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      pointer-events: none;
+    }
+
+    .filter-notification.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .filter-notification::before {
+      content: '✓';
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      font-size: 14px;
+    }
+
+    /* Smooth scroll behavior */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Enhanced mobile responsiveness */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .subtitle {
+        font-size: 1.1rem;
+      }
+
+      .cards-grid {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+      }
+
+      .uni-card {
+        min-height: 180px;
+      }
+
+      .uni-card-content {
+        padding: 1.25rem;
+      }
+
+      .uni-card h3 {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="container header-content">
+      <div class="logo">
+        <span class="logo-text">UniGuide</span>
+      </div>
+      <nav class="nav">
+          <a href="home.html" class="nav-link">Home</a>
+      <a href="universities.html" class="nav-link">Universities</a>
+      <a href="deadlines.html" class="nav-link">Deadlines</a>
+      <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
+      <a href="compare.html" class="nav-link">Compare Universities</a>
+      <a href="chat.html" class="nav-link">AI Chat</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-content">
+      <h1>Find Your Future.</h1>
+      <p class="subtitle">Explore universities and programs across Pakistan.</p>
+
+      <div class="search-section">
+        <h2>Search Universities</h2>
+        <div class="search-group">
+          <input 
+            type="text" 
+            placeholder="Search by name or city (LUMS, NUST, Lahore...)" 
+            class="search-input" 
+            id="university-search" 
+            autocomplete="off"
+          />
+        </div>
+        <div class="search-stats" id="search-stats"></div>
+      </div>
+
+      <div class="filter-chips">
+        <div class="filter-chip active" data-filter="all">All</div>
+        <div class="filter-chip" data-filter="Lahore">Lahore</div>
+        <div class="filter-chip" data-filter="Karachi">Karachi</div>
+        <div class="filter-chip" data-filter="Islamabad">Islamabad</div>
+        <div class="filter-chip" data-filter="Faisalabad">Faisalabad</div>
+        <div class="filter-chip" data-filter="Multan">Multan</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="institutions">
+    <div class="container">
+      <h2 class="section-title" id="section-title">Explore Top Institutions</h2>
+      
+      <div id="loading" class="loading">🔄 Loading universities from database...</div>
+      <div id="error" class="error" style="display:none;"></div>
+
+      <div class="cards-grid" id="universities-grid"></div>
+      
+      <div id="no-results" class="no-results" style="display:none;">
+        <div class="no-results-icon">🔍</div>
+        <h3>No universities found</h3>
+        <p>Try searching with different keywords or filters</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="logo footer-logo">
+        <span class="logo-text">UniGuide</span>
+      </div>
+      <div class="footer-links">
+         <a href="home.html" class="nav-link">Home</a>
+      <a href="universities.html" class="nav-link">Universities</a>
+      <a href="deadlines.html" class="nav-link">Deadlines</a>
+      <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
+      <a href="compare.html" class="nav-link">Compare Universities</a>
+      <a href="chat.html" class="nav-link">AI Chat</a>
+      </div>
+      <p class="copyright">© 2025 UniGuide. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script>
+    const API_URL = CONFIG.API_URL;
+    let allUniversities = [];
+    let filteredUniversities = [];
+    let currentCityFilter = 'all';
+
+    function normalizeText(text) {
+      return text.toLowerCase().trim().replace(/[^\w\s]/g, '');
+    }
+
+    // Show filter notification and auto-scroll to results
+    function showFilterNotification(count, query) {
+      const existing = document.querySelector('.filter-notification');
+      if (existing) existing.remove();
+
+      const notification = document.createElement('div');
+      notification.className = 'filter-notification';
+      notification.textContent = query 
+        ? `Found ${count} result${count !== 1 ? 's' : ''} for "${query}"`
+        : `Showing ${count} universities`;
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => notification.classList.add('show'), 10);
+      
+      setTimeout(() => {
+        const grid = document.getElementById('universities-grid');
+        grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+      
+      setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 500);
+      }, 2500);
+    }
+
+    async function loadUniversities() {
+      try {
+        const response = await fetch(`${API_URL}/api/universities`);
+        if (!response.ok) throw new Error('Failed to load universities');
+
+        allUniversities = await response.json();
+        filteredUniversities = [...allUniversities];
+        
+        document.getElementById('loading').style.display = 'none';
+        displayUniversities(filteredUniversities);
+        updateStats();
+
+      } catch (err) {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('error').style.display = 'block';
+        document.getElementById('error').textContent = '⚠️ Error loading universities. Please try again later.';
+        console.error('Error:', err);
+      }
+    }
+
+    function displayUniversities(universities) {
+      const grid = document.getElementById('universities-grid');
+      const noResults = document.getElementById('no-results');
+      
+      if (universities.length === 0) {
+        grid.innerHTML = '';
+        noResults.style.display = 'block';
+        return;
+      }
+
+      noResults.style.display = 'none';
+      grid.innerHTML = '';
+
+      universities.forEach(uni => {
+        const card = document.createElement('div');
+        card.className = 'uni-card';
+        const shortName = uni.name;
+        const fullName = uni.full_name;
+        const city = uni.city || 'Pakistan';
+
+        card.innerHTML = `
+          <div class="uni-card-content">
+            <h3>${shortName}</h3>
+            ${fullName && fullName !== shortName ? `<p>${fullName}</p>` : `<p>📍 ${city}</p>`}
+            <button onclick="window.location.href='university.html?name=${encodeURIComponent(shortName)}'" class="view-btn">
+              View Details
+            </button>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+    }
+
+    function updateStats() {
+      const stats = document.getElementById('search-stats');
+      const total = filteredUniversities.length;
+      const allTotal = allUniversities.length;
+      
+      if (total === allTotal) {
+        stats.textContent = `Showing all ${total} universities`;
+      } else {
+        stats.textContent = `Showing ${total} of ${allTotal} universities`;
+      }
+    }
+
+    function filterUniversities(searchQuery = '', cityFilter = 'all') {
+      const normQuery = normalizeText(searchQuery);
+      
+      filteredUniversities = allUniversities.filter(uni => {
+        if (cityFilter !== 'all') {
+          const uniCity = normalizeText(uni.city || '');
+          if (!uniCity.includes(normalizeText(cityFilter))) {
+            return false;
+          }
+        }
+
+        if (normQuery) {
+          const normName = normalizeText(uni.name);
+          const normFullName = normalizeText(uni.full_name || '');
+          const normCity = normalizeText(uni.city || '');
+          
+          return normName.includes(normQuery) || 
+                 normFullName.includes(normQuery) || 
+                 normCity.includes(normQuery);
+        }
+
+        return true;
+      });
+
+      if (normQuery) {
+        filteredUniversities.sort((a, b) => {
+          const aName = normalizeText(a.name);
+          const bName = normalizeText(b.name);
+          
+          const aStarts = aName.startsWith(normQuery);
+          const bStarts = bName.startsWith(normQuery);
+          
+          if (aStarts && !bStarts) return -1;
+          if (!aStarts && bStarts) return 1;
+          
+          return a.name.localeCompare(b.name);
+        });
+      }
+
+      displayUniversities(filteredUniversities);
+      updateStats();
+
+      // Show notification and scroll (only if search or filter was applied)
+      if (normQuery || cityFilter !== 'all') {
+        showFilterNotification(filteredUniversities.length, searchQuery);
+      }
+
+      const title = document.getElementById('section-title');
+      if (normQuery) {
+        title.textContent = `Search Results for "${searchQuery}"`;
+      } else if (cityFilter !== 'all') {
+        title.textContent = `Universities in ${cityFilter}`;
+      } else {
+        title.textContent = 'Explore Top Institutions';
+      }
+    }
+
+    const searchInput = document.getElementById('university-search');
+    let searchTimeout;
+
+    searchInput.addEventListener('input', (e) => {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        filterUniversities(e.target.value, currentCityFilter);
+      }, 300);
+    });
+
+    document.querySelectorAll('.filter-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        
+        currentCityFilter = chip.dataset.filter;
+        filterUniversities(searchInput.value, currentCityFilter);
+      });
+    });
+
+    loadUniversities();
+  </script>
+  <script src="chatWidget.js"></script>
+</body>
+</html>
