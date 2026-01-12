@@ -251,77 +251,67 @@ def get_universities_by_city(city: str):
         "universities": universities
     }
 
+
+
 @app.get("/api/compare")
 def compare_universities(uni1: str, uni2: str):
-    """Compare two universities"""
+    """
+    Compare two universities using stored data in MongoDB.
+    Returns: name, full_name, cities, total programs, ranking, avg fee, avg eligibility.
+    """
     collection = get_universities_collection()
     
-    university1 = collection.find_one({
-        "$or": [
-            {"name": {"$regex": f"^{uni1}$", "$options": "i"}},
-            {"shortName": {"$regex": f"^{uni1}$", "$options": "i"}}
-        ]
-    })
+    # Helper: fetch a university from DB
+    def find_uni(name):
+        return collection.find_one({
+            "$or": [
+                {"name": {"$regex": f"^{name}$", "$options": "i"}},
+                {"shortName": {"$regex": f"^{name}$", "$options": "i"}}
+            ]
+        })
     
-    university2 = collection.find_one({
-        "$or": [
-            {"name": {"$regex": f"^{uni2}$", "$options": "i"}},
-            {"shortName": {"$regex": f"^{uni2}$", "$options": "i"}}
-        ]
-    })
+    university1 = find_uni(uni1)
+    university2 = find_uni(uni2)
     
     if not university1:
         return {"error": f"University '{uni1}' not found"}
     if not university2:
         return {"error": f"University '{uni2}' not found"}
-    
-    def get_fee_stats(programs):
+
+    # Helper: Average fee
+    def get_avg_fee(programs):
         fees = [p.get("total_fee_first_year") for p in programs if p.get("total_fee_first_year")]
-        if not fees:
-            return {"min": 0, "max": 0, "avg": 0}
-        return {
-            "min": min(fees),
-            "max": max(fees),
-            "avg": round(sum(fees) / len(fees))
-        }
-    
-    def get_departments(programs):
-        depts = set()
+        return round(sum(fees)/len(fees)) if fees else 0
+
+    # Helper: Average eligibility
+    def get_avg_eligibility(programs):
+        matric_list = []
+        inter_list = []
         for p in programs:
-            dept = p.get("department", "").strip()
-            if dept:
-                depts.add(dept)
-        return sorted(list(depts))
-    
-    comparison = {
-        "university1": {
-            "name": university1.get("name"),
-            "full_name": university1.get("full_name"),
-            "city": university1.get("city"),
-            "address": university1.get("address", ""),
-            "website": university1.get("website", ""),
-            "introduction": university1.get("introduction", ""),
-            "total_programs": len(university1.get("programs", [])),
-            "departments": get_departments(university1.get("programs", [])),
-            "fee_range": get_fee_stats(university1.get("programs", [])),
-            "scholarships_count": len(university1.get("scholarships", [])),
-            "upcoming_deadlines": len(university1.get("deadlines", []))
-        },
-        "university2": {
-            "name": university2.get("name"),
-            "full_name": university2.get("full_name"),
-            "city": university2.get("city"),
-            "address": university2.get("address", ""),
-            "website": university2.get("website", ""),
-            "introduction": university2.get("introduction", ""),
-            "total_programs": len(university2.get("programs", [])),
-            "departments": get_departments(university2.get("programs", [])),
-            "fee_range": get_fee_stats(university2.get("programs", [])),
-            "scholarships_count": len(university2.get("scholarships", [])),
-            "upcoming_deadlines": len(university2.get("deadlines", []))
+            eligibility = p.get("eligibility", {})
+            if eligibility.get("min_percentage_matric") is not None:
+                matric_list.append(eligibility.get("min_percentage_matric"))
+            if eligibility.get("min_percentage_inter") is not None:
+                inter_list.append(eligibility.get("min_percentage_inter"))
+        avg_matric = round(sum(matric_list)/len(matric_list),1) if matric_list else 0
+        avg_inter = round(sum(inter_list)/len(inter_list),1) if inter_list else 0
+        return {"avg_matric": avg_matric, "avg_inter": avg_inter}
+
+    # Build comparison object
+    comparison = {}
+    for i, uni in enumerate([university1, university2], start=1):
+        programs = uni.get("programs", [])
+        cities = list(set([uni.get("city")] if uni.get("city") else []))
+        comparison[f"university{i}"] = {
+            "name": uni.get("name"),
+            "full_name": uni.get("full_name"),
+            "cities": cities,
+            "total_programs": len(programs),
+            "ranking": uni.get("ranking", "Doesn't hold a rank in Asia University Rankings 2025"),
+            "avg_fee": get_avg_fee(programs),
+            "avg_eligibility": get_avg_eligibility(programs)
         }
-    }
-    
+
     return comparison
 
 @app.get("/api/search")
