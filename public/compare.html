@@ -5,12 +5,69 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Compare Universities - UniGuide</title>
   
-  <link rel="stylesheet" href="home.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 
   <style>
-    * { box-sizing: border-box; }
+    * { 
+      box-sizing: border-box; 
+      margin: 0;
+      padding: 0;
+    }
 
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* Header */
+    .header {
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-text {
+      font-size: 1.8rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-link {
+      color: #64748b;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    .nav-link:hover {
+      color: #3b82f6;
+    }
+
+    /* Hero Section */
     .compare-hero {
       background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1)), #ffffff;
       padding: 4rem 0 3rem;
@@ -30,9 +87,9 @@
     .compare-hero p {
       font-size: 1.2rem;
       color: #64748b;
-      margin: 0;
     }
 
+    /* Selector Section */
     .selector-section {
       background: white;
       padding: 2.5rem;
@@ -49,10 +106,6 @@
       margin-bottom: 2rem;
     }
 
-    .selector-box {
-      position: relative;
-    }
-
     .selector-label {
       font-size: 1.1rem;
       font-weight: 700;
@@ -61,14 +114,9 @@
       display: block;
     }
 
-    .custom-select {
-      position: relative;
-      width: 100%;
-    }
-
     .custom-select select {
       width: 100%;
-      padding: 1rem 1.5rem;
+      padding: 1rem 3rem 1rem 1.5rem;
       font-size: 1.05rem;
       font-weight: 600;
       color: #1e293b;
@@ -82,7 +130,6 @@
       background-repeat: no-repeat;
       background-position: right 1rem center;
       background-size: 20px;
-      padding-right: 3rem;
     }
 
     .custom-select select:focus {
@@ -90,10 +137,6 @@
       border-color: #3b82f6;
       background: white;
       box-shadow: 0 0 0 4px rgba(59,130,246,0.1);
-    }
-
-    .custom-select select:hover {
-      border-color: #3b82f6;
     }
 
     .compare-btn {
@@ -111,7 +154,7 @@
       margin: 0 auto;
     }
 
-    .compare-btn:hover {
+    .compare-btn:hover:not(:disabled) {
       transform: translateY(-3px);
       box-shadow: 0 12px 28px rgba(59,130,246,0.4);
     }
@@ -119,202 +162,78 @@
     .compare-btn:disabled {
       opacity: 0.5;
       cursor: not-allowed;
-      transform: none;
     }
 
+    /* Loading */
     .loading-message {
       text-align: center;
-      padding: 2rem;
+      padding: 3rem;
       color: #64748b;
       font-size: 1.1rem;
       font-weight: 600;
     }
 
+    .spinner {
+      border: 4px solid #e2e8f0;
+      border-top: 4px solid #3b82f6;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Comparison Container */
     .comparison-container {
       display: none;
       margin: 3rem 0;
     }
 
-    .comparison-grid {
+    .comparison-header {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 80px 1fr;
       gap: 2rem;
-    }
-
-    .uni-column {
-      background: white;
-      border-radius: 24px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-      overflow: hidden;
-      border: 2px solid rgba(59,130,246,0.1);
-    }
-
-    .uni-header {
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      color: white;
-      padding: 2rem;
-      text-align: center;
-    }
-
-    .uni-header h2 {
-      font-size: 2rem;
-      font-weight: 900;
-      margin: 0 0 0.5rem 0;
-    }
-
-    .uni-header p {
-      font-size: 1rem;
-      opacity: 0.9;
-      margin: 0;
-    }
-
-    .uni-content {
-      padding: 2rem;
-    }
-
-    .info-section {
       margin-bottom: 2rem;
-      padding-bottom: 2rem;
-      border-bottom: 2px solid #f1f5f9;
-      min-height: 200px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .info-section:last-child {
-      border-bottom: none;
-      margin-bottom: 0;
-      padding-bottom: 0;
-    }
-
-    .section-content {
-      flex: 1;
-      overflow-y: auto;
-      max-height: 400px;
-      padding-right: 0.5rem;
-    }
-
-    .section-content::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    .section-content::-webkit-scrollbar-track {
-      background: #f1f5f9;
-      border-radius: 10px;
-    }
-
-    .section-content::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 10px;
-    }
-
-    .section-content::-webkit-scrollbar-thumb:hover {
-      background: #94a3b8;
-    }
-
-    .section-title {
-      font-size: 1.3rem;
-      font-weight: 800;
-      color: #1e40af;
-      margin-bottom: 1rem;
-      display: flex;
       align-items: center;
-      gap: 0.5rem;
     }
 
-    .info-item {
-      background: #f8fafc;
-      padding: 1rem;
-      border-radius: 12px;
-      margin: 0.5rem 0;
-      border-left: 4px solid #3b82f6;
-    }
-
-    .info-label {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #64748b;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 0.3rem;
-    }
-
-    .info-value {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #1e293b;
-    }
-
-    .fee-highlight {
-      background: linear-gradient(135deg, #fffbeb, #fef3c7);
-      padding: 1.5rem;
-      border-radius: 16px;
+    .uni-header-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      border: 2px solid rgba(59,130,246,0.1);
       text-align: center;
-      border: 2px solid #fbbf24;
-      margin: 1rem 0;
     }
 
-    .fee-amount {
+    .uni-header-card h2 {
       font-size: 2rem;
       font-weight: 900;
-      color: #d97706;
-      margin-bottom: 0.3rem;
+      background: linear-gradient(135deg, #1e40af, #8b5cf6);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
     }
 
-    .fee-label {
-      font-size: 0.9rem;
-      color: #92400e;
-      font-weight: 600;
-    }
-
-    .programs-list {
-      /* Removed fixed max-height, now controlled by section-content */
-      padding-right: 0.5rem;
-    }
-
-    .program-chip {
-      background: linear-gradient(135deg, #dbeafe, #e0e7ff);
-      color: #1e40af;
-      padding: 0.6rem 1rem;
-      border-radius: 50px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      margin: 0.3rem;
-      display: inline-block;
-    }
-
-    .deadline-item {
-      background: linear-gradient(135deg, #ecfdf5, #d1fae5);
-      padding: 1rem;
-      border-radius: 12px;
-      margin: 0.5rem 0;
-      border-left: 4px solid #10b981;
-    }
-
-    .deadline-title {
-      font-weight: 700;
-      color: #065f46;
-      margin-bottom: 0.3rem;
-    }
-
-    .deadline-date {
-      font-weight: 600;
-      color: #059669;
+    .uni-header-card .full-name {
+      color: #64748b;
       font-size: 0.95rem;
+      font-weight: 600;
     }
 
-    .no-data {
-      text-align: center;
+    .uni-header-card .city {
       color: #94a3b8;
-      font-style: italic;
-      padding: 1rem;
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
     }
 
     .vs-badge {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
       background: linear-gradient(135deg, #3b82f6, #8b5cf6);
       color: white;
       width: 80px;
@@ -326,8 +245,168 @@
       font-size: 2rem;
       font-weight: 900;
       box-shadow: 0 8px 24px rgba(59,130,246,0.4);
-      z-index: 10;
       border: 4px solid white;
+    }
+
+    /* Comparison Metrics */
+    .comparison-metrics {
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+      overflow: hidden;
+      border: 2px solid rgba(59,130,246,0.1);
+    }
+
+    .metric-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 2rem;
+      padding: 2rem;
+      border-bottom: 2px solid #f1f5f9;
+      align-items: center;
+    }
+
+    .metric-row:last-child {
+      border-bottom: none;
+    }
+
+    .metric-row:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    .metric-cell {
+      text-align: center;
+    }
+
+    .metric-label {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #1e40af;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      padding: 0 2rem;
+    }
+
+    .metric-value {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #1e293b;
+      margin-bottom: 0.3rem;
+    }
+
+    .metric-sublabel {
+      font-size: 0.85rem;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .winner-indicator {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 900;
+      margin: 0 auto 0.5rem;
+    }
+
+    .winner {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+    }
+
+    .loser {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white;
+    }
+
+    .neutral {
+      background: #e2e8f0;
+      color: #94a3b8;
+    }
+
+    .ranking-text {
+      font-size: 0.9rem;
+      color: #64748b;
+      font-weight: 600;
+      margin-top: 0.5rem;
+      line-height: 1.4;
+      padding: 0 1rem;
+    }
+
+    .ranking-text.ranked {
+      color: #059669;
+    }
+
+    .ranking-text.not-ranked {
+      color: #ef4444;
+    }
+
+    .eligibility-box {
+      background: #f8fafc;
+      padding: 1rem;
+      border-radius: 12px;
+      margin-top: 0.5rem;
+      display: inline-block;
+    }
+
+    .eligibility-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin: 0.3rem 0;
+      font-size: 0.9rem;
+    }
+
+    .eligibility-label {
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .eligibility-value {
+      color: #1e293b;
+      font-weight: 700;
+    }
+
+    /* Footer */
+    .footer {
+      background: #1e293b;
+      color: white;
+      padding: 3rem 0 2rem;
+      margin-top: 5rem;
+    }
+
+    .footer-content {
+      text-align: center;
+    }
+
+    .footer-logo {
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-links a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: white;
+    }
+
+    .copyright {
+      color: #64748b;
+      font-size: 0.9rem;
     }
 
     @media (max-width: 1024px) {
@@ -335,32 +414,24 @@
         grid-template-columns: 1fr;
       }
       
-      .comparison-grid {
+      .comparison-header {
         grid-template-columns: 1fr;
+        gap: 1.5rem;
       }
       
       .vs-badge {
         display: none;
       }
-    }
 
-    /* Scrollbar styling */
-    .programs-list::-webkit-scrollbar {
-      width: 8px;
-    }
+      .metric-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
 
-    .programs-list::-webkit-scrollbar-track {
-      background: #f1f5f9;
-      border-radius: 10px;
-    }
-
-    .programs-list::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 10px;
-    }
-
-    .programs-list::-webkit-scrollbar-thumb:hover {
-      background: #94a3b8;
+      .metric-label {
+        order: -1;
+        margin-bottom: 1rem;
+      }
     }
   </style>
 </head>
@@ -417,17 +488,11 @@
     </div>
 
     <div id="loading-message" class="loading-message" style="display: none;">
+      <div class="spinner"></div>
       Loading comparison data...
     </div>
 
-    <div id="comparison-container" class="comparison-container">
-      <div class="comparison-grid" style="position: relative;">
-        <div class="vs-badge">VS</div>
-        
-        <div class="uni-column" id="uni1-column"></div>
-        <div class="uni-column" id="uni2-column"></div>
-      </div>
-    </div>
+    <div id="comparison-container" class="comparison-container"></div>
   </div>
 
   <footer class="footer">
@@ -437,7 +502,7 @@
       </div>
       <div class="footer-links">
         <a href="home.html">Home</a>
-        <a href="programs.html" class="nav-link">Programs</a>
+        <a href="programs.html">Programs</a>
         <a href="deadlines.html">Deadlines</a>
         <a href="aggregateCalculator.html">Aggregate Calculator</a>
         <a href="compare.html">Compare Universities</a>
@@ -490,122 +555,6 @@
       }
     }
 
-    // Load detailed university data
-    async function loadUniversityData(uniName) {
-      const res = await fetch(`${API_URL}/api/university/${encodeURIComponent(uniName)}`);
-      return await res.json();
-    }
-
-    // Render university column
-    function renderUniversityColumn(uni, columnId) {
-      const column = document.getElementById(columnId);
-      
-      // Calculate fee stats
-      const fees = (uni.programs || []).map(p => p.total_fee_first_year).filter(f => f && f > 0);
-      const avgFee = fees.length > 0 ? Math.round(fees.reduce((a,b) => a+b, 0) / fees.length) : 0;
-      const minFee = fees.length > 0 ? Math.min(...fees) : 0;
-      const maxFee = fees.length > 0 ? Math.max(...fees) : 0;
-
-      // Get unique departments
-      const departments = [...new Set((uni.programs || []).map(p => p.department).filter(Boolean))];
-
-      column.innerHTML = `
-        <div class="uni-header">
-          <h2>${uni.name}</h2>
-          <p>${uni.full_name || uni.fullName || ''}</p>
-        </div>
-
-        <div class="uni-content">
-          <!-- Basic Info -->
-          <div class="info-section">
-            <div class="section-title">📍 Location & Contact</div>
-            <div class="section-content">
-              ${uni.city ? `
-                <div class="info-item">
-                  <div class="info-label">City</div>
-                  <div class="info-value">${uni.city}</div>
-                </div>
-              ` : ''}
-              ${uni.address ? `
-                <div class="info-item">
-                  <div class="info-label">Address</div>
-                  <div class="info-value">${uni.address}</div>
-                </div>
-              ` : ''}
-              ${uni.email ? `
-                <div class="info-item">
-                  <div class="info-label">Email</div>
-                  <div class="info-value">${uni.email}</div>
-                </div>
-              ` : ''}
-              ${!uni.city && !uni.address && !uni.email ? '<div class="no-data">No contact information available</div>' : ''}
-            </div>
-          </div>
-
-          <!-- Fees -->
-          <div class="info-section">
-            <div class="section-title">💰 Fees Overview</div>
-            <div class="section-content">
-              ${avgFee > 0 ? `
-                <div class="fee-highlight">
-                  <div class="fee-amount">PKR ${avgFee.toLocaleString()}</div>
-                  <div class="fee-label">Average First Year Fee</div>
-                </div>
-                <div class="info-item">
-                  <div class="info-label">Fee Range</div>
-                  <div class="info-value">PKR ${minFee.toLocaleString()} - ${maxFee.toLocaleString()}</div>
-                </div>
-              ` : '<div class="no-data">No fee data available</div>'}
-            </div>
-          </div>
-
-          <!-- Programs -->
-          <div class="info-section">
-            <div class="section-title">📚 Programs (${(uni.programs || []).length})</div>
-            <div class="section-content">
-              ${departments.length > 0 ? `
-                <div class="info-item">
-                  <div class="info-label">Departments</div>
-                  <div style="margin-top: 0.5rem;">
-                    ${departments.map(d => `<span class="program-chip">${d}</span>`).join('')}
-                  </div>
-                </div>
-              ` : ''}
-              ${(uni.programs || []).length > 0 ? `
-                <div class="programs-list" style="margin-top: 1rem;">
-                  ${uni.programs.slice(0, 10).map(p => `
-                    <div class="info-item">
-                      <div class="info-label">${p.department || 'General'}</div>
-                      <div class="info-value">${p.name}</div>
-                      ${p.total_fee_first_year ? `<div style="color: #059669; font-weight: 600; font-size: 0.9rem; margin-top: 0.3rem;">PKR ${p.total_fee_first_year.toLocaleString()}</div>` : ''}
-                    </div>
-                  `).join('')}
-                  ${uni.programs.length > 10 ? `<div class="no-data">+ ${uni.programs.length - 10} more programs</div>` : ''}
-                </div>
-              ` : '<div class="no-data">No programs listed</div>'}
-            </div>
-          </div>
-
-          <!-- Scholarships -->
-          ${(uni.scholarships || []).length > 0 ? `
-            <div class="info-section">
-              <div class="section-title">🎓 Scholarships (${uni.scholarships.length})</div>
-              <div class="section-content">
-                ${uni.scholarships.map(s => `
-                  <div class="info-item">
-                    <div class="info-value">${s.name}</div>
-                    <div style="color: #64748b; font-size: 0.85rem; margin-top: 0.3rem;">
-                      ${s.type || 'Merit/Need Based'}
-                    </div>
-                  </div>
-                `).join('')}
-              </div>
-            </div>
-          ` : ''}
-        </div>
-      `;
-    }
-
     // Compare button click
     document.getElementById('compare-btn').addEventListener('click', async () => {
       const uni1Name = document.getElementById('uni1-select').value;
@@ -618,15 +567,16 @@
       document.getElementById('comparison-container').style.display = 'none';
 
       try {
-        // Load both universities
-        const [uni1, uni2] = await Promise.all([
-          loadUniversityData(uni1Name),
-          loadUniversityData(uni2Name)
-        ]);
+        // Call comparison API
+        const res = await fetch(`${API_URL}/api/compare?uni1=${encodeURIComponent(uni1Name)}&uni2=${encodeURIComponent(uni2Name)}`);
+        const data = await res.json();
+
+        if (data.error) {
+          throw new Error(data.error);
+        }
 
         // Render comparison
-        renderUniversityColumn(uni1, 'uni1-column');
-        renderUniversityColumn(uni2, 'uni2-column');
+        renderComparison(data);
 
         // Show results
         document.getElementById('loading-message').style.display = 'none';
@@ -644,6 +594,179 @@
           '<div style="color: #ef4444; font-weight: 700;">❌ Error loading comparison data. Please try again.</div>';
       }
     });
+
+    function renderComparison(data) {
+      const uni1 = data.university1;
+      const uni2 = data.university2;
+      
+      const container = document.getElementById('comparison-container');
+
+      // Determine winners for each metric
+      const programsWinner = uni1.total_programs > uni2.total_programs ? 1 : 
+                            uni1.total_programs < uni2.total_programs ? 2 : 0;
+      
+      const feeWinner = uni1.avg_fee < uni2.avg_fee && uni1.avg_fee > 0 ? 1 : 
+                       uni2.avg_fee < uni1.avg_fee && uni2.avg_fee > 0 ? 2 : 0;
+      
+      const uni1Ranked = !uni1.ranking.includes("Doesn't hold");
+      const uni2Ranked = !uni2.ranking.includes("Doesn't hold");
+      const rankingWinner = uni1Ranked && !uni2Ranked ? 1 : 
+                           !uni1Ranked && uni2Ranked ? 2 : 
+                           uni1Ranked && uni2Ranked ? 0 : -1;
+
+      // Eligibility comparison (lower is better for entry)
+      const uni1HasEligibility = uni1.avg_eligibility.avg_matric > 0 || uni1.avg_eligibility.avg_inter > 0;
+      const uni2HasEligibility = uni2.avg_eligibility.avg_matric > 0 || uni2.avg_eligibility.avg_inter > 0;
+      
+      let eligibilityWinner = 0;
+      if (uni1HasEligibility && uni2HasEligibility) {
+        const uni1Avg = ((uni1.avg_eligibility.avg_matric || 0) + (uni1.avg_eligibility.avg_inter || 0)) / 2;
+        const uni2Avg = ((uni2.avg_eligibility.avg_matric || 0) + (uni2.avg_eligibility.avg_inter || 0)) / 2;
+        eligibilityWinner = uni1Avg < uni2Avg ? 1 : uni1Avg > uni2Avg ? 2 : 0;
+      }
+
+      // Get city display
+      const city1 = uni1.cities && uni1.cities.length > 0 ? uni1.cities.join(', ') : 'Pakistan';
+      const city2 = uni2.cities && uni2.cities.length > 0 ? uni2.cities.join(', ') : 'Pakistan';
+
+      container.innerHTML = `
+        <div class="comparison-header">
+          <div class="uni-header-card">
+            <h2>${uni1.name}</h2>
+            <p class="full-name">${uni1.full_name || ''}</p>
+            <p class="city">📍 ${city1}</p>
+          </div>
+          
+          <div class="vs-badge">VS</div>
+          
+          <div class="uni-header-card">
+            <h2>${uni2.name}</h2>
+            <p class="full-name">${uni2.full_name || ''}</p>
+            <p class="city">📍 ${city2}</p>
+          </div>
+        </div>
+
+        <div class="comparison-metrics">
+          <!-- Programs Offered -->
+          <div class="metric-row">
+            <div class="metric-cell">
+              <div class="winner-indicator ${programsWinner === 1 ? 'winner' : programsWinner === 2 ? 'loser' : 'neutral'}">
+                ${programsWinner === 1 ? '✓' : programsWinner === 2 ? '✗' : '−'}
+              </div>
+              <div class="metric-value">${uni1.total_programs}</div>
+              <div class="metric-sublabel">Programs Offered</div>
+            </div>
+            
+            <div class="metric-label">📚 Total Programs</div>
+            
+            <div class="metric-cell">
+              <div class="winner-indicator ${programsWinner === 2 ? 'winner' : programsWinner === 1 ? 'loser' : 'neutral'}">
+                ${programsWinner === 2 ? '✓' : programsWinner === 1 ? '✗' : '−'}
+              </div>
+              <div class="metric-value">${uni2.total_programs}</div>
+              <div class="metric-sublabel">Programs Offered</div>
+            </div>
+          </div>
+
+          <!-- Ranking -->
+          <div class="metric-row">
+            <div class="metric-cell">
+              <div class="winner-indicator ${rankingWinner === 1 ? 'winner' : rankingWinner === 2 ? 'loser' : rankingWinner === 0 ? 'winner' : 'loser'}">
+                ${uni1Ranked ? '✓' : '✗'}
+              </div>
+              <div class="ranking-text ${uni1Ranked ? 'ranked' : 'not-ranked'}">
+                ${uni1.ranking}
+              </div>
+            </div>
+            
+            <div class="metric-label">🏆 Asia Rankings 2025</div>
+            
+            <div class="metric-cell">
+              <div class="winner-indicator ${rankingWinner === 2 ? 'winner' : rankingWinner === 1 ? 'loser' : rankingWinner === 0 ? 'winner' : 'loser'}">
+                ${uni2Ranked ? '✓' : '✗'}
+              </div>
+              <div class="ranking-text ${uni2Ranked ? 'ranked' : 'not-ranked'}">
+                ${uni2.ranking}
+              </div>
+            </div>
+          </div>
+
+          <!-- Fees -->
+          <div class="metric-row">
+            <div class="metric-cell">
+              <div class="winner-indicator ${feeWinner === 1 ? 'winner' : feeWinner === 2 ? 'loser' : 'neutral'}">
+                ${feeWinner === 1 ? '✓' : feeWinner === 2 ? '✗' : '−'}
+              </div>
+              ${uni1.avg_fee > 0 ? `
+                <div class="metric-value">PKR ${uni1.avg_fee.toLocaleString()}</div>
+                <div class="metric-sublabel">Average First Year Fee</div>
+              ` : '<div class="metric-sublabel">No fee data available</div>'}
+            </div>
+            
+            <div class="metric-label">💰 Average Tuition Fee</div>
+            
+            <div class="metric-cell">
+              <div class="winner-indicator ${feeWinner === 2 ? 'winner' : feeWinner === 1 ? 'loser' : 'neutral'}">
+                ${feeWinner === 2 ? '✓' : feeWinner === 1 ? '✗' : '−'}
+              </div>
+              ${uni2.avg_fee > 0 ? `
+                <div class="metric-value">PKR ${uni2.avg_fee.toLocaleString()}</div>
+                <div class="metric-sublabel">Average First Year Fee</div>
+              ` : '<div class="metric-sublabel">No fee data available</div>'}
+            </div>
+          </div>
+
+          <!-- Eligibility -->
+          <div class="metric-row">
+            <div class="metric-cell">
+              ${uni1HasEligibility ? `
+                <div class="winner-indicator ${eligibilityWinner === 1 ? 'winner' : eligibilityWinner === 2 ? 'loser' : 'neutral'}">
+                  ${eligibilityWinner === 1 ? '✓' : eligibilityWinner === 2 ? '✗' : '−'}
+                </div>
+                <div class="eligibility-box">
+                  ${uni1.avg_eligibility.avg_matric > 0 ? `
+                    <div class="eligibility-item">
+                      <span class="eligibility-label">Matric:</span>
+                      <span class="eligibility-value">${uni1.avg_eligibility.avg_matric}%</span>
+                    </div>
+                  ` : ''}
+                  ${uni1.avg_eligibility.avg_inter > 0 ? `
+                    <div class="eligibility-item">
+                      <span class="eligibility-label">Inter:</span>
+                      <span class="eligibility-value">${uni1.avg_eligibility.avg_inter}%</span>
+                    </div>
+                  ` : ''}
+                </div>
+              ` : '<div class="metric-sublabel">No eligibility data</div>'}
+            </div>
+            
+            <div class="metric-label">📊 Avg Entry Requirements<br><span style="font-size: 0.85rem; font-weight: 600; color: #64748b;">(Lower is easier to enter)</span></div>
+            
+            <div class="metric-cell">
+              ${uni2HasEligibility ? `
+                <div class="winner-indicator ${eligibilityWinner === 2 ? 'winner' : eligibilityWinner === 1 ? 'loser' : 'neutral'}">
+                  ${eligibilityWinner === 2 ? '✓' : eligibilityWinner === 1 ? '✗' : '−'}
+                </div>
+                <div class="eligibility-box">
+                  ${uni2.avg_eligibility.avg_matric > 0 ? `
+                    <div class="eligibility-item">
+                      <span class="eligibility-label">Matric:</span>
+                      <span class="eligibility-value">${uni2.avg_eligibility.avg_matric}%</span>
+                    </div>
+                  ` : ''}
+                  ${uni2.avg_eligibility.avg_inter > 0 ? `
+                    <div class="eligibility-item">
+                      <span class="eligibility-label">Inter:</span>
+                      <span class="eligibility-value">${uni2.avg_eligibility.avg_inter}%</span>
+                    </div>
+                  ` : ''}
+                </div>
+              ` : '<div class="metric-sublabel">No eligibility data</div>'}
+            </div>
+          </div>
+        </div>
+      `;
+    }
 
     // Initialize
     loadUniversities();
