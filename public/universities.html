@@ -95,6 +95,17 @@
       margin-top: 1rem;
       color: #64748b;
       font-size: 0.95rem;
+      font-weight: 500;
+      padding: 0.75rem;
+      border-radius: 12px;
+      transition: all 0.3s;
+    }
+
+    .search-stats.filtered {
+      background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1));
+      color: #3b82f6;
+      font-weight: 600;
+      border: 2px solid rgba(59,130,246,0.2);
     }
 
     .filter-chips {
@@ -136,6 +147,7 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin-bottom: 3rem;
+      transition: all 0.3s;
     }
 
     .loading {
@@ -157,7 +169,6 @@
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 1.5rem;
       padding: 0 1rem;
-      scroll-margin-top: 100px;
     }
 
     .uni-card {
@@ -301,47 +312,6 @@
       margin-bottom: 1rem;
     }
 
-    /* Filter notification styles */
-    .filter-notification {
-      position: fixed;
-      top: 80px;
-      left: 50%;
-      transform: translateX(-50%) translateY(-120%);
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      color: white;
-      padding: 1rem 2rem;
-      border-radius: 50px;
-      box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
-      z-index: 1000;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-      pointer-events: none;
-    }
-
-    .filter-notification.show {
-      transform: translateX(-50%) translateY(0);
-    }
-
-    .filter-notification::before {
-      content: '✓';
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 24px;
-      height: 24px;
-      background: rgba(255, 255, 255, 0.3);
-      border-radius: 50%;
-      font-size: 14px;
-    }
-
-    /* Smooth scroll behavior */
-    html {
-      scroll-behavior: smooth;
-    }
-
     /* Enhanced mobile responsiveness */
     @media (max-width: 768px) {
       .hero h1 {
@@ -391,8 +361,8 @@
 
   <section class="hero">
     <div class="container hero-content">
-      <h1>Find Your Future.</h1>
-      <p class="subtitle">Explore universities and programs across Pakistan.</p>
+      <h1>Browse Universities</h1>
+      <p class="subtitle">Search and filter institutions across Pakistan</p>
 
       <div class="search-section">
         <h2>Search Universities</h2>
@@ -464,32 +434,6 @@
       return text.toLowerCase().trim().replace(/[^\w\s]/g, '');
     }
 
-    // Show filter notification and auto-scroll to results
-    function showFilterNotification(count, query) {
-      const existing = document.querySelector('.filter-notification');
-      if (existing) existing.remove();
-
-      const notification = document.createElement('div');
-      notification.className = 'filter-notification';
-      notification.textContent = query 
-        ? `Found ${count} result${count !== 1 ? 's' : ''} for "${query}"`
-        : `Showing ${count} universities`;
-      
-      document.body.appendChild(notification);
-      
-      setTimeout(() => notification.classList.add('show'), 10);
-      
-      setTimeout(() => {
-        const grid = document.getElementById('universities-grid');
-        grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 100);
-      
-      setTimeout(() => {
-        notification.classList.remove('show');
-        setTimeout(() => notification.remove(), 500);
-      }, 2500);
-    }
-
     async function loadUniversities() {
       try {
         const response = await fetch(`${API_URL}/api/universities`);
@@ -551,12 +495,14 @@
       
       if (total === allTotal) {
         stats.textContent = `Showing all ${total} universities`;
+        stats.classList.remove('filtered');
       } else {
-        stats.textContent = `Showing ${total} of ${allTotal} universities`;
+        stats.textContent = `Filtered: ${total} of ${allTotal} universities`;
+        stats.classList.add('filtered');
       }
     }
 
-    function filterUniversities(searchQuery = '', cityFilter = 'all') {
+    function filterUniversities(searchQuery = '', cityFilter = 'all', shouldScroll = false) {
       const normQuery = normalizeText(searchQuery);
       
       filteredUniversities = allUniversities.filter(uni => {
@@ -598,9 +544,12 @@
       displayUniversities(filteredUniversities);
       updateStats();
 
-      // Show notification and scroll (only if search or filter was applied)
-      if (normQuery || cityFilter !== 'all') {
-        showFilterNotification(filteredUniversities.length, searchQuery);
+      // Smooth scroll to results only when explicitly triggered (Enter key or filter click)
+      if (shouldScroll && (normQuery || cityFilter !== 'all')) {
+        setTimeout(() => {
+          const section = document.querySelector('.institutions');
+          section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
       }
 
       const title = document.getElementById('section-title');
@@ -619,8 +568,16 @@
     searchInput.addEventListener('input', (e) => {
       clearTimeout(searchTimeout);
       searchTimeout = setTimeout(() => {
-        filterUniversities(e.target.value, currentCityFilter);
+        filterUniversities(e.target.value, currentCityFilter, false);
       }, 300);
+    });
+
+    // Scroll to results when user presses Enter
+    searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        clearTimeout(searchTimeout);
+        filterUniversities(e.target.value, currentCityFilter, true);
+      }
     });
 
     document.querySelectorAll('.filter-chip').forEach(chip => {
@@ -629,7 +586,7 @@
         chip.classList.add('active');
         
         currentCityFilter = chip.dataset.filter;
-        filterUniversities(searchInput.value, currentCityFilter);
+        filterUniversities(searchInput.value, currentCityFilter, true);
       });
     });
 

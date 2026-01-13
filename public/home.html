@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title id="page-title">Programs - UniGuide</title>
+  <title id="page-title">UniGuide - Your Ultimate University Guide in Pakistan</title>
   <link rel="stylesheet" href="home.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   
@@ -20,42 +20,50 @@
       line-height: 1.6;
     }
 
+    /* Hero Section */
     .hero {
       background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1)), #ffffff;
       padding: 4rem 0 3rem;
       text-align: center;
+      border-bottom: 1px solid #e2e8f0;
     }
 
     .hero h1 {
-          font-size: 5rem;
+      font-size: 4rem;
       font-weight: 900;
       background: linear-gradient(135deg, #1e40af, #8b5cf6);
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin-bottom: 1rem;
+      line-height: 1.2;
     }
 
     .hero-subtitle {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       color: #64748b;
-      margin-bottom: 2rem;
+      margin-bottom: 2.5rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
+    /* Search Bar */
     .search-bar {
-      max-width: 700px;
-      margin: 2rem auto 0;
+      max-width: 800px;
+      margin: 0 auto 2rem;
       position: relative;
     }
 
     .search-bar input {
       width: 100%;
-      padding: 1.2rem 1.5rem;
+      padding: 1.3rem 1.5rem;
       border: 2px solid #e2e8f0;
       border-radius: 16px;
       font-size: 1.1rem;
       outline: none;
       transition: all 0.3s;
+      background: white;
     }
 
     .search-bar input:focus {
@@ -63,24 +71,61 @@
       box-shadow: 0 0 0 4px rgba(59,130,246,0.1);
     }
 
+    /* Quick Filters */
+    .quick-filters {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      justify-content: center;
+      padding-bottom: 1rem;
+    }
+
+    .filter-chip {
+      background: white;
+      border: 2px solid #e2e8f0;
+      padding: 0.6rem 1.3rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .filter-chip:hover {
+      border-color: #3b82f6;
+      color: #3b82f6;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(59,130,246,0.2);
+    }
+
+    .filter-chip.active {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: white;
+      border-color: transparent;
+    }
+
+    /* Stats Bar */
     .stats-bar {
       display: flex;
       gap: 1.5rem;
       justify-content: center;
-      margin: 3rem 0;
+      margin: 2.5rem 0;
       flex-wrap: wrap;
     }
 
     .stat-card {
       background: white;
-      padding: 1.5rem 2.5rem;
-      border-radius: 18px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+      padding: 1.3rem 2rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
       border: 2px solid rgba(59,130,246,0.15);
     }
 
     .stat-number {
-      font-size: 2.5rem;
+      font-size: 2.2rem;
       font-weight: 800;
       background: linear-gradient(135deg, #1e40af, #8b5cf6);
       -webkit-background-clip: text;
@@ -90,17 +135,18 @@
 
     .stat-label {
       color: #64748b;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       font-weight: 600;
       margin-top: 0.3rem;
     }
 
-    /* ONE BIG COMBINED CARD */
+    /* Programs Container - MOVED UP */
     .programs-container {
-      margin: 3rem auto;
+      margin: 0 auto 3rem;
       max-width: 1400px;
+      scroll-margin-top: 100px;
     }
 
     .combined-card {
@@ -133,6 +179,7 @@
       font-weight: 600;
     }
 
+    /* Programs Table */
     .programs-table {
       display: grid;
       gap: 0.6rem;
@@ -155,48 +202,56 @@
       grid-template-columns: 2fr 2fr 1fr 1.5fr auto;
       gap: 1rem;
       align-items: center;
-      background: #f8fafc;
-      padding: 1rem 1.5rem;
+      background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+      padding: 1.2rem 1.5rem;
       border-radius: 12px;
       border-left: 4px solid #3b82f6;
       transition: all 0.3s;
       cursor: pointer;
+      border: 1px solid #e2e8f0;
     }
 
     .program-row:hover {
       background: linear-gradient(135deg, #dbeafe, #e0e7ff);
-      transform: translateX(5px);
-      box-shadow: 0 4px 12px rgba(59,130,246,0.2);
+      transform: translateX(8px);
+      box-shadow: 0 6px 20px rgba(59,130,246,0.25);
+      border-left-width: 6px;
     }
 
     .program-name-cell {
       font-weight: 700;
       color: #1e40af;
-      font-size: 0.95rem;
+      font-size: 1rem;
     }
 
     .uni-name-cell {
       font-weight: 600;
       color: #475569;
       font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
     }
 
     .city-cell {
       color: #64748b;
       font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
     }
 
     .fee-cell {
       color: #059669;
       font-weight: 700;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       text-align: right;
     }
 
     .view-btn {
       background: linear-gradient(135deg, #3b82f6, #8b5cf6);
       color: white;
-      padding: 0.5rem 1.2rem;
+      padding: 0.6rem 1.4rem;
       border-radius: 50px;
       border: none;
       font-weight: 600;
@@ -207,15 +262,31 @@
     }
 
     .view-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 12px rgba(59,130,246,0.4);
+      transform: scale(1.08);
+      box-shadow: 0 6px 16px rgba(59,130,246,0.4);
     }
 
+    /* Loading State */
     .loading {
       text-align: center;
-      padding: 4rem;
-      font-size: 1.3rem;
-      color: #94a3b8;
+      padding: 4rem 2rem;
+      font-size: 1.2rem;
+      color: #64748b;
+    }
+
+    .loading-spinner {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 4px solid #e2e8f0;
+      border-top-color: #3b82f6;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 1rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
 
     .no-results {
@@ -231,6 +302,94 @@
       margin-bottom: 1rem;
     }
 
+    /* About Section - AFTER SEARCH RESULTS */
+    .about-section {
+      background: linear-gradient(135deg, #f8fafc, #ffffff);
+      padding: 5rem 0;
+      margin-top: 3rem;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .about-section h2 {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #1e40af, #8b5cf6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+
+    .about-subtitle {
+      text-align: center;
+      color: #64748b;
+      font-size: 1.2rem;
+      margin-bottom: 4rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background: white;
+      padding: 2.5rem 2rem;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+      border: 2px solid transparent;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      transform: scaleX(0);
+      transition: transform 0.4s;
+    }
+
+    .feature-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(59,130,246,0.15);
+      border-color: rgba(59,130,246,0.2);
+    }
+
+    .feature-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .feature-title {
+      font-weight: 800;
+      color: #1e40af;
+      font-size: 1.3rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .feature-desc {
+      font-size: 0.95rem;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    /* Footer */
     .footer {
       background: #1e293b;
       padding: 3rem 0;
@@ -246,12 +405,14 @@
       gap: 2rem;
       justify-content: center;
       margin-bottom: 1.5rem;
+      flex-wrap: wrap;
     }
 
     .footer-links a {
       color: #94a3b8;
       text-decoration: none;
       transition: color 0.3s;
+      font-weight: 500;
     }
 
     .footer-links a:hover {
@@ -261,6 +422,13 @@
     .copyright {
       color: #718096;
       font-size: 0.9rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
 
     @media (max-width: 968px) {
@@ -277,49 +445,90 @@
       .fee-cell {
         text-align: left;
       }
+
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+      }
     }
 
     @media (max-width: 768px) {
       .hero h1 {
-        font-size: 2rem;
+        font-size: 2.5rem;
       }
       
+      .hero-subtitle {
+        font-size: 1.1rem;
+      }
+
       .search-term-title {
         font-size: 1.8rem;
+      }
+
+      .quick-filters {
+        gap: 0.6rem;
+      }
+
+      .filter-chip {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+      }
+
+      .about-section h2 {
+        font-size: 2rem;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .feature-card {
+        padding: 2rem 1.5rem;
       }
     }
   </style>
 </head>
 <body>
 
- <header class="header">
-  <div class="container header-content">
-    <div class="logo">
-      <span class="logo-text">UniGuide</span>
+  <header class="header">
+    <div class="container header-content">
+      <div class="logo">
+        <span class="logo-text">UniGuide</span>
+      </div>
+      <nav class="nav">
+        <a href="home.html" class="nav-link">Home</a>
+        <a href="universities.html" class="nav-link">Universities</a>
+        <a href="deadlines.html" class="nav-link">Deadlines</a>
+        <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
+        <a href="compare.html" class="nav-link">Compare Universities</a>
+        <a href="chat.html" class="nav-link">AI Chat</a>
+      </nav>
     </div>
-    <nav class="nav">
-      <a href="home.html" class="nav-link">Home</a>
-      <a href="universities.html" class="nav-link">Universities</a>
-      <a href="deadlines.html" class="nav-link">Deadlines</a>
-      <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
-      <a href="compare.html" class="nav-link">Compare Universities</a>
-      <a href="chat.html" class="nav-link">AI Chat</a>
-    </nav>
-  </div>
-</header>
+  </header>
 
   <section class="hero">
     <div class="container">
-      <h1 id="program-title">Find Programs</h1>
-      <p class="hero-subtitle">Search and explore programs across all universities in Pakistan</p>
+      <h1>🎓 Find Your Perfect University Program</h1>
+      <p class="hero-subtitle">
+        Search through 400+ programs across 13 universities in Pakistan
+      </p>
       
       <div class="search-bar">
         <input 
           type="text" 
           id="program-search" 
-          placeholder="Search programs (e.g., CS, BBA, Engineering)..."
+          placeholder="Search programs (e.g., Computer Science, BBA, Engineering)..."
           autocomplete="off"
         />
+      </div>
+
+      <div class="quick-filters">
+        <div class="filter-chip" data-query="cs">💻 Computer Science</div>
+        <div class="filter-chip" data-query="bba">📊 Business</div>
+        <div class="filter-chip" data-query="engineering">⚙️ Engineering</div>
+        <div class="filter-chip" data-query="law">⚖️ Law</div>
+        <div class="filter-chip" data-query="psychology">🧠 Psychology</div>
       </div>
     </div>
   </section>
@@ -340,16 +549,96 @@
       </div>
     </div>
 
-    <div id="loading" class="loading">🔍 Loading programs...</div>
+    <div id="loading" class="loading">
+      <div class="loading-spinner"></div>
+      <div>🔄 Loading programs from universities...</div>
+      <div style="font-size: 0.9rem; margin-top: 0.5rem; color: #94a3b8;">This may take a few moments</div>
+    </div>
     
     <div id="programs-container" class="programs-container"></div>
     
     <div id="no-results" class="no-results" style="display:none;">
       <div class="no-results-icon">🔍</div>
-      <h3>No programs found</h3>
-      <p>Try searching with different keywords</p>
+      <h3 style="color: #475569; margin-bottom: 0.5rem;">No programs found</h3>
+      <p style="color: #64748b;">Try searching with different keywords or use the quick filters above</p>
     </div>
   </div>
+
+  <section class="about-section">
+    <div class="container">
+      <h2>Everything You Need</h2>
+      <p class="about-subtitle">Your complete university admission companion</p>
+      
+      <div class="features-grid">
+
+  <div class="feature-card">
+    <span class="feature-icon">🔍</span>
+    <div class="feature-title">Program Search</div>
+    <p class="feature-desc">
+      Search university programs across Pakistan from a single, unified platform.
+    </p>
+  </div>
+
+  <div class="feature-card">
+    <span class="feature-icon">🏛️</span>
+    <div class="feature-title">University Information</div>
+    <p class="feature-desc">
+      View programs offered by each university with essential admission details.
+    </p>
+  </div>
+
+  <div class="feature-card">
+    <span class="feature-icon">📅</span>
+    <div class="feature-title">Admission Deadlines</div>
+    <p class="feature-desc">
+      Check current and upcoming admission deadlines for different universities.
+    </p>
+  </div>
+
+  <div class="feature-card">
+    <span class="feature-icon">⚖️</span>
+  <div class="feature-title">Compare Universities</div>
+<p class="feature-desc">
+  Side-by-side comparison of programs, fees, rankings, and entry requirements — with a clear summary to help you decide.
+</p>
+
+  </div>
+
+  <div class="feature-card">
+    <span class="feature-icon">🧮</span>
+    <div class="feature-title">Aggregate Calculator</div>
+    <p class="feature-desc">
+      Calculate your admission aggregate using a unified and simple calculator.
+    </p>
+  </div>
+
+  <div class="feature-card">
+    <span class="feature-icon">💰</span>
+    <div class="feature-title">Program Fee Details</div>
+    <p class="feature-desc">
+      View estimated tuition and program fees to help plan your education costs.
+    </p>
+  </div>
+
+  <div class="feature-card">
+    <span class="feature-icon">🎓</span>
+    <div class="feature-title">Scholarships</div>
+    <p class="feature-desc">
+      Explore scholarships and financial support options offered by universities.
+    </p>
+  </div>
+
+  <div class="feature-card">
+    <span class="feature-icon">🤖</span>
+    <div class="feature-title">AI Admission Help</div>
+    <p class="feature-desc">
+      Ask questions and get guidance related to programs, universities, and admissions.
+    </p>
+  </div>
+
+</div>
+
+  </section>
 
   <footer class="footer">
     <div class="container footer-content">
@@ -426,7 +715,6 @@
       }
     }
 
-    // YOUR EXACT MAPPINGS from document 8
     const programMappings = {
       'cs': ['computer science'],
       'bscs': ['computer science', 'bs computer science', 'bachelor of computer science'],
@@ -444,6 +732,7 @@
       'marketing': ['marketing'],
       'hr': ['human resource management'],
       'eng': ['engineering'],
+      'engineering': ['engineering'],
       'ee': ['electrical engineering'],
       'bsee': ['electrical engineering', 'bs electrical engineering'],
       'me': ['mechanical engineering'],
@@ -459,6 +748,7 @@
       'pharmd': ['doctor of pharmacy', 'pharm.d'],
       'nursing': ['nursing', 'bsn'],
       'llb': ['bachelor of laws', 'llb'],
+      'law': ['bachelor of laws', 'llb', 'law'],
       'llm': ['master of laws', 'llm'],
       'psychology': ['psychology'],
       'sociology': ['sociology'],
@@ -477,7 +767,6 @@
         .trim();
     }
 
-    // YOUR EXACT FILTER LOGIC from document 8
     function filterPrograms(query) {
       if (!query || query.length < 2) {
         document.getElementById('programs-container').innerHTML = '';
@@ -487,13 +776,11 @@
 
       const normQuery = normalizeText(query);
       
-      // Check if it's a known abbreviation
       let searchTerms = [normQuery];
       if (programMappings[normQuery]) {
         searchTerms = programMappings[normQuery];
       }
       
-      // YOUR EXACT STRICT MATCHING
       filteredPrograms = allPrograms.filter(prog => {
         const normProgName = normalizeText(prog.name);
         
@@ -513,7 +800,6 @@
         return false;
       });
       
-      // Sort
       filteredPrograms.sort((a, b) => {
         const normA = normalizeText(a.name);
         const normB = normalizeText(b.name);
@@ -526,8 +812,14 @@
         return a.name.localeCompare(b.name);
       });
 
-      // NOW SHOW IN ONE BIG CARD
       displayOneBigCard(query, filteredPrograms);
+      
+      setTimeout(() => {
+        const resultsContainer = document.getElementById('programs-container');
+        if (resultsContainer.children.length > 0) {
+          resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 300);
     }
 
     function displayOneBigCard(searchQuery, programs) {
@@ -552,7 +844,6 @@
       document.getElementById('stat-variations').textContent = uniquePrograms;
       document.getElementById('stats-bar').style.display = 'flex';
 
-      // ONE BIG CARD with ALL results
       container.innerHTML = `
         <div class="combined-card">
           <div class="card-header">
@@ -574,8 +865,8 @@
             ${programs.map(prog => `
               <div class="program-row" onclick="goToProgram('${prog.university.replace(/'/g, "\\'")}', '${prog.name.replace(/'/g, "\\'")}')">
                 <div class="program-name-cell">${prog.name}</div>
-                <div class="uni-name-cell">🏛️ ${prog.university}</div>
-                <div class="city-cell">📍 ${prog.city}</div>
+                <div class="uni-name-cell"><span>🏛️</span>${prog.university}</div>
+                <div class="city-cell"><span>📍</span>${prog.city}</div>
                 <div class="fee-cell">${prog.fee ? `PKR ${prog.fee.toLocaleString()}` : 'N/A'}</div>
                 <button class="view-btn" onclick="event.stopPropagation(); goToProgram('${prog.university.replace(/'/g, "\\'")}', '${prog.name.replace(/'/g, "\\'")}')">
                   View Details
@@ -590,6 +881,22 @@
     function goToProgram(university, programName) {
       window.location.href = `university.html?name=${encodeURIComponent(university)}&program=${encodeURIComponent(programName)}`;
     }
+      // Quick filter chips
+    document.querySelectorAll('.filter-chip').forEach(chip => {
+      chip.addEventListener('click', function() {
+        const query = this.getAttribute('data-query');
+        document.getElementById('program-search').value = query;
+        
+        document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+        this.classList.add('active');
+        
+        const newUrl = `home.html?program=${encodeURIComponent(query)}`;
+        window.history.pushState({}, '', newUrl);
+        document.title = `${query} - UniGuide`;
+        
+        filterPrograms(query);
+      });
+    });
 
     const searchInput = document.getElementById('program-search');
     let searchTimeout;
@@ -599,15 +906,35 @@
       searchTimeout = setTimeout(() => {
         const query = e.target.value.trim();
         
+        document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+        
         const newUrl = query 
           ? `home.html?program=${encodeURIComponent(query)}`
           : 'home.html';
         window.history.pushState({}, '', newUrl);
         
-        document.title = query ? `${query} - UniGuide` : 'Programs - UniGuide';
+        document.title = query ? `${query} - UniGuide` : 'UniGuide - Your Ultimate University Guide in Pakistan';
         
         filterPrograms(query);
       }, 300);
+    });
+
+    // Search on Enter key
+    searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        const query = e.target.value.trim();
+        if (query) {
+          clearTimeout(searchTimeout);
+          
+          document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+          
+          const newUrl = `home.html?program=${encodeURIComponent(query)}`;
+          window.history.pushState({}, '', newUrl);
+          document.title = `${query} - UniGuide`;
+          
+          filterPrograms(query);
+        }
+      }
     });
 
     loadAllPrograms();

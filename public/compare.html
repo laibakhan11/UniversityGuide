@@ -82,22 +82,24 @@
       width: 100%;
     }
 
-    /* Hero Section */
     .compare-hero {
-      background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1)), #ffffff;
-      padding: 4rem 0 3rem;
-      text-align: center;
-    }
+  background: linear-gradient(135deg, #eef2ff, #c7d2fe);
+  padding: 5rem 0 4rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
 
-    .compare-hero h1 {
-      font-size: 3.5rem;
-      font-weight: 900;
-      background: linear-gradient(135deg, #1e40af, #8b5cf6);
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin: 0 0 1rem 0;
-    }
+.compare-hero h1 {
+  font-size: 4rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #1e40af, #8b5cf6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+}
+
 
     .compare-hero p {
       font-size: 1.2rem;
@@ -555,6 +557,7 @@
         grid-template-columns: 1fr;
       }
       
+      
       .comparison-header {
         grid-template-columns: 1fr;
         gap: 1.5rem;
@@ -578,6 +581,12 @@
         grid-template-columns: 1fr;
       }
     }
+    @media (max-width: 768px) {
+  .compare-hero h1 {
+    font-size: 3rem;
+  }
+}
+
   </style>
 </head>
 <body>
