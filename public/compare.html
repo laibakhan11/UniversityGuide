@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Compare Universities - UniGuide</title>
-  
+  <link rel="stylesheet" href="home.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 
   <style>
@@ -26,45 +26,60 @@
       padding: 0 2rem;
     }
 
-    /* Header */
     .header {
-      background: white;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      padding: 1rem 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 1000;
     }
 
     .header-content {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 1.25rem 0;
     }
 
-    .logo-text {
-      font-size: 1.8rem;
-      font-weight: 900;
+    .logo {
+      display: flex;
+      align-items: center;
+      font-size: 2rem;
+      font-weight: 800;
       background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      background-clip: text;
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    .nav {
-      display: flex;
-      gap: 2rem;
+    .nav-link {
+      margin-left: 2.5rem;
+      font-weight: 600;
+      color: #475569;
+      text-decoration: none;
+      position: relative;
+      transition: color 0.3s;
     }
 
-    .nav-link {
-      color: #64748b;
-      text-decoration: none;
-      font-weight: 600;
-      transition: color 0.3s;
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -6px;
+      left: 0;
+      background: #3b82f6;
+      transition: width 0.4s ease;
     }
 
     .nav-link:hover {
       color: #3b82f6;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
     }
 
     /* Hero Section */
@@ -196,8 +211,8 @@
 
     .comparison-header {
       display: grid;
-      grid-template-columns: 1fr 80px 1fr;
-      gap: 2rem;
+      grid-template-columns: 1fr 60px 1fr;
+      gap: 1.5rem;
       margin-bottom: 2rem;
       align-items: center;
     }
@@ -212,7 +227,7 @@
     }
 
     .uni-header-card h2 {
-      font-size: 2rem;
+      font-size: 1.8rem;
       font-weight: 900;
       background: linear-gradient(135deg, #1e40af, #8b5cf6);
       background-clip: text;
@@ -236,16 +251,16 @@
     .vs-badge {
       background: linear-gradient(135deg, #3b82f6, #8b5cf6);
       color: white;
-      width: 80px;
-      height: 80px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2rem;
+      font-size: 1.4rem;
       font-weight: 900;
-      box-shadow: 0 8px 24px rgba(59,130,246,0.4);
-      border: 4px solid white;
+      box-shadow: 0 6px 20px rgba(59,130,246,0.4);
+      border: 3px solid white;
     }
 
     /* Comparison Metrics */
@@ -255,6 +270,7 @@
       box-shadow: 0 10px 40px rgba(0,0,0,0.08);
       overflow: hidden;
       border: 2px solid rgba(59,130,246,0.1);
+      margin-bottom: 2rem;
     }
 
     .metric-row {
@@ -276,22 +292,32 @@
 
     .metric-cell {
       text-align: center;
+      position: relative;
+    }
+
+    .metric-label-container {
+      text-align: center;
+      padding: 0 1rem;
     }
 
     .metric-label {
-      font-size: 1.1rem;
-      font-weight: 800;
+      font-size: 1rem;
+      font-weight: 700;
       color: #1e40af;
-      margin-bottom: 1.5rem;
-      text-align: center;
-      padding: 0 2rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .metric-hint {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      font-weight: 500;
     }
 
     .metric-value {
-      font-size: 1.8rem;
-      font-weight: 900;
+      font-size: 1.5rem;
+      font-weight: 800;
       color: #1e293b;
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.5rem;
     }
 
     .metric-sublabel {
@@ -300,48 +326,55 @@
       font-weight: 600;
     }
 
-    .winner-indicator {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      font-weight: 900;
-      margin: 0 auto 0.5rem;
+    /* Subtle winner indicators */
+    .metric-cell.winner {
+      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.08), transparent);
     }
 
-    .winner {
-      background: linear-gradient(135deg, #10b981, #059669);
-      color: white;
+    .metric-cell.loser {
+      background: linear-gradient(90deg, transparent, rgba(239, 68, 68, 0.06), transparent);
     }
 
-    .loser {
-      background: linear-gradient(135deg, #ef4444, #dc2626);
-      color: white;
+    .metric-cell.neutral {
+      background: transparent;
     }
 
-    .neutral {
-      background: #e2e8f0;
-      color: #94a3b8;
+    .status-badge {
+      display: inline-block;
+      padding: 0.4rem 0.9rem;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-top: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status-badge.better {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .status-badge.worse {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .status-badge.equal {
+      background: #e0e7ff;
+      color: #3730a3;
     }
 
     .ranking-text {
-      font-size: 0.9rem;
-      color: #64748b;
+      font-size: 0.95rem;
+      color: #1e293b;
       font-weight: 600;
       margin-top: 0.5rem;
       line-height: 1.4;
-      padding: 0 1rem;
-    }
-
-    .ranking-text.ranked {
-      color: #059669;
-    }
-
-    .ranking-text.not-ranked {
-      color: #ef4444;
+      padding: 0.8rem;
+      background: #f8fafc;
+      border-radius: 10px;
+      display: inline-block;
     }
 
     .eligibility-box {
@@ -368,6 +401,114 @@
     .eligibility-value {
       color: #1e293b;
       font-weight: 700;
+    }
+
+    /* Summary Card */
+    .summary-card {
+      background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1)), white;
+      border-radius: 24px;
+      padding: 2.5rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+      border: 2px solid rgba(59,130,246,0.2);
+    }
+
+    .summary-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .summary-header h3 {
+      font-size: 2rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #1e40af, #8b5cf6);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .summary-header p {
+      color: #64748b;
+      font-size: 1rem;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .summary-section {
+      background: white;
+      padding: 1.8rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .summary-section h4 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #1e40af;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .summary-item {
+      padding: 0.7rem 0;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .summary-item:last-child {
+      border-bottom: none;
+    }
+
+    .summary-item-label {
+      color: #64748b;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .summary-item-value {
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .recommendation {
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+
+    .recommendation h4 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #1e40af;
+      margin-bottom: 1rem;
+    }
+
+    .recommendation-text {
+      color: #475569;
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .recommendation-winner {
+      font-size: 1.8rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #10b981, #059669);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 1rem 0;
     }
 
     /* Footer */
@@ -428,30 +569,34 @@
         gap: 1rem;
       }
 
-      .metric-label {
+      .metric-label-container {
         order: -1;
         margin-bottom: 1rem;
+      }
+
+      .summary-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
 
-  <header class="header">
-    <div class="container header-content">
-      <div class="logo">
-        <span class="logo-text">UniGuide</span>
-      </div>
-      <nav class="nav">
-          <a href="home.html" class="nav-link">Home</a>
-         <a href="universities.html" class="nav-link">Universities</a>
-         <a href="deadlines.html" class="nav-link">Deadlines</a>
-         <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
-         <a href="compare.html" class="nav-link">Compare Universities</a>
-         <a href="chat.html" class="nav-link">AI Chat</a>
-      </nav>
+ <header class="header">
+  <div class="container header-content">
+    <div class="logo">
+      <span class="logo-text">UniGuide</span>
     </div>
-  </header>
+    <nav class="nav">
+      <a href="home.html" class="nav-link">Home</a>
+      <a href="universities.html" class="nav-link">Universities</a>
+      <a href="deadlines.html" class="nav-link">Deadlines</a>
+      <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
+      <a href="compare.html" class="nav-link">Compare Universities</a>
+      <a href="chat.html" class="nav-link">AI Chat</a>
+    </nav>
+  </div>
+</header>
 
   <section class="compare-hero">
     <div class="container">
@@ -517,7 +662,6 @@
     const API_URL = CONFIG.API_URL;
     let universities = [];
 
-    // Load all universities
     async function loadUniversities() {
       try {
         const res = await fetch(`${API_URL}/api/universities`);
@@ -539,7 +683,6 @@
         select1.innerHTML = options;
         select2.innerHTML = options;
 
-        // Enable compare button when both selected
         [select1, select2].forEach(select => {
           select.addEventListener('change', () => {
             const uni1 = select1.value;
@@ -555,19 +698,16 @@
       }
     }
 
-    // Compare button click
     document.getElementById('compare-btn').addEventListener('click', async () => {
       const uni1Name = document.getElementById('uni1-select').value;
       const uni2Name = document.getElementById('uni2-select').value;
 
       if (!uni1Name || !uni2Name) return;
 
-      // Show loading
       document.getElementById('loading-message').style.display = 'block';
       document.getElementById('comparison-container').style.display = 'none';
 
       try {
-        // Call comparison API
         const res = await fetch(`${API_URL}/api/compare?uni1=${encodeURIComponent(uni1Name)}&uni2=${encodeURIComponent(uni2Name)}`);
         const data = await res.json();
 
@@ -575,14 +715,11 @@
           throw new Error(data.error);
         }
 
-        // Render comparison
         renderComparison(data);
 
-        // Show results
         document.getElementById('loading-message').style.display = 'none';
         document.getElementById('comparison-container').style.display = 'block';
 
-        // Smooth scroll to results
         document.getElementById('comparison-container').scrollIntoView({ 
           behavior: 'smooth', 
           block: 'start' 
@@ -601,7 +738,7 @@
       
       const container = document.getElementById('comparison-container');
 
-      // Determine winners for each metric
+      // Determine winners
       const programsWinner = uni1.total_programs > uni2.total_programs ? 1 : 
                             uni1.total_programs < uni2.total_programs ? 2 : 0;
       
@@ -614,7 +751,6 @@
                            !uni1Ranked && uni2Ranked ? 2 : 
                            uni1Ranked && uni2Ranked ? 0 : -1;
 
-      // Eligibility comparison (lower is better for entry)
       const uni1HasEligibility = uni1.avg_eligibility.avg_matric > 0 || uni1.avg_eligibility.avg_inter > 0;
       const uni2HasEligibility = uni2.avg_eligibility.avg_matric > 0 || uni2.avg_eligibility.avg_inter > 0;
       
@@ -625,9 +761,19 @@
         eligibilityWinner = uni1Avg < uni2Avg ? 1 : uni1Avg > uni2Avg ? 2 : 0;
       }
 
-      // Get city display
       const city1 = uni1.cities && uni1.cities.length > 0 ? uni1.cities.join(', ') : 'Pakistan';
       const city2 = uni2.cities && uni2.cities.length > 0 ? uni2.cities.join(', ') : 'Pakistan';
+
+      // Calculate overall scores
+      let uni1Score = 0, uni2Score = 0;
+      if (programsWinner === 1) uni1Score++;
+      if (programsWinner === 2) uni2Score++;
+      if (rankingWinner === 1) uni1Score++;
+      if (rankingWinner === 2) uni2Score++;
+      if (feeWinner === 1) uni1Score++;
+      if (feeWinner === 2) uni2Score++;
+      if (eligibilityWinner === 1) uni1Score++;
+      if (eligibilityWinner === 2) uni2Score++;
 
       container.innerHTML = `
         <div class="comparison-header">
@@ -647,82 +793,86 @@
         </div>
 
         <div class="comparison-metrics">
-          <!-- Programs Offered -->
+          <!-- Programs -->
           <div class="metric-row">
-            <div class="metric-cell">
-              <div class="winner-indicator ${programsWinner === 1 ? 'winner' : programsWinner === 2 ? 'loser' : 'neutral'}">
-                ${programsWinner === 1 ? '✓' : programsWinner === 2 ? '✗' : '−'}
-              </div>
+            <div class="metric-cell ${programsWinner === 1 ? 'winner' : programsWinner === 2 ? 'loser' : 'neutral'}">
               <div class="metric-value">${uni1.total_programs}</div>
-              <div class="metric-sublabel">Programs Offered</div>
+              <div class="metric-sublabel">Programs</div>
+              ${programsWinner === 1 ? '<span class="status-badge better">More Options</span>' : 
+                programsWinner === 2 ? '<span class="status-badge worse">Fewer Options</span>' : 
+                '<span class="status-badge equal">Same</span>'}
             </div>
             
-            <div class="metric-label">📚 Total Programs</div>
+            <div class="metric-label-container">
+              <div class="metric-label">📚 Programs Offered</div>
+              <div class="metric-hint">Variety of degrees</div>
+            </div>
             
-            <div class="metric-cell">
-              <div class="winner-indicator ${programsWinner === 2 ? 'winner' : programsWinner === 1 ? 'loser' : 'neutral'}">
-                ${programsWinner === 2 ? '✓' : programsWinner === 1 ? '✗' : '−'}
-              </div>
+            <div class="metric-cell ${programsWinner === 2 ? 'winner' : programsWinner === 1 ? 'loser' : 'neutral'}">
               <div class="metric-value">${uni2.total_programs}</div>
-              <div class="metric-sublabel">Programs Offered</div>
+              <div class="metric-sublabel">Programs</div>
+              ${programsWinner === 2 ? '<span class="status-badge better">More Options</span>' : 
+                programsWinner === 1 ? '<span class="status-badge worse">Fewer Options</span>' : 
+                '<span class="status-badge equal">Same</span>'}
             </div>
           </div>
 
           <!-- Ranking -->
           <div class="metric-row">
-            <div class="metric-cell">
-              <div class="winner-indicator ${rankingWinner === 1 ? 'winner' : rankingWinner === 2 ? 'loser' : rankingWinner === 0 ? 'winner' : 'loser'}">
-                ${uni1Ranked ? '✓' : '✗'}
-              </div>
-              <div class="ranking-text ${uni1Ranked ? 'ranked' : 'not-ranked'}">
-                ${uni1.ranking}
-              </div>
+            <div class="metric-cell ${rankingWinner === 1 ? 'winner' : rankingWinner === 2 ? 'loser' : rankingWinner === 0 ? 'neutral' : ''}">
+              <div class="ranking-text">${uni1.ranking}</div>
+              ${rankingWinner === 1 ? '<span class="status-badge better">Ranked</span>' : 
+                rankingWinner === 2 ? '<span class="status-badge worse">Not Ranked</span>' : 
+                rankingWinner === 0 ? '<span class="status-badge equal">Both Ranked</span>' : 
+                '<span class="status-badge worse">Not Ranked</span>'}
             </div>
             
-            <div class="metric-label">🏆 Asia Rankings 2025</div>
+            <div class="metric-label-container">
+              <div class="metric-label">🏆 Asia Rankings</div>
+              <div class="metric-hint">QS 2025</div>
+            </div>
             
-            <div class="metric-cell">
-              <div class="winner-indicator ${rankingWinner === 2 ? 'winner' : rankingWinner === 1 ? 'loser' : rankingWinner === 0 ? 'winner' : 'loser'}">
-                ${uni2Ranked ? '✓' : '✗'}
-              </div>
-              <div class="ranking-text ${uni2Ranked ? 'ranked' : 'not-ranked'}">
-                ${uni2.ranking}
-              </div>
+            <div class="metric-cell ${rankingWinner === 2 ? 'winner' : rankingWinner === 1 ? 'loser' : rankingWinner === 0 ? 'neutral' : ''}">
+              <div class="ranking-text">${uni2.ranking}</div>
+              ${rankingWinner === 2 ? '<span class="status-badge better">Ranked</span>' : 
+                rankingWinner === 1 ? '<span class="status-badge worse">Not Ranked</span>' : 
+                rankingWinner === 0 ? '<span class="status-badge equal">Both Ranked</span>' : 
+                '<span class="status-badge worse">Not Ranked</span>'}
             </div>
           </div>
 
           <!-- Fees -->
           <div class="metric-row">
-            <div class="metric-cell">
-              <div class="winner-indicator ${feeWinner === 1 ? 'winner' : feeWinner === 2 ? 'loser' : 'neutral'}">
-                ${feeWinner === 1 ? '✓' : feeWinner === 2 ? '✗' : '−'}
-              </div>
+            <div class="metric-cell ${feeWinner === 1 ? 'winner' : feeWinner === 2 ? 'loser' : 'neutral'}">
               ${uni1.avg_fee > 0 ? `
                 <div class="metric-value">PKR ${uni1.avg_fee.toLocaleString()}</div>
-                <div class="metric-sublabel">Average First Year Fee</div>
-              ` : '<div class="metric-sublabel">No fee data available</div>'}
+                <div class="metric-sublabel">Avg Fee</div>
+                ${feeWinner === 1 ? '<span class="status-badge better">More Affordable</span>' : 
+                  feeWinner === 2 ? '<span class="status-badge worse">More Expensive</span>' : 
+                  '<span class="status-badge equal">Same Range</span>'}
+              ` : '<div class="metric-sublabel">No data</div>'}
             </div>
             
-            <div class="metric-label">💰 Average Tuition Fee</div>
+            <div class="metric-label-container">
+              <div class="metric-label">💰 Tuition Fee</div>
+              <div class="metric-hint">Avg first year</div>
+            </div>
             
-            <div class="metric-cell">
-              <div class="winner-indicator ${feeWinner === 2 ? 'winner' : feeWinner === 1 ? 'loser' : 'neutral'}">
-                ${feeWinner === 2 ? '✓' : feeWinner === 1 ? '✗' : '−'}
-              </div>
+            <div class="metric-cell ${feeWinner === 2 ? 'winner' : feeWinner === 1 ? 'loser' : 'neutral'}">
               ${uni2.avg_fee > 0 ? `
                 <div class="metric-value">PKR ${uni2.avg_fee.toLocaleString()}</div>
-                <div class="metric-sublabel">Average First Year Fee</div>
-              ` : '<div class="metric-sublabel">No fee data available</div>'}
+                <div class="metric-sublabel">Avg Fee</div>
+                ${feeWinner === 2 ? '<span class="status-badge better">More Affordable</span>' : 
+                  feeWinner === 1 ? '<span class="status-badge worse">More Expensive</span>' : 
+                  '<span class="status-badge equal">Same Range</span>'}
+              ` : '<div class="metric-sublabel">No data</div>'}
             </div>
           </div>
 
           <!-- Eligibility -->
           <div class="metric-row">
-            <div class="metric-cell">
+            <div class="metric-cell ${eligibilityWinner === 1 ? 'winner' : eligibilityWinner === 2 ? 'loser' : 'neutral'}">
               ${uni1HasEligibility ? `
-                <div class="winner-indicator ${eligibilityWinner === 1 ? 'winner' : eligibilityWinner === 2 ? 'loser' : 'neutral'}">
-                  ${eligibilityWinner === 1 ? '✓' : eligibilityWinner === 2 ? '✗' : '−'}
-                </div>
                 <div class="eligibility-box">
                   ${uni1.avg_eligibility.avg_matric > 0 ? `
                     <div class="eligibility-item">
@@ -737,16 +887,19 @@
                     </div>
                   ` : ''}
                 </div>
-              ` : '<div class="metric-sublabel">No eligibility data</div>'}
+                ${eligibilityWinner === 1 ? '<span class="status-badge better">Easier Entry</span>' : 
+                  eligibilityWinner === 2 ? '<span class="status-badge worse">Harder Entry</span>' : 
+                  '<span class="status-badge equal">Similar</span>'}
+              ` : '<div class="metric-sublabel">No data</div>'}
             </div>
             
-            <div class="metric-label">📊 Avg Entry Requirements<br><span style="font-size: 0.85rem; font-weight: 600; color: #64748b;">(Lower is easier to enter)</span></div>
+            <div class="metric-label-container">
+              <div class="metric-label">📊 Entry Requirements</div>
+              <div class="metric-hint">Average minimum</div>
+            </div>
             
-            <div class="metric-cell">
+            <div class="metric-cell ${eligibilityWinner === 2 ? 'winner' : eligibilityWinner === 1 ? 'loser' : 'neutral'}">
               ${uni2HasEligibility ? `
-                <div class="winner-indicator ${eligibilityWinner === 2 ? 'winner' : eligibilityWinner === 1 ? 'loser' : 'neutral'}">
-                  ${eligibilityWinner === 2 ? '✓' : eligibilityWinner === 1 ? '✗' : '−'}
-                </div>
                 <div class="eligibility-box">
                   ${uni2.avg_eligibility.avg_matric > 0 ? `
                     <div class="eligibility-item">
@@ -761,14 +914,103 @@
                     </div>
                   ` : ''}
                 </div>
-              ` : '<div class="metric-sublabel">No eligibility data</div>'}
+                ${eligibilityWinner === 2 ? '<span class="status-badge better">Easier Entry</span>' : 
+                  eligibilityWinner === 1 ? '<span class="status-badge worse">Harder Entry</span>' : 
+                  '<span class="status-badge equal">Similar</span>'}
+              ` : '<div class="metric-sublabel">No data</div>'}
             </div>
+          </div>
+        </div>
+
+        <!-- Summary Card -->
+        <div class="summary-card">
+          <div class="summary-header">
+            <h3>📋 Comparison Summary</h3>
+            <p>Quick overview to help you decide</p>
+          </div>
+
+          <div class="summary-grid">
+            <div class="summary-section">
+              <h4>🏛️ ${uni1.name}</h4>
+              <div class="summary-item">
+                <span class="summary-item-label">Location</span>
+                <span class="summary-item-value">${city1}</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-item-label">Total Programs</span>
+                <span class="summary-item-value">${uni1.total_programs}</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-item-label">Ranking Status</span>
+                <span class="summary-item-value">${uni1Ranked ? '✓ Ranked' : '✗ Not Ranked'}</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-item-label">Avg Fee</span>
+                <span class="summary-item-value">${uni1.avg_fee > 0 ? 'PKR ' + uni1.avg_fee.toLocaleString() : 'N/A'}</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-item-label">Advantages Won</span>
+                <span class="summary-item-value" style="color: #059669; font-size: 1.3rem;">${uni1Score}/4</span>
+              </div>
+            </div>
+
+            <div class="summary-section">
+              <h4>🏛️ ${uni2.name}</h4>
+              <div class="summary-item">
+                <span class="summary-item-label">Location</span>
+                <span class="summary-item-value">${city2}</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-item-label">Total Programs</span>
+                <span class="summary-item-value">${uni2.total_programs}</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-item-label">Ranking Status</span>
+                <span class="summary-item-value">${uni2Ranked ? '✓ Ranked' : '✗ Not Ranked'}</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-item-label">Avg Fee</span>
+                <span class="summary-item-value">${uni2.avg_fee > 0 ? 'PKR ' + uni2.avg_fee.toLocaleString() : 'N/A'}</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-item-label">Advantages Won</span>
+                <span class="summary-item-value" style="color: #059669; font-size: 1.3rem;">${uni2Score}/4</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="recommendation">
+            <h4>💡 Our Analysis</h4>
+            ${uni1Score > uni2Score ? `
+              <p class="recommendation-text">
+                Based on the metrics compared, <strong>${uni1.name}</strong> has a slight edge with ${uni1Score} advantages compared to ${uni2.name}'s ${uni2Score}.
+              </p>
+              <div class="recommendation-winner">${uni1.name} appears stronger overall</div>
+              <p class="recommendation-text" style="font-size: 0.9rem; color: #64748b;">
+                However, the best choice depends on your priorities: program availability, budget, ranking importance, and admission chances.
+              </p>
+            ` : uni2Score > uni1Score ? `
+              <p class="recommendation-text">
+                Based on the metrics compared, <strong>${uni2.name}</strong> has a slight edge with ${uni2Score} advantages compared to ${uni1.name}'s ${uni1Score}.
+              </p>
+              <div class="recommendation-winner">${uni2.name} appears stronger overall</div>
+              <p class="recommendation-text" style="font-size: 0.9rem; color: #64748b;">
+                However, the best choice depends on your priorities: program availability, budget, ranking importance, and admission chances.
+              </p>
+            ` : `
+              <p class="recommendation-text">
+                Both universities are evenly matched with ${uni1Score} advantages each. The decision comes down to personal preferences.
+              </p>
+              <div class="recommendation-winner" style="background: linear-gradient(135deg, #3b82f6, #8b5cf6);">It's a tie!</div>
+              <p class="recommendation-text" style="font-size: 0.9rem; color: #64748b;">
+                Consider visiting campuses, checking specific programs, and evaluating location convenience to make your final decision.
+              </p>
+            `}
           </div>
         </div>
       `;
     }
 
-    // Initialize
     loadUniversities();
   </script>
   <script src="chatWidget.js"></script>
