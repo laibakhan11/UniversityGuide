@@ -7,31 +7,29 @@
   <link rel="stylesheet" href="home.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 
-
   <style>
     
-.hero {
-  background: linear-gradient(135deg, #eef2ff, #c7d2fe);
-  text-align: center;
-  padding: 5rem 0 4rem;
-  border-bottom: none;
-}
-.hero h1 {
-  font-size: 4rem;
-  font-weight: 900;
-  background: linear-gradient(135deg, #1e40af, #8b5cf6);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
+    .hero {
+      background: linear-gradient(135deg, #eef2ff, #c7d2fe);
+      text-align: center;
+      padding: 5rem 0 4rem;
+      border-bottom: none;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 7vw, 4rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, #1e40af, #8b5cf6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
     .hero .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
 
     .subtitle {
       font-size: 1.2rem;
@@ -51,7 +49,6 @@
       margin: 2rem 0;
       flex-wrap: wrap;
     }
-    
 
     .stat-card {
       background: linear-gradient(135deg, #ffffff, #f1f5f9);
@@ -113,6 +110,8 @@
       font-size: 1rem;
       font-weight: 600;
       transition: all 0.3s;
+      font-family: inherit;
+      white-space: nowrap;
     }
 
     .filter-btn:hover:not(.active) {
@@ -224,18 +223,14 @@
       box-shadow: 0 -4px 20px rgba(0,0,0,0.03);
     }
 
-    .footer-content {
-      text-align: center;
-    }
-
-    .footer-logo {
-      margin-bottom: 1rem;
-    }
+    .footer-content { text-align: center; }
+    .footer-logo { margin-bottom: 1rem; }
 
     .footer-links {
       display: flex;
       gap: 2rem;
       justify-content: center;
+      flex-wrap: wrap;
       margin-bottom: 1.5rem;
     }
 
@@ -258,38 +253,130 @@
       transition: width 0.4s ease;
     }
 
-    .footer-links a:hover {
-      color: #3b82f6;
+    .footer-links a:hover { color: #3b82f6; }
+    .footer-links a:hover::after { width: 100%; }
+    .copyright { color: #718096; font-size: 0.9rem; }
+
+    /* ── Hamburger ── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+      flex-shrink: 0;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: #3b82f6;
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ── Mobile nav ── */
+    .mobile-nav {
+      display: none;
+      flex-direction: column;
+      background: white;
+      border-top: 1px solid #e2e8f0;
+      padding: 0.75rem 1.5rem 1rem;
+      gap: 0.25rem;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav .nav-link {
+      display: block;
+      margin-left: 0;
+      padding: 0.65rem 0.75rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      color: #475569;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .mobile-nav .nav-link:hover { background: #eef2ff; color: #3b82f6; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .nav { display: none; }
+      .hamburger { display: flex; }
     }
 
-    .footer-links a:hover::after {
-      width: 100%;
-    }
+    @media (max-width: 640px) {
+      .hero { padding: 3rem 1rem 2rem; }
+      .subtitle { font-size: 1rem; }
 
-    .copyright {
-      color: #718096;
-      font-size: 0.9rem;
+      .deadlines-container { padding: 0 1rem; }
+
+      .stats-bar { gap: 0.75rem; }
+      .stat-card { padding: 1rem 1.25rem; min-width: 80px; }
+      .stat-number { font-size: 1.8rem; }
+      .stat-label { font-size: 0.78rem; }
+
+      /* Horizontally scrollable pill filters */
+      .filters-bar {
+        border-radius: 20px;
+        padding: 0.75rem;
+        gap: 0.5rem;
+        justify-content: flex-start;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        top: 64px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .filters-bar::-webkit-scrollbar { display: none; }
+
+      .filter-btn {
+        padding: 0.6rem 1.1rem;
+        font-size: 0.88rem;
+        flex-shrink: 0;
+      }
+
+      .section-header { font-size: 1.4rem; }
+
+      .deadline-card { padding: 1.25rem; border-radius: 16px; }
+      .deadline-uni { font-size: 1.1rem; }
+      .deadline-title { font-size: 0.95rem; }
+      .deadline-date { font-size: 0.9rem; }
     }
-    
   </style>
 </head>
 <body>
+
   <header class="header">
-  <div class="container header-content">
-    <div class="logo">
-      <span class="logo-text">UniGuide</span>
-    </div>
-    <nav class="nav">
+    <div class="container header-content">
+      <div class="logo">
+        <span class="logo-text">UniGuide</span>
+      </div>
+      <nav class="nav">
         <a href="home.html" class="nav-link">Home</a>
+        <a href="universities.html" class="nav-link">Universities</a>
+        <a href="deadlines.html" class="nav-link">Deadlines</a>
+        <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
+        <a href="compare.html" class="nav-link">Compare Universities</a>
+        <a href="chat.html" class="nav-link">AI Chat</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="mobile-nav" id="mobileNav">
+      <a href="home.html" class="nav-link">Home</a>
       <a href="universities.html" class="nav-link">Universities</a>
       <a href="deadlines.html" class="nav-link">Deadlines</a>
       <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
       <a href="compare.html" class="nav-link">Compare Universities</a>
       <a href="chat.html" class="nav-link">AI Chat</a>
     </nav>
-  </div>
- </header>
-
+  </header>
 
   <section class="hero">
     <div class="container">
@@ -349,96 +436,79 @@
         <span class="logo-text">UniGuide</span>
       </div>
       <div class="footer-links">
-        <a href="home.html" class="nav-link">Home</a>
-      <a href="universities.html" class="nav-link">Universities</a>
-      <a href="deadlines.html" class="nav-link">Deadlines</a>
-      <a href="aggregateCalculator.html" class="nav-link">Aggregate Calculator</a>
-      <a href="compare.html" class="nav-link">Compare Universities</a>
-      <a href="chat.html" class="nav-link">AI Chat</a>
+        <a href="home.html">Home</a>
+        <a href="universities.html">Universities</a>
+        <a href="deadlines.html">Deadlines</a>
+        <a href="aggregateCalculator.html">Aggregate Calculator</a>
+        <a href="compare.html">Compare Universities</a>
+        <a href="chat.html">AI Chat</a>
       </div>
       <p class="copyright">© 2025 UniGuide. All rights reserved.</p>
     </div>
   </footer>
 
   <script>
-    // Production API URL
+    // ── Hamburger ──
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobileNav');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileNav.classList.toggle('open');
+    });
+    mobileNav.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileNav.classList.remove('open');
+      });
+    });
+
+    // ── App logic (unchanged) ──
     const API_URL = 'https://universityguide.onrender.com';
-    
     let allDeadlines = [];
     let currentFilter = 'upcoming';
 
     function parseTimestamp(timestampOrDate) {
-      if (typeof timestampOrDate === 'number') {
-        return new Date(timestampOrDate * 1000);
-      }
-      if (timestampOrDate && typeof timestampOrDate === 'string') {
-        return new Date(timestampOrDate);
-      }
+      if (typeof timestampOrDate === 'number') return new Date(timestampOrDate * 1000);
+      if (timestampOrDate && typeof timestampOrDate === 'string') return new Date(timestampOrDate);
       return null;
     }
 
     function categorizeDeadline(deadline) {
       const deadlineDate = parseTimestamp(deadline.timestamp || deadline.parsed_date);
       if (!deadlineDate) return 'upcoming';
-      
-      const now = new Date();
-      now.setHours(0, 0, 0, 0);
-      
-      const oneWeek = new Date();
-      oneWeek.setDate(oneWeek.getDate() + 7);
-      oneWeek.setHours(23, 59, 59, 999);
-      
+      const now = new Date(); now.setHours(0, 0, 0, 0);
+      const oneWeek = new Date(); oneWeek.setDate(oneWeek.getDate() + 7); oneWeek.setHours(23, 59, 59, 999);
       deadlineDate.setHours(23, 59, 59, 999);
-      
-      if (deadlineDate < now) {
-        return 'passed';
-      } else if (deadlineDate <= oneWeek) {
-        return 'this-week';
-      } else {
-        return 'upcoming';
-      }
+      if (deadlineDate < now) return 'passed';
+      else if (deadlineDate <= oneWeek) return 'this-week';
+      else return 'upcoming';
     }
 
     function getDaysRemaining(deadline) {
       const deadlineDate = parseTimestamp(deadline.timestamp || deadline.parsed_date);
       if (!deadlineDate) return null;
-      
-      const now = new Date();
-      now.setHours(0, 0, 0, 0);
+      const now = new Date(); now.setHours(0, 0, 0, 0);
       deadlineDate.setHours(0, 0, 0, 0);
-      
-      const diff = Math.ceil((deadlineDate - now) / (1000 * 60 * 60 * 24));
-      return diff;
+      return Math.ceil((deadlineDate - now) / (1000 * 60 * 60 * 24));
     }
 
     function createDeadlineCard(deadline) {
       const category = categorizeDeadline(deadline);
       const daysLeft = getDaysRemaining(deadline);
-      
       const card = document.createElement('div');
       card.className = `deadline-card ${category}`;
       card.dataset.category = category;
-      
       let urgencyBadge = '';
       if (daysLeft !== null && daysLeft >= 0) {
-        if (daysLeft === 0) {
-          urgencyBadge = '<span class="urgency-badge urgent">TODAY!</span>';
-        } else if (daysLeft <= 3) {
-          urgencyBadge = `<span class="urgency-badge urgent">${daysLeft} days left</span>`;
-        } else if (daysLeft <= 7) {
-          urgencyBadge = `<span class="urgency-badge">${daysLeft} days left</span>`;
-        }
+        if (daysLeft === 0) urgencyBadge = '<span class="urgency-badge urgent">TODAY!</span>';
+        else if (daysLeft <= 3) urgencyBadge = `<span class="urgency-badge urgent">${daysLeft} days left</span>`;
+        else if (daysLeft <= 7) urgencyBadge = `<span class="urgency-badge">${daysLeft} days left</span>`;
       }
-      
       card.innerHTML = `
         <div class="deadline-uni">${deadline.university_name}</div>
         <div class="deadline-title">${deadline.title}</div>
-        <div class="deadline-date">
-          📅 ${deadline.deadline_date}
-          ${urgencyBadge}
-        </div>
+        <div class="deadline-date">📅 ${deadline.deadline_date} ${urgencyBadge}</div>
       `;
-      
       return card;
     }
 
@@ -446,84 +516,51 @@
       const upcomingList = document.getElementById('upcoming-list');
       const thisWeekList = document.getElementById('this-week-list');
       const passedList = document.getElementById('passed-list');
-      
-      upcomingList.innerHTML = '';
-      thisWeekList.innerHTML = '';
-      passedList.innerHTML = '';
-      
-      let upcomingCount = 0;
-      let thisWeekCount = 0;
-      let passedCount = 0;
-      
+      upcomingList.innerHTML = ''; thisWeekList.innerHTML = ''; passedList.innerHTML = '';
+      let upcomingCount = 0, thisWeekCount = 0, passedCount = 0;
       allDeadlines.forEach(deadline => {
         const card = createDeadlineCard(deadline);
         const category = categorizeDeadline(deadline);
-        
         if (category === 'this-week') {
           thisWeekList.appendChild(card.cloneNode(true));
           upcomingList.appendChild(card);
-          thisWeekCount++;
-          upcomingCount++;
+          thisWeekCount++; upcomingCount++;
         } else if (category === 'upcoming') {
-          upcomingList.appendChild(card);
-          upcomingCount++;
+          upcomingList.appendChild(card); upcomingCount++;
         } else if (category === 'passed') {
-          passedList.appendChild(card);
-          passedCount++;
+          passedList.appendChild(card); passedCount++;
         }
       });
-      
-      // Update stats
       document.getElementById('stat-upcoming').textContent = upcomingCount;
       document.getElementById('stat-this-week').textContent = thisWeekCount;
       document.getElementById('stat-total').textContent = allDeadlines.length;
-      
-      // Show/hide sections based on filter
       applyFilter(currentFilter);
     }
 
     function applyFilter(filter) {
       currentFilter = filter;
-      
       const upcomingSection = document.getElementById('upcoming-section');
       const thisWeekSection = document.getElementById('this-week-section');
       const passedSection = document.getElementById('passed-section');
       const noResults = document.getElementById('no-results');
-      
       upcomingSection.style.display = 'none';
       thisWeekSection.style.display = 'none';
       passedSection.style.display = 'none';
       noResults.style.display = 'none';
-      
       const upcomingCount = document.querySelectorAll('#upcoming-list .deadline-card').length;
       const thisWeekCount = document.querySelectorAll('#this-week-list .deadline-card').length;
       const passedCount = document.querySelectorAll('#passed-list .deadline-card').length;
-      
       if (filter === 'upcoming') {
-        if (upcomingCount > 0) {
-          upcomingSection.style.display = 'block';
-        } else {
-          noResults.style.display = 'block';
-        }
+        upcomingCount > 0 ? upcomingSection.style.display = 'block' : noResults.style.display = 'block';
       } else if (filter === 'this-week') {
-        if (thisWeekCount > 0) {
-          thisWeekSection.style.display = 'block';
-        } else {
-          noResults.style.display = 'block';
-        }
+        thisWeekCount > 0 ? thisWeekSection.style.display = 'block' : noResults.style.display = 'block';
       } else if (filter === 'passed') {
-        if (passedCount > 0) {
-          passedSection.style.display = 'block';
-        } else {
-          noResults.style.display = 'block';
-        }
+        passedCount > 0 ? passedSection.style.display = 'block' : noResults.style.display = 'block';
       } else if (filter === 'all') {
         if (upcomingCount > 0) upcomingSection.style.display = 'block';
         if (thisWeekCount > 0) thisWeekSection.style.display = 'block';
         if (passedCount > 0) passedSection.style.display = 'block';
-        if (upcomingCount === 0 && thisWeekCount === 0 && passedCount === 0) {
-          noResults.style.display = 'block';
-        }
+        if (!upcomingCount && !thisWeekCount && !passedCount) noResults.style.display = 'block';
       }
     }
 
@@ -531,9 +568,7 @@
       try {
         const res = await fetch(`${API_URL}/api/deadlines`);
         const data = await res.json();
-        
         document.getElementById('loading').style.display = 'none';
-        
         if (data.deadlines && data.deadlines.length > 0) {
           allDeadlines = data.deadlines;
           document.getElementById('stats-bar').style.display = 'flex';
@@ -548,7 +583,6 @@
       }
     }
 
-    // Filter button handlers
     document.querySelectorAll('.filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));

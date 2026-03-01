@@ -224,7 +224,7 @@ html {
   margin-bottom: 4rem;
   background: linear-gradient(135deg, #1e293b, #475569);
   -webkit-background-clip: text;
-    background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -298,6 +298,7 @@ html {
   flex-direction: column;
   align-items: center;
   text-align: center;
+  padding: 0 1.5rem;
 }
 
 .footer-logo .logo-text {
@@ -307,6 +308,13 @@ html {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 1.5rem;
 }
 
 .footer-links a {
@@ -325,6 +333,8 @@ html {
   margin-top: 3rem;
   color: #64748b;
   font-size: 0.95rem;
+  padding: 0 1rem;
+  text-align: center;
 }
 
 /* Responsive */
@@ -339,4 +349,29 @@ html {
   .search-boxes { flex-direction: column; align-items: stretch; }
   .search-btn { width: 100%; }
   .nav-link { margin-left: 1.5rem; }
+
+  /* Footer mobile */
+  .footer {
+    padding: 4rem 0 2.5rem;
+  }
+
+  .footer-logo .logo-text {
+    font-size: 1.8rem;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .footer-links a {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  .copyright {
+    margin-top: 2rem;
+    font-size: 0.875rem;
+  }
 }

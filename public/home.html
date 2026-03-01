@@ -23,7 +23,7 @@
     /* Hero Section */
     .hero {
       background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1)), #ffffff;
-      padding: 4rem 0 3rem;
+      padding: 4rem 1rem 3rem;
       text-align: center;
       border-bottom: 1px solid #e2e8f0;
     }
@@ -53,6 +53,7 @@
       max-width: 800px;
       margin: 0 auto 2rem;
       position: relative;
+      padding: 0 1rem;
     }
 
     .search-bar input {
@@ -79,7 +80,7 @@
       flex-wrap: wrap;
       gap: 0.8rem;
       justify-content: center;
-      padding-bottom: 1rem;
+      padding: 0 1rem 1rem;
     }
 
     .filter-chip {
@@ -114,6 +115,7 @@
       justify-content: center;
       margin: 2.5rem 0;
       flex-wrap: wrap;
+      padding: 0 1rem;
     }
 
     .stat-card {
@@ -122,6 +124,9 @@
       border-radius: 16px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.06);
       border: 2px solid rgba(59,130,246,0.15);
+      flex: 1;
+      min-width: 120px;
+      text-align: center;
     }
 
     .stat-number {
@@ -142,11 +147,12 @@
       margin-top: 0.3rem;
     }
 
-    /* Programs Container - MOVED UP */
+    /* Programs Container */
     .programs-container {
       margin: 0 auto 3rem;
       max-width: 1400px;
       scroll-margin-top: 100px;
+      padding: 0 1rem;
     }
 
     .combined-card {
@@ -302,10 +308,10 @@
       margin-bottom: 1rem;
     }
 
-    /* About Section - AFTER SEARCH RESULTS */
+    /* About Section */
     .about-section {
       background: linear-gradient(135deg, #f8fafc, #ffffff);
-      padding: 5rem 0;
+      padding: 5rem 1rem;
       margin-top: 3rem;
       border-top: 1px solid #e2e8f0;
     }
@@ -389,10 +395,30 @@
       line-height: 1.6;
     }
 
+    /* Header nav – hamburger for mobile */
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: #475569;
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
     /* Footer */
     .footer {
       background: #1e293b;
-      padding: 3rem 0;
+      padding: 3rem 1rem;
       margin-top: 4rem;
     }
 
@@ -424,7 +450,8 @@
       font-size: 0.9rem;
     }
 
-    /* Responsive */
+    /* ── Responsive ── */
+
     @media (max-width: 1200px) {
       .features-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -437,54 +464,220 @@
       }
 
       .program-row {
-        grid-template-columns: 1fr;
-        gap: 0.5rem;
-        text-align: left;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.6rem;
+        padding: 1rem;
+      }
+
+      .program-row:hover {
+        transform: none;
+      }
+
+      .program-name-cell {
+        grid-column: 1 / -1;
+        font-size: 1rem;
       }
 
       .fee-cell {
         text-align: left;
       }
 
+      .view-btn {
+        grid-column: 1 / -1;
+        width: 100%;
+        text-align: center;
+        padding: 0.75rem;
+      }
+
       .features-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 1.5rem;
       }
+
+      .combined-card {
+        padding: 1.5rem 1rem;
+      }
     }
 
     @media (max-width: 768px) {
+      /* Header */
+      .header-content {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 1rem 1rem;
+      }
+
+      .nav-toggle {
+        display: flex;
+      }
+
+      .nav {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        gap: 0;
+        background: white;
+        border-top: 1px solid #e2e8f0;
+        margin-top: 0.5rem;
+      }
+
+      .nav.open {
+        display: flex;
+      }
+
+      .nav-link {
+        margin: 0;
+        padding: 0.9rem 0;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 1rem;
+        display: block;
+      }
+
+      .nav-link:last-child {
+        border-bottom: none;
+      }
+
+      /* Hero */
+      .hero {
+        padding: 3rem 1rem 2rem;
+      }
+
       .hero h1 {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
       }
-      
+
       .hero-subtitle {
-        font-size: 1.1rem;
+        font-size: 1rem;
+        margin-bottom: 1.8rem;
       }
 
-      .search-term-title {
-        font-size: 1.8rem;
-      }
-
-      .quick-filters {
-        gap: 0.6rem;
+      .search-bar input {
+        font-size: 1rem;
+        padding: 1rem 1.2rem;
       }
 
       .filter-chip {
         padding: 0.5rem 1rem;
-        font-size: 0.85rem;
+        font-size: 0.82rem;
+      }
+
+      /* Stats */
+      .stats-bar {
+        gap: 0.8rem;
+        margin: 1.5rem 0;
+      }
+
+      .stat-card {
+        padding: 1rem 1.2rem;
+        min-width: 80px;
+      }
+
+      .stat-number {
+        font-size: 1.6rem;
+      }
+
+      .stat-label {
+        font-size: 0.75rem;
+      }
+
+      /* Programs */
+      .search-term-title {
+        font-size: 1.6rem;
+      }
+
+      .results-count {
+        font-size: 0.95rem;
+      }
+
+      .program-row {
+        grid-template-columns: 1fr;
+        gap: 0.4rem;
+      }
+
+      .program-name-cell {
+        font-size: 1rem;
+      }
+
+      .uni-name-cell,
+      .city-cell {
+        font-size: 0.88rem;
+      }
+
+      .fee-cell {
+        font-size: 0.9rem;
+      }
+
+      /* About */
+      .about-section {
+        padding: 3.5rem 1rem;
       }
 
       .about-section h2 {
         font-size: 2rem;
       }
 
+      .about-subtitle {
+        font-size: 1rem;
+        margin-bottom: 2.5rem;
+      }
+
       .features-grid {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
+        gap: 1.2rem;
       }
 
       .feature-card {
-        padding: 2rem 1.5rem;
+        padding: 1.8rem 1.5rem;
+      }
+
+      .feature-icon {
+        font-size: 2.8rem;
+        margin-bottom: 1rem;
+      }
+
+      .feature-title {
+        font-size: 1.1rem;
+      }
+
+      /* Footer */
+      .footer {
+        padding: 2.5rem 1rem;
+        margin-top: 2rem;
+      }
+
+      .footer-links {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.9rem;
+        margin-bottom: 1.2rem;
+      }
+
+      .footer-links a {
+        font-size: 0.95rem;
+      }
+
+      .copyright {
+        font-size: 0.82rem;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+
+      .stats-bar {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
+      .stat-card {
+        flex: 1;
+        padding: 0.8rem 0.6rem;
+      }
+
+      .stat-number {
+        font-size: 1.4rem;
       }
     }
   </style>
@@ -496,7 +689,12 @@
       <div class="logo">
         <span class="logo-text">UniGuide</span>
       </div>
-      <nav class="nav">
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="nav" id="main-nav">
         <a href="home.html" class="nav-link">Home</a>
         <a href="universities.html" class="nav-link">Universities</a>
         <a href="deadlines.html" class="nav-link">Deadlines</a>
@@ -545,7 +743,7 @@
       </div>
       <div class="stat-card">
         <div class="stat-number" id="stat-variations">0</div>
-        <div class="stat-label">Program Variations</div>
+        <div class="stat-label">Variations</div>
       </div>
     </div>
 
@@ -570,74 +768,48 @@
       <p class="about-subtitle">Your complete university admission companion</p>
       
       <div class="features-grid">
-
-  <div class="feature-card">
-    <span class="feature-icon">🔍</span>
-    <div class="feature-title">Program Search</div>
-    <p class="feature-desc">
-      Search university programs across Pakistan from a single, unified platform.
-    </p>
-  </div>
-
-  <div class="feature-card">
-    <span class="feature-icon">🏛️</span>
-    <div class="feature-title">University Information</div>
-    <p class="feature-desc">
-      View programs offered by each university with essential admission details.
-    </p>
-  </div>
-
-  <div class="feature-card">
-    <span class="feature-icon">📅</span>
-    <div class="feature-title">Admission Deadlines</div>
-    <p class="feature-desc">
-      Check current and upcoming admission deadlines for different universities.
-    </p>
-  </div>
-
-  <div class="feature-card">
-    <span class="feature-icon">⚖️</span>
-  <div class="feature-title">Compare Universities</div>
-<p class="feature-desc">
-  Side-by-side comparison of programs, fees, rankings, and entry requirements — with a clear summary to help you decide.
-</p>
-
-  </div>
-
-  <div class="feature-card">
-    <span class="feature-icon">🧮</span>
-    <div class="feature-title">Aggregate Calculator</div>
-    <p class="feature-desc">
-      Calculate your admission aggregate using a unified and simple calculator.
-    </p>
-  </div>
-
-  <div class="feature-card">
-    <span class="feature-icon">💰</span>
-    <div class="feature-title">Program Fee Details</div>
-    <p class="feature-desc">
-      View estimated tuition and program fees to help plan your education costs.
-    </p>
-  </div>
-
-  <div class="feature-card">
-    <span class="feature-icon">🎓</span>
-    <div class="feature-title">Scholarships</div>
-    <p class="feature-desc">
-      Explore scholarships and financial support options offered by universities.
-    </p>
-  </div>
-
-  <div class="feature-card">
-    <span class="feature-icon">🤖</span>
-    <div class="feature-title">AI Admission Help</div>
-    <p class="feature-desc">
-      Ask questions and get guidance related to programs, universities, and admissions.
-    </p>
-  </div>
-
-</div>
-
+        <div class="feature-card">
+          <span class="feature-icon">🔍</span>
+          <div class="feature-title">Program Search</div>
+          <p class="feature-desc">Search university programs across Pakistan from a single, unified platform.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🏛️</span>
+          <div class="feature-title">University Information</div>
+          <p class="feature-desc">View programs offered by each university with essential admission details.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">📅</span>
+          <div class="feature-title">Admission Deadlines</div>
+          <p class="feature-desc">Check current and upcoming admission deadlines for different universities.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">⚖️</span>
+          <div class="feature-title">Compare Universities</div>
+          <p class="feature-desc">Side-by-side comparison of programs, fees, rankings, and entry requirements — with a clear summary to help you decide.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🧮</span>
+          <div class="feature-title">Aggregate Calculator</div>
+          <p class="feature-desc">Calculate your admission aggregate using a unified and simple calculator.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">💰</span>
+          <div class="feature-title">Program Fee Details</div>
+          <p class="feature-desc">View estimated tuition and program fees to help plan your education costs.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🎓</span>
+          <div class="feature-title">Scholarships</div>
+          <p class="feature-desc">Explore scholarships and financial support options offered by universities.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🤖</span>
+          <div class="feature-title">AI Admission Help</div>
+          <p class="feature-desc">Ask questions and get guidance related to programs, universities, and admissions.</p>
+        </div>
+      </div>
+    </div>
   </section>
 
   <footer class="footer">
@@ -658,6 +830,11 @@
   </footer>
 
   <script>
+    // Hamburger toggle
+    document.getElementById('nav-toggle').addEventListener('click', function() {
+      document.getElementById('main-nav').classList.toggle('open');
+    });
+
     const API_URL = 'https://universityguide.onrender.com';
     const urlParams = new URLSearchParams(window.location.search);
     const programQuery = urlParams.get('program') || '';
@@ -699,8 +876,6 @@
             console.error(`Error loading ${uni.name}:`, err);
           }
         }
-        
-        console.log(`Loaded ${allPrograms.length} programs`);
         
         if (programQuery) {
           filterPrograms(programQuery);
@@ -761,10 +936,7 @@
     };
 
     function normalizeText(text) {
-      return text.toLowerCase()
-        .replace(/[^\w\s]/g, ' ')
-        .replace(/\s+/g, ' ')
-        .trim();
+      return text.toLowerCase().replace(/[^\w\s]/g, ' ').replace(/\s+/g, ' ').trim();
     }
 
     function filterPrograms(query) {
@@ -775,40 +947,25 @@
       }
 
       const normQuery = normalizeText(query);
-      
-      let searchTerms = [normQuery];
-      if (programMappings[normQuery]) {
-        searchTerms = programMappings[normQuery];
-      }
+      let searchTerms = programMappings[normQuery] || [normQuery];
       
       filteredPrograms = allPrograms.filter(prog => {
         const normProgName = normalizeText(prog.name);
-        
         for (const term of searchTerms) {
           const termWords = term.split(' ');
           const progWords = normProgName.split(' ');
-          
-          const allWordsMatch = termWords.every(searchWord => 
-            progWords.some(progWord => progWord === searchWord)
-          );
-          
-          if (allWordsMatch) {
-            return true;
-          }
+          if (termWords.every(sw => progWords.some(pw => pw === sw))) return true;
         }
-        
         return false;
       });
       
       filteredPrograms.sort((a, b) => {
         const normA = normalizeText(a.name);
         const normB = normalizeText(b.name);
-        
         for (const term of searchTerms) {
           if (normA === term && normB !== term) return -1;
           if (normB === term && normA !== term) return 1;
         }
-        
         return a.name.localeCompare(b.name);
       });
 
@@ -853,7 +1010,6 @@
               (${uniquePrograms} variations)
             </p>
           </div>
-
           <div class="programs-table">
             <div class="table-header">
               <div>Program Name</div>
@@ -881,19 +1037,15 @@
     function goToProgram(university, programName) {
       window.location.href = `university.html?name=${encodeURIComponent(university)}&program=${encodeURIComponent(programName)}`;
     }
-      // Quick filter chips
+
     document.querySelectorAll('.filter-chip').forEach(chip => {
       chip.addEventListener('click', function() {
         const query = this.getAttribute('data-query');
         document.getElementById('program-search').value = query;
-        
         document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
         this.classList.add('active');
-        
-        const newUrl = `home.html?program=${encodeURIComponent(query)}`;
-        window.history.pushState({}, '', newUrl);
+        window.history.pushState({}, '', `home.html?program=${encodeURIComponent(query)}`);
         document.title = `${query} - UniGuide`;
-        
         filterPrograms(query);
       });
     });
@@ -905,33 +1057,21 @@
       clearTimeout(searchTimeout);
       searchTimeout = setTimeout(() => {
         const query = e.target.value.trim();
-        
         document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-        
-        const newUrl = query 
-          ? `home.html?program=${encodeURIComponent(query)}`
-          : 'home.html';
-        window.history.pushState({}, '', newUrl);
-        
+        window.history.pushState({}, '', query ? `home.html?program=${encodeURIComponent(query)}` : 'home.html');
         document.title = query ? `${query} - UniGuide` : 'UniGuide - Your Ultimate University Guide in Pakistan';
-        
         filterPrograms(query);
       }, 300);
     });
 
-    // Search on Enter key
     searchInput.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') {
         const query = e.target.value.trim();
         if (query) {
           clearTimeout(searchTimeout);
-          
           document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-          
-          const newUrl = `home.html?program=${encodeURIComponent(query)}`;
-          window.history.pushState({}, '', newUrl);
+          window.history.pushState({}, '', `home.html?program=${encodeURIComponent(query)}`);
           document.title = `${query} - UniGuide`;
-          
           filterPrograms(query);
         }
       }
