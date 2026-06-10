@@ -157,8 +157,8 @@ print(f"   → Total: {len(programs)} programs scraped")
 
 req = requests.get("https://itu.edu.pk/admissions/")
 soup = BeautifulSoup(req.text, "html.parser")
-table = soup.find('table', class_="table table-bordered table-hovered")
-rows = table.find_all('tr')[1:] 
+table = soup.find('table', class_="table table-striped")  
+rows = table.find_all('tr')[1:]
 deadlines = []
 
 undergrad_keywords = ["undergraduate", "bs", "sat", "usat", "nat", "ecat", 

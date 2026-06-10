@@ -31,24 +31,21 @@ for row in rows:
     )
     scholarships.append(scholarship)
 
-rows=tables[1].find_all('tr')[1:]
-for row in rows:
-    cols=row.find_all('td')
-    name=cols[0].text.strip()
-    type="merit" if "merit" in cols[1].text.strip().lower() else "need-based" if "need" in cols[1].text.strip().lower() else "other"
-    link_tag=cols[0].find('a')
-    link=link_tag['href'].strip() if link_tag else ""
-    title = cols[1].get_text(strip=True)
-    imp = cols[4].get_text(strip=True)
-    notes = f"{title} - {imp}"   
-    scholarship=Scholarship(
-            name=name,
-            type=type,
-            link=link,
-            notes=notes
-    )
-    scholarships.append(scholarship)
-
+if len(tables) > 1:
+    rows = tables[1].find_all('tr')[1:]
+    for row in rows:
+        cols = row.find_all('td')
+        if len(cols) < 5:  # safety check bhi
+            continue
+        name = cols[0].text.strip()
+        type = "merit" if "merit" in cols[1].text.strip().lower() else "need-based" if "need" in cols[1].text.strip().lower() else "other"
+        link_tag = cols[0].find('a')
+        link = link_tag['href'].strip() if link_tag else ""
+        title = cols[1].get_text(strip=True)
+        imp = cols[4].get_text(strip=True)
+        notes = f"{title} - {imp}"
+        scholarship = Scholarship(name=name, type=type, link=link, notes=notes)
+        scholarships.append(scholarship)
 
 req= requests.get("https://giki.edu.pk/admissions/admissions-undergraduates/", verify=False)
 soup=BeautifulSoup(req.text,'html.parser')

@@ -12,16 +12,21 @@ url = "https://admission.lums.edu.pk/critical-dates-all-programmes"
 r = requests.get(url)
 soup = BeautifulSoup(r.text, "html.parser")
 deadlines = soup.find(id="quicktabs-tabpage-admissions-calendar-0")
-UGdeadlines = deadlines.find_all("div", class_="views-row form-group")
+UGdeadlines = deadlines.find_all("div", class_="col-custom views-row")
 alldeadlines = []
 
 for deadline in UGdeadlines:
-    title = deadline.find("div", class_="views-field views-field-nothing").find("div", class_="date-month-container2").find("div", class_="date-title").get_text(strip=True)
-    date = deadline.find("div", class_="views-field views-field-nothing").find("div", class_="date-month-container2").find("div", class_="date-long").get_text(strip=False)
-    alldeadlines.append({
-        "title": title,
-        "deadline_date": date
-    })
+    date = deadline.find("div", class_="views-field-field-activity-date")
+    date = date.get_text(strip=True) if date else ""
+
+    title_div = deadline.find("div", class_="views-field views-field-field-calendar-activity")
+    title = title_div.find("div", class_="field-content").get_text(strip=True) if title_div else ""
+
+    if title and date:
+        alldeadlines.append({
+            "title": title,
+            "deadline_date": date
+        })
 
 lums = University(
     name="LUMS",
@@ -31,7 +36,7 @@ lums = University(
     website="https://lums.edu.pk",
     email="admissions@lums.edu.pk",
     admission_link="https://admission.lums.edu.pk",
-    introduction="Lahore University of Management Sciences (LUMS), established in 1984, is Pakistan’s most prestigious private university and is internationally recognized for academic excellence, research, and leadership development. It is most famous for its highly competitive admissions process, generous need-based financial aid program, and the renowned Suleman Dawood School of Business, which ranks among Asia’s top business schools. LUMS offers undergraduate and graduate programs in business, economics, computer science, engineering, law, social sciences, and humanities. Located in Lahore, its 100-acre purpose-built campus hosts students from diverse socioeconomic backgrounds and promotes critical thinking, innovation, and interdisciplinary learning. LUMS graduates consistently secure top positions in multinational companies, global consulting firms, tech giants, and policy institutions.",
+    introduction="Lahore University of Management Sciences (LUMS), established in 1984, is Pakistan's most prestigious private university and is internationally recognized for academic excellence, research, and leadership development. It is most famous for its highly competitive admissions process, generous need-based financial aid program, and the renowned Suleman Dawood School of Business, which ranks among Asia's top business schools. LUMS offers undergraduate and graduate programs in business, economics, computer science, engineering, law, social sciences, and humanities. Located in Lahore, its 100-acre purpose-built campus hosts students from diverse socioeconomic backgrounds and promotes critical thinking, innovation, and interdisciplinary learning. LUMS graduates consistently secure top positions in multinational companies, global consulting firms, tech giants, and policy institutions.",
     programs=[
         # Business School Programs
         Program(
@@ -56,7 +61,7 @@ lums = University(
                 notes="O/A-Levels: B average in 8 O-Level subjects, 2Bs+1C in A-Levels"
             )
         ),
-        
+
         # Humanities & Social Sciences Programs
         Program(
             name="BA (Honours) English",
@@ -168,7 +173,7 @@ lums = University(
                 notes="O/A-Levels: B average in 8 O-Level subjects, 2Bs+1C in A-Levels"
             )
         ),
-        
+
         # Science & Engineering Programs
         Program(
             name="BSc (Honours) Biology",
@@ -247,7 +252,7 @@ lums = University(
                 notes="FSc Pre-Engineering. O/A-Levels with science subjects"
             )
         ),
-        
+
         # Law School
         Program(
             name="BA-LL.B (Honours)",
@@ -261,7 +266,7 @@ lums = University(
             )
         ),
     ],
-    
+
     scholarships=[
         Scholarship(
             name="LUMS Financial Aid",
@@ -294,7 +299,7 @@ lums = University(
             link="https://financial-aid.lums.edu.pk/international-students-scholarship"
         ),
     ],
-    
+
     deadlines=[
         EmbeddedDeadline(
             title=d["title"],
@@ -303,23 +308,25 @@ lums = University(
     ]
 )
 
+
 def save_to_database():
     db = get_db()
-    
+
     db.universities.delete_many({"name": "LUMS"})
     db.deadlines.delete_many({"university_name": "LUMS"})
-    
-    db.universities.insert_one(lums.dict())
-    
+
+    db.universities.insert_one(lums.model_dump())
+
     for d in alldeadlines:
         deadline_obj = Deadline(
             university_name="LUMS",
             title=d["title"],
             deadline_date=d["deadline_date"],
         )
-        db.deadlines.insert_one(deadline_obj.dict())
-    
+        db.deadlines.insert_one(deadline_obj.model_dump())
+
     print("LUMS data saved successfully")
+
 
 if __name__ == "__main__":
     save_to_database()
