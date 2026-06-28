@@ -20,6 +20,26 @@
       line-height: 1.6;
     }
 
+    .view-more-btn {
+      display: block;
+      margin: 1rem auto 0.5rem;
+      padding: 0.85rem 2.5rem;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.3s;
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
+    }
+    .view-more-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(59, 130, 246, 0.45);
+    }
+
     /* Hero Section */
     .hero {
       background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1)), #ffffff;
@@ -48,7 +68,6 @@
       margin-right: auto;
     }
 
-    /* Search Bar */
     .search-bar {
       max-width: 800px;
       margin: 0 auto 2rem;
@@ -72,7 +91,6 @@
       box-shadow: 0 0 0 4px rgba(59,130,246,0.1);
     }
 
-    /* Quick Filters */
     .quick-filters {
       max-width: 900px;
       margin: 0 auto;
@@ -108,7 +126,6 @@
       border-color: transparent;
     }
 
-    /* Stats Bar */
     .stats-bar {
       display: flex;
       gap: 1.5rem;
@@ -147,7 +164,6 @@
       margin-top: 0.3rem;
     }
 
-    /* Programs Container */
     .programs-container {
       margin: 0 auto 3rem;
       max-width: 1400px;
@@ -185,7 +201,6 @@
       font-weight: 600;
     }
 
-    /* Programs Table */
     .programs-table {
       display: grid;
       gap: 0.6rem;
@@ -272,7 +287,6 @@
       box-shadow: 0 6px 16px rgba(59,130,246,0.4);
     }
 
-    /* Loading State */
     .loading {
       text-align: center;
       padding: 4rem 2rem;
@@ -308,7 +322,6 @@
       margin-bottom: 1rem;
     }
 
-    /* About Section */
     .about-section {
       background: linear-gradient(135deg, #f8fafc, #ffffff);
       padding: 5rem 1rem;
@@ -395,7 +408,6 @@
       line-height: 1.6;
     }
 
-    /* Header nav – hamburger for mobile */
     .nav-toggle {
       display: none;
       background: none;
@@ -415,7 +427,6 @@
       transition: all 0.3s;
     }
 
-    /* Footer */
     .footer {
       background: #1e293b;
       padding: 3rem 1rem;
@@ -450,67 +461,28 @@
       font-size: 0.9rem;
     }
 
-    /* ── Responsive ── */
-
     @media (max-width: 1200px) {
-      .features-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     @media (max-width: 968px) {
-      .table-header {
-        display: none;
-      }
-
+      .table-header { display: none; }
       .program-row {
         grid-template-columns: 1fr 1fr;
         gap: 0.6rem;
         padding: 1rem;
       }
-
-      .program-row:hover {
-        transform: none;
-      }
-
-      .program-name-cell {
-        grid-column: 1 / -1;
-        font-size: 1rem;
-      }
-
-      .fee-cell {
-        text-align: left;
-      }
-
-      .view-btn {
-        grid-column: 1 / -1;
-        width: 100%;
-        text-align: center;
-        padding: 0.75rem;
-      }
-
-      .features-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
-      }
-
-      .combined-card {
-        padding: 1.5rem 1rem;
-      }
+      .program-row:hover { transform: none; }
+      .program-name-cell { grid-column: 1 / -1; font-size: 1rem; }
+      .fee-cell { text-align: left; }
+      .view-btn { grid-column: 1 / -1; width: 100%; text-align: center; padding: 0.75rem; }
+      .features-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+      .combined-card { padding: 1.5rem 1rem; }
     }
 
     @media (max-width: 768px) {
-      /* Header */
-      .header-content {
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        padding: 1rem 1rem;
-      }
-
-      .nav-toggle {
-        display: flex;
-      }
-
+      .header-content { flex-wrap: wrap; gap: 0.5rem; padding: 1rem 1rem; }
+      .nav-toggle { display: flex; }
       .nav {
         display: none;
         width: 100%;
@@ -520,11 +492,7 @@
         border-top: 1px solid #e2e8f0;
         margin-top: 0.5rem;
       }
-
-      .nav.open {
-        display: flex;
-      }
-
+      .nav.open { display: flex; }
       .nav-link {
         margin: 0;
         padding: 0.9rem 0;
@@ -532,153 +500,40 @@
         font-size: 1rem;
         display: block;
       }
-
-      .nav-link:last-child {
-        border-bottom: none;
-      }
-
-      /* Hero */
-      .hero {
-        padding: 3rem 1rem 2rem;
-      }
-
-      .hero h1 {
-        font-size: 2.2rem;
-      }
-
-      .hero-subtitle {
-        font-size: 1rem;
-        margin-bottom: 1.8rem;
-      }
-
-      .search-bar input {
-        font-size: 1rem;
-        padding: 1rem 1.2rem;
-      }
-
-      .filter-chip {
-        padding: 0.5rem 1rem;
-        font-size: 0.82rem;
-      }
-
-      /* Stats */
-      .stats-bar {
-        gap: 0.8rem;
-        margin: 1.5rem 0;
-      }
-
-      .stat-card {
-        padding: 1rem 1.2rem;
-        min-width: 80px;
-      }
-
-      .stat-number {
-        font-size: 1.6rem;
-      }
-
-      .stat-label {
-        font-size: 0.75rem;
-      }
-
-      /* Programs */
-      .search-term-title {
-        font-size: 1.6rem;
-      }
-
-      .results-count {
-        font-size: 0.95rem;
-      }
-
-      .program-row {
-        grid-template-columns: 1fr;
-        gap: 0.4rem;
-      }
-
-      .program-name-cell {
-        font-size: 1rem;
-      }
-
-      .uni-name-cell,
-      .city-cell {
-        font-size: 0.88rem;
-      }
-
-      .fee-cell {
-        font-size: 0.9rem;
-      }
-
-      /* About */
-      .about-section {
-        padding: 3.5rem 1rem;
-      }
-
-      .about-section h2 {
-        font-size: 2rem;
-      }
-
-      .about-subtitle {
-        font-size: 1rem;
-        margin-bottom: 2.5rem;
-      }
-
-      .features-grid {
-        grid-template-columns: 1fr;
-        gap: 1.2rem;
-      }
-
-      .feature-card {
-        padding: 1.8rem 1.5rem;
-      }
-
-      .feature-icon {
-        font-size: 2.8rem;
-        margin-bottom: 1rem;
-      }
-
-      .feature-title {
-        font-size: 1.1rem;
-      }
-
-      /* Footer */
-      .footer {
-        padding: 2.5rem 1rem;
-        margin-top: 2rem;
-      }
-
-      .footer-links {
-        flex-direction: column;
-        align-items: center;
-        gap: 0.9rem;
-        margin-bottom: 1.2rem;
-      }
-
-      .footer-links a {
-        font-size: 0.95rem;
-      }
-
-      .copyright {
-        font-size: 0.82rem;
-      }
+      .nav-link:last-child { border-bottom: none; }
+      .hero { padding: 3rem 1rem 2rem; }
+      .hero h1 { font-size: 2.2rem; }
+      .hero-subtitle { font-size: 1rem; margin-bottom: 1.8rem; }
+      .search-bar input { font-size: 1rem; padding: 1rem 1.2rem; }
+      .filter-chip { padding: 0.5rem 1rem; font-size: 0.82rem; }
+      .stats-bar { gap: 0.8rem; margin: 1.5rem 0; }
+      .stat-card { padding: 1rem 1.2rem; min-width: 80px; }
+      .stat-number { font-size: 1.6rem; }
+      .stat-label { font-size: 0.75rem; }
+      .search-term-title { font-size: 1.6rem; }
+      .results-count { font-size: 0.95rem; }
+      .program-row { grid-template-columns: 1fr; gap: 0.4rem; }
+      .program-name-cell { font-size: 1rem; }
+      .uni-name-cell, .city-cell { font-size: 0.88rem; }
+      .fee-cell { font-size: 0.9rem; }
+      .about-section { padding: 3.5rem 1rem; }
+      .about-section h2 { font-size: 2rem; }
+      .about-subtitle { font-size: 1rem; margin-bottom: 2.5rem; }
+      .features-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+      .feature-card { padding: 1.8rem 1.5rem; }
+      .feature-icon { font-size: 2.8rem; margin-bottom: 1rem; }
+      .feature-title { font-size: 1.1rem; }
+      .footer { padding: 2.5rem 1rem; margin-top: 2rem; }
+      .footer-links { flex-direction: column; align-items: center; gap: 0.9rem; margin-bottom: 1.2rem; }
+      .footer-links a { font-size: 0.95rem; }
+      .copyright { font-size: 0.82rem; }
     }
 
     @media (max-width: 420px) {
-      .hero h1 {
-        font-size: 1.8rem;
-      }
-
-      .stats-bar {
-        flex-direction: row;
-        justify-content: space-between;
-      }
-
-      .stat-card {
-        flex: 1;
-        padding: 0.8rem 0.6rem;
-      }
-
-      .stat-number {
-        font-size: 1.4rem;
-      }
+      .hero h1 { font-size: 1.8rem; }
+      .stats-bar { flex-direction: row; justify-content: space-between; }
+      .stat-card { flex: 1; padding: 0.8rem 0.6rem; }
+      .stat-number { font-size: 1.4rem; }
     }
   </style>
 </head>
@@ -690,9 +545,7 @@
         <span class="logo-text">UniGuide</span>
       </div>
       <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span></span><span></span><span></span>
       </button>
       <nav class="nav" id="main-nav">
         <a href="home.html" class="nav-link">Home</a>
@@ -708,9 +561,7 @@
   <section class="hero">
     <div class="container">
       <h1>🎓 Find Your Perfect University Program</h1>
-      <p class="hero-subtitle">
-        Search through programs across top universities in Pakistan
-      </p>
+      <p class="hero-subtitle">Search through programs across top universities in Pakistan</p>
       
       <div class="search-bar">
         <input 
@@ -979,6 +830,22 @@
       }, 300);
     }
 
+    function makeRow(prog) {
+      const uni = prog.university.replace(/'/g, "\\'");
+      const name = prog.name.replace(/'/g, "\\'");
+      return `
+        <div class="program-row" onclick="goToProgram('${uni}', '${name}')">
+          <div class="program-name-cell">${prog.name}</div>
+          <div class="uni-name-cell"><span>🏛️</span>${prog.university}</div>
+          <div class="city-cell"><span>📍</span>${prog.city}</div>
+          <div class="fee-cell">${prog.fee ? `PKR ${prog.fee.toLocaleString()}` : 'N/A'}</div>
+          <button class="view-btn" onclick="event.stopPropagation(); goToProgram('${uni}', '${name}')">
+            View Details
+          </button>
+        </div>
+      `;
+    }
+
     function displayOneBigCard(searchQuery, programs) {
       document.getElementById('loading').style.display = 'none';
       const container = document.getElementById('programs-container');
@@ -1001,6 +868,11 @@
       document.getElementById('stat-variations').textContent = uniquePrograms;
       document.getElementById('stats-bar').style.display = 'flex';
 
+      const INITIAL_SHOW = 5;
+      const hiddenCount = programs.length - INITIAL_SHOW;
+      const initialRows = programs.slice(0, INITIAL_SHOW).map(makeRow).join('');
+      const allRows = programs.map(makeRow).join('');
+
       container.innerHTML = `
         <div class="combined-card">
           <div class="card-header">
@@ -1018,20 +890,24 @@
               <div style="text-align:right;">Fee (1st Year)</div>
               <div></div>
             </div>
-            ${programs.map(prog => `
-              <div class="program-row" onclick="goToProgram('${prog.university.replace(/'/g, "\\'")}', '${prog.name.replace(/'/g, "\\'")}')">
-                <div class="program-name-cell">${prog.name}</div>
-                <div class="uni-name-cell"><span>🏛️</span>${prog.university}</div>
-                <div class="city-cell"><span>📍</span>${prog.city}</div>
-                <div class="fee-cell">${prog.fee ? `PKR ${prog.fee.toLocaleString()}` : 'N/A'}</div>
-                <button class="view-btn" onclick="event.stopPropagation(); goToProgram('${prog.university.replace(/'/g, "\\'")}', '${prog.name.replace(/'/g, "\\'")}')">
-                  View Details
-                </button>
-              </div>
-            `).join('')}
+            <div id="rows-container">
+              ${programs.length <= INITIAL_SHOW ? allRows : initialRows}
+            </div>
+            ${hiddenCount > 0 ? `
+              <button class="view-more-btn" id="view-more-programs">
+                View More (${hiddenCount} remaining)
+              </button>
+            ` : ''}
           </div>
         </div>
       `;
+
+      if (hiddenCount > 0) {
+        document.getElementById('view-more-programs').addEventListener('click', () => {
+          document.getElementById('rows-container').innerHTML = allRows;
+          document.getElementById('view-more-programs').remove();
+        });
+      }
     }
 
     function goToProgram(university, programName) {

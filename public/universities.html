@@ -295,7 +295,27 @@
       margin-bottom: 1rem;
     }
 
-    /* Nav toggle */
+    /* View More Button */
+    .view-more-btn {
+      display: block;
+      margin: 2rem auto 0;
+      padding: 0.85rem 2.5rem;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.3s;
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
+    }
+    .view-more-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(59, 130, 246, 0.45);
+    }
+
     .nav-toggle {
       display: none;
       background: none;
@@ -315,20 +335,9 @@
       transition: all 0.3s;
     }
 
-    /* ── Responsive ── */
-
     @media (max-width: 768px) {
-      /* Header */
-      .header-content {
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        padding: 1rem;
-      }
-
-      .nav-toggle {
-        display: flex;
-      }
-
+      .header-content { flex-wrap: wrap; gap: 0.5rem; padding: 1rem; }
+      .nav-toggle { display: flex; }
       .nav {
         display: none;
         width: 100%;
@@ -338,11 +347,7 @@
         border-top: 1px solid #e2e8f0;
         margin-top: 0.5rem;
       }
-
-      .nav.open {
-        display: flex;
-      }
-
+      .nav.open { display: flex; }
       .nav-link {
         margin: 0;
         padding: 0.9rem 0;
@@ -350,101 +355,29 @@
         font-size: 1rem;
         display: block;
       }
-
-      .nav-link:last-child {
-        border-bottom: none;
-      }
-
-      /* Hero */
-      .hero {
-        padding: 3.5rem 1rem 3rem;
-      }
-
-      .hero h1 {
-        font-size: 2.4rem;
-      }
-
-      .subtitle {
-        font-size: 1rem;
-        margin-bottom: 2rem;
-      }
-
-      .search-section h2 {
-        font-size: 1.2rem;
-      }
-
-      .search-input {
-        font-size: 1rem;
-        padding: 1rem 1.2rem;
-      }
-
-      .filter-chip {
-        padding: 0.5rem 1.1rem;
-        font-size: 0.85rem;
-      }
-
-      /* Section */
-      .institutions {
-        padding: 3rem 0;
-      }
-
-      .section-title {
-        font-size: 2rem;
-        margin-bottom: 2rem;
-      }
-
-      /* Cards */
-      .cards-grid {
-        grid-template-columns: 1fr;
-        gap: 1.25rem;
-      }
-
-      .uni-card {
-        min-height: 160px;
-      }
-
-      .uni-card-content {
-        padding: 1.25rem;
-      }
-
-      .uni-card h3 {
-        font-size: 1.2rem;
-      }
-
-      /* Footer */
-      .footer {
-        padding: 2.5rem 1rem;
-      }
-
-      .footer-links {
-        flex-direction: column;
-        align-items: center;
-        gap: 0.9rem;
-      }
-
-      .footer-links a {
-        margin: 0;
-        font-size: 0.95rem;
-      }
+      .nav-link:last-child { border-bottom: none; }
+      .hero { padding: 3.5rem 1rem 3rem; }
+      .hero h1 { font-size: 2.4rem; }
+      .subtitle { font-size: 1rem; margin-bottom: 2rem; }
+      .search-section h2 { font-size: 1.2rem; }
+      .search-input { font-size: 1rem; padding: 1rem 1.2rem; }
+      .filter-chip { padding: 0.5rem 1.1rem; font-size: 0.85rem; }
+      .institutions { padding: 3rem 0; }
+      .section-title { font-size: 2rem; margin-bottom: 2rem; }
+      .cards-grid { grid-template-columns: 1fr; gap: 1.25rem; }
+      .uni-card { min-height: 160px; }
+      .uni-card-content { padding: 1.25rem; }
+      .uni-card h3 { font-size: 1.2rem; }
+      .footer { padding: 2.5rem 1rem; }
+      .footer-links { flex-direction: column; align-items: center; gap: 0.9rem; }
+      .footer-links a { margin: 0; font-size: 0.95rem; }
     }
 
     @media (max-width: 480px) {
-      .hero h1 {
-        font-size: 2rem;
-      }
-
-      .filter-chips {
-        gap: 0.5rem;
-      }
-
-      .filter-chip {
-        padding: 0.45rem 0.9rem;
-        font-size: 0.8rem;
-      }
-
-      .section-title {
-        font-size: 1.6rem;
-      }
+      .hero h1 { font-size: 2rem; }
+      .filter-chips { gap: 0.5rem; }
+      .filter-chip { padding: 0.45rem 0.9rem; font-size: 0.8rem; }
+      .section-title { font-size: 1.6rem; }
     }
   </style>
 </head>
@@ -456,9 +389,7 @@
         <span class="logo-text">UniGuide</span>
       </div>
       <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span></span><span></span><span></span>
       </button>
       <nav class="nav" id="main-nav">
         <a href="home.html" class="nav-link">Home</a>
@@ -509,6 +440,10 @@
       <div id="error" class="error" style="display:none;"></div>
 
       <div class="cards-grid" id="universities-grid"></div>
+
+      <button class="view-more-btn" id="view-more-btn" style="display:none;">
+        View More
+      </button>
       
       <div id="no-results" class="no-results" style="display:none;">
         <div class="no-results-icon">🔍</div>
@@ -537,15 +472,16 @@
 
   <script src="config.js"></script>
   <script>
-    // Hamburger toggle
     document.getElementById('nav-toggle').addEventListener('click', function() {
       document.getElementById('main-nav').classList.toggle('open');
     });
 
     const API_URL = CONFIG.API_URL;
+    const INITIAL_SHOW = 10;
     let allUniversities = [];
     let filteredUniversities = [];
     let currentCityFilter = 'all';
+    let showingAll = false;
 
     function normalizeText(text) {
       return text.toLowerCase().trim().replace(/[^\w\s]/g, '');
@@ -571,27 +507,12 @@
       }
     }
 
-    function displayUniversities(universities) {
-      const grid = document.getElementById('universities-grid');
-      const noResults = document.getElementById('no-results');
-      
-      if (universities.length === 0) {
-        grid.innerHTML = '';
-        noResults.style.display = 'block';
-        return;
-      }
-
-      noResults.style.display = 'none';
-      grid.innerHTML = '';
-
-      universities.forEach(uni => {
-        const card = document.createElement('div');
-        card.className = 'uni-card';
-        const shortName = uni.name;
-        const fullName = uni.full_name;
-        const city = uni.city || 'Pakistan';
-
-        card.innerHTML = `
+    function makeCard(uni) {
+      const shortName = uni.name;
+      const fullName = uni.full_name;
+      const city = uni.city || 'Pakistan';
+      return `
+        <div class="uni-card">
           <div class="uni-card-content">
             <h3>${shortName}</h3>
             ${fullName && fullName !== shortName ? `<p>${fullName}</p>` : `<p>📍 ${city}</p>`}
@@ -599,11 +520,46 @@
               View Details
             </button>
           </div>
-        `;
-
-        grid.appendChild(card);
-      });
+        </div>
+      `;
     }
+
+    function displayUniversities(universities) {
+      const grid = document.getElementById('universities-grid');
+      const noResults = document.getElementById('no-results');
+      const viewMoreBtn = document.getElementById('view-more-btn');
+
+      // Reset state
+      showingAll = false;
+
+      if (universities.length === 0) {
+        grid.innerHTML = '';
+        noResults.style.display = 'block';
+        viewMoreBtn.style.display = 'none';
+        return;
+      }
+
+      noResults.style.display = 'none';
+
+      const toShow = universities.slice(0, INITIAL_SHOW);
+      grid.innerHTML = toShow.map(makeCard).join('');
+
+      if (universities.length > INITIAL_SHOW) {
+        const remaining = universities.length - INITIAL_SHOW;
+        viewMoreBtn.textContent = `View More (${remaining} remaining)`;
+        viewMoreBtn.style.display = 'block';
+      } else {
+        viewMoreBtn.style.display = 'none';
+      }
+    }
+
+    // View More click — show all remaining cards
+    document.getElementById('view-more-btn').addEventListener('click', () => {
+      const grid = document.getElementById('universities-grid');
+      grid.innerHTML = filteredUniversities.map(makeCard).join('');
+      document.getElementById('view-more-btn').style.display = 'none';
+      showingAll = true;
+    });
 
     function updateStats() {
       const stats = document.getElementById('search-stats');
